@@ -1,0 +1,19 @@
+*{
+  /* outline: 1px solid red; */
+}
+
+
+@font-face {
+  font-family: 'Plein';
+  src: url('./assets/fonts/Plein_Complete/Fonts/WEB/fonts/Plein-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+}
+
+/* Optional: Add bold, medium, etc. if you have them */
+@font-face {
+  font-family: 'Plein';
+  src: url('./assets/fonts/Plein_Complete/Fonts/WEB/fonts/Plein-Bold.woff') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+}
