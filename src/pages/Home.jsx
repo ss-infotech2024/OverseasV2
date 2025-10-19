@@ -14,6 +14,9 @@ import StepsSection from "../components/StepsSection";
 import DestinationComponent from "../components/DestinationComponent";
 import BannerComponent from "../components/BannerComponent";
 import TrendingCourses from "../components/TrendingCourses"
+import Earth from "../components/Earth";
+import VideoAD from "../components/VideoAD"
+import VideoAD1 from "../components/VideoAD1"
 
 // Register ScrollTrigger plugin
 gsap.registerPlugin(ScrollTrigger);
@@ -124,11 +127,7 @@ const Home = () => {
         <OfferedCountriesSection />
       </section>
 
-       
-
-      <section className="section">
-        <StepsSection />
-      </section>
+      
 
        <section className="section">
         <DestinationComponent />
@@ -145,18 +144,38 @@ const Home = () => {
       </section>
 
 
+    
+
+
+      <section className="section">
+        <StepsSection />
+      </section>
+
+
       
+
+        <section className="section">
+        <VideoAD1 />
+      </section> 
 
       {/* Our Services Section */}
       <section className="section">
         <OurServices />
       </section>
 
-      
-      {/* Testimonials Section */}
+
+
+       {/* Testimonials Section */}
       <section className="section">
         <TestimonialSection />
       </section>
+
+        {/* <section className="section">
+        <VideoAD />
+      </section> */}
+
+      
+     
     </main>
   );
 };

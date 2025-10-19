@@ -76,27 +76,27 @@ const Navbar = () => {
   const getLinkClass = (pathMatch) =>
     `${
       currentPath.startsWith(pathMatch)
-        ? "text-purple-900 font-semibold"
-        : "text-gray-800"
-    } relative group`;
+        ? "text-purple-900 font-extrabold"
+        : "text-gray-800 font-bold"
+    } relative group transition-all duration-300 hover:text-purple-900`;
 
   return (
     <nav
       ref={navbarRef}
-      className="bg-white sticky top-0 z-50 shadow-md transition-all duration-300 supports-[position:sticky]:sticky supports-[position:sticky]:top-0 fixed"
+      className="bg-white sticky top-0 z-50 shadow-lg transition-all duration-300 supports-[position:sticky]:sticky supports-[position:sticky]:top-0 fixed"
     >
-      <div className="w-11/12 mx-auto flex items-center justify-between py-3 sm:px-4">
+      <div className="w-11/12 mx-auto flex items-center justify-between py-4 sm:px-6">
         {/* Logo */}
-        <Link to="/" className="flex items-center gap-2">
+        <Link to="/" className="flex items-center gap-3">
           <img
             src={Logo}
             alt="SS Overseas Logo"
-            className="h-14 sm:h-16 md:h-20 lg:h-24 w-auto object-contain transform transition-transform duration-300 hover:scale-105"
+            className="h-16 sm:h-18 md:h-20 lg:h-24 w-auto object-contain transform transition-transform duration-300 hover:scale-110"
           />
         </Link>
 
         {/* Center Nav Links */}
-        <div className="hidden lg:flex flex-1 justify-center items-center space-x-6 xl:space-x-10">
+        <div className="hidden lg:flex flex-1 justify-center items-center space-x-8 xl:space-x-12">
           {[
             { to: "/", label: "Home" },
             { to: "/services", label: "Services" },
@@ -105,8 +105,10 @@ const Navbar = () => {
             { to: "/about", label: "About Us" },
           ].map(({ to, label }) => (
             <Link key={to} to={to} className={getLinkClass(to)}>
-              <span className="hover:text-purple-900 transition">{label}</span>
-              <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-purple-900 transition-all duration-300 group-hover:w-full"></span>
+              <span className="text-lg font-bold tracking-wide hover:text-purple-900 transition-colors duration-300">
+                {label}
+              </span>
+              <span className="absolute left-0 -bottom-1 w-0 h-[3px] bg-yellow-400 transition-all duration-300 group-hover:w-full"></span>
             </Link>
           ))}
         </div>
@@ -115,10 +117,10 @@ const Navbar = () => {
         <div className="hidden lg:flex">
           <Link
             to="/contact"
-            className="group inline-flex items-center gap-2 bg-purple-900 text-white px-5 py-2 rounded-lg ring-1 ring-purple-900 transition duration-300 hover:bg-white hover:text-purple-900"
+            className="group inline-flex items-center gap-3 bg-gradient-to-r from-purple-900 to-blue-900 text-white px-6 py-3 rounded-xl ring-1 ring-purple-900 transition-all duration-300 hover:bg-gradient-to-r hover:from-yellow-400 hover:to-yellow-500 hover:text-black hover:ring-yellow-400 shadow-md hover:shadow-lg"
           >
-            Contact
-            <FaArrowAltCircleRight className="text-yellow-400 group-hover:text-purple-900 transition-colors duration-300" />
+            <span className="text-lg font-extrabold">Contact</span>
+            <FaArrowAltCircleRight className="text-yellow-400 group-hover:text-black w-5 h-5 transition-colors duration-300" />
           </Link>
         </div>
 
@@ -128,7 +130,7 @@ const Navbar = () => {
             onClick={toggleMenu}
             className="text-purple-900 focus:outline-none"
           >
-            {isOpen ? <FaTimes size={26} /> : <FaBars size={26} />}
+            {isOpen ? <FaTimes size={28} /> : <FaBars size={28} />}
           </button>
         </div>
       </div>
@@ -137,12 +139,12 @@ const Navbar = () => {
       {isOpen && (
         <div
           ref={mobileMenuRef}
-          className="lg:hidden bg-white px-6 py-4 flex flex-col items-start space-y-4 border-t border-gray-200 shadow-md text-base sm:text-lg z-[60]"
+          className="lg:hidden bg-white px-6 py-6 flex flex-col items-start space-y-5 border-t border-gray-200 shadow-lg text-base sm:text-lg z-[60]"
         >
           <Link
             onClick={toggleMenu}
             to="/"
-            className="text-gray-800 hover:text-purple-900"
+            className="text-gray-800 font-bold hover:text-purple-900 transition-colors duration-300"
           >
             Home
           </Link>
@@ -162,8 +164,8 @@ const Navbar = () => {
           </Link>
           <Link
             onClick={toggleMenu}
-            to="/universities"
-            className={getLinkClass("/universities")}
+            to="/all-universities"
+            className={getLinkClass("/all-universities")}
           >
             Universities
           </Link>
@@ -177,7 +179,7 @@ const Navbar = () => {
           <Link
             onClick={toggleMenu}
             to="/contact"
-            className="w-full text-center bg-purple-900 text-white py-2 px-4 rounded-lg ring-1 ring-purple-900 hover:bg-white hover:text-purple-900 transition"
+            className="w-full text-center bg-gradient-to-r from-purple-900 to-blue-900 text-white font-extrabold py-3 px-6 rounded-xl ring-1 ring-purple-900 hover:bg-gradient-to-r hover:from-yellow-400 hover:to-yellow-500 hover:text-black hover:ring-yellow-400 transition-all duration-300 shadow-md hover:shadow-lg"
           >
             Contact
           </Link>

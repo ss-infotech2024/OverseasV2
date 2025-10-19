@@ -1,396 +1,449 @@
-import { Button } from "../components/ui/Button";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "../components/ui/Card";
-import { Badge } from "../components/ui/Badge";
-import {
-  GraduationCap,
-  Users,
-  Target,
-  Heart,
-  Star,
-  Award,
-  Globe,
-  BookOpen,
-  Lightbulb,
-  Shield,
-  Zap,
-  Phone,
-  Mail,
-  MapPin,
-  Calendar,
-  CheckCircle,
-  ArrowRight,
-  MessageSquare,
-  Trophy,
-  Building,
-} from "lucide-react";
-import { Link } from "react-router-dom";
-import { useState } from "react";
+import React, { useState, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { 
+  Users, 
+  Award, 
+  Globe, 
+  Target, 
+  Heart, 
+  Zap, 
+  CheckCircle, 
+  ArrowRight, 
+  Quote 
+} from 'lucide-react';
 
-const Header = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+const AboutUs = () => {
+  const [activeSection, setActiveSection] = useState('about');
+  const navigate = useNavigate();
+  const sectionRefs = {
+    about: useRef(null),
+    mission: useRef(null),
+    vision: useRef(null),
+    leadership: useRef(null),
+    stats: useRef(null),
+  };
+
+  const scrollToSection = (section) => {
+    setActiveSection(section);
+    sectionRefs[section].current.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+    });
+  };
+
+  const leadershipData = [
+    {
+      id: 1,
+      name: 'Rajesh Sharma',
+      role: 'CEO & Founder',
+      quote: 'Education is the passport to the future, and at SS Overseas, we are committed to helping every student succeed. Our vision goes beyond placements—we are building global citizens.',
+      image: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80',
+      color: 'from-blue-500 to-cyan-500',
+      experience: '15+ years',
+    },
+    {
+      id: 2,
+      name: 'Priya Patel',
+      role: 'Chief Academic Officer',
+      quote: 'We leverage technology to simplify the visa process, making global education accessible. Our platforms ensure you are informed and prepared.',
+      image: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80',
+      color: 'from-purple-500 to-pink-500',
+      experience: '12+ years',
+    },
+    {
+      id: 3,
+      name: 'Anil Kumar',
+      role: 'Director of Admissions',
+      quote: 'Our 98% visa approval rate reflects our meticulous approach and personalized guidance. We treat every application as a unique journey.',
+      image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80',
+      color: 'from-green-500 to-teal-500',
+      experience: '10+ years',
+    },
+  ];
+
+  const statsData = [
+    { icon: <Users className="w-8 h-8" />, number: '10,000+', label: 'Students Guided', color: 'from-blue-500 to-cyan-500' },
+    { icon: <Award className="w-8 h-8" />, number: '98%', label: 'Visa Success Rate', color: 'from-green-500 to-emerald-500' },
+    { icon: <Globe className="w-8 h-8" />, number: '25+', label: 'Countries', color: 'from-purple-500 to-pink-500' },
+    { icon: <Target className="w-8 h-8" />, number: '200+', label: 'Partner Institutions', color: 'from-orange-500 to-red-500' },
+  ];
+
+  const processData = [
+    {
+      step: '01',
+      title: 'Initial Counseling',
+      description: 'Personalized guidance to understand your goals and aspirations',
+      icon: <Users className="w-6 h-6" />,
+      color: 'from-blue-400 to-cyan-400',
+    },
+    {
+      step: '02',
+      title: 'University Selection',
+      description: 'Curated list of institutions matching your profile and preferences',
+      icon: <Globe className="w-6 h-6" />,
+      color: 'from-purple-400 to-pink-400',
+    },
+    {
+      step: '03',
+      title: 'Application Process',
+      description: 'End-to-end support with documentation and submissions',
+      icon: <CheckCircle className="w-6 h-6" />,
+      color: 'from-green-400 to-teal-400',
+    },
+    {
+      step: '04',
+      title: 'Visa Assistance',
+      description: 'Expert guidance for successful visa approval',
+      icon: <ArrowRight className="w-6 h-6" />,
+      color: 'from-orange-400 to-red-400',
+    },
+  ];
+
+  const valuesData = [
+    { icon: <Heart className="w-8 h-8" />, title: 'Student-Centric Approach', description: 'Every student is unique, and so is our approach to their journey' },
+    { icon: <Zap className="w-8 h-8" />, title: 'Excellence in Service', description: 'Committed to delivering high-quality guidance and support' },
+    { icon: <CheckCircle className="w-8 h-8" />, title: 'Transparency & Integrity', description: 'Honest advice and clear processes at every step' },
+    { icon: <Globe className="w-8 h-8" />, title: 'Global Perspective', description: 'Connecting students with world-class education opportunities' },
+  ];
 
   return (
-    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-border shadow-sm"></header>
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50">
+      {/* Hero Section */}
+      <section className="relative bg-gradient-to-br from-purple-900 to-blue-900 text-white py-16 px-4 sm:px-6 lg:px-8 overflow-hidden">
+        <div className="absolute inset-0 bg-black/20"></div>
+        <div className="absolute top-0 left-0 w-72 h-72 bg-purple-500/10 rounded-full -translate-x-1/2 -translate-y-1/2"></div>
+        <div className="absolute bottom-0 right-0 w-96 h-96 bg-blue-500/10 rounded-full translate-x-1/3 translate-y-1/3"></div>
+        <div className="max-w-7xl mx-auto text-center relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-4 py-2 mb-4 border border-white/20">
+              <span className="text-sm font-medium">About SS Overseas</span>
+            </div>
+            <h1 className="text-3xl sm:text-4xl font-bold mb-4">Your Study Abroad Partner</h1>
+            <p className="text-lg text-blue-100 max-w-2xl mx-auto mb-6">
+              Guiding students to global education success with personalized support and expertise.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <button
+                onClick={() => scrollToSection('about')}
+                className="px-6 py-3 bg-gradient-to-r from-yellow-400 to-yellow-500 text-black rounded-lg font-medium hover:from-yellow-500 hover:to-yellow-600 transition-all duration-300"
+              >
+                Explore Our Story
+              </button>
+              <button
+                onClick={() => navigate('/contact')}
+                className="px-6 py-3 border-2 border-white text-white rounded-lg font-medium hover:bg-white/10 transition-all duration-300"
+              >
+                Contact Us
+              </button>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Navigation (Internal Section Links) */}
+      <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-md shadow-lg border-b border-gray-200 py-4">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-center space-x-6">
+            {[
+              { id: 'about', label: 'About' },
+              { id: 'mission', label: 'Mission' },
+              { id: 'vision', label: 'Vision' },
+              { id: 'leadership', label: 'Leadership' },
+              { id: 'stats', label: 'Achievements' },
+            ].map((item) => (
+              <button
+                key={item.id}
+                onClick={() => scrollToSection(item.id)}
+                className={`text-sm font-medium transition-all duration-300 ${
+                  activeSection === item.id ? 'text-purple-600' : 'text-gray-600 hover:text-purple-500'
+                }`}
+              >
+                {item.label}
+                {activeSection === item.id && (
+                  <span className="block h-0.5 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full mt-1"></span>
+                )}
+              </button>
+            ))}
+          </div>
+        </div>
+      </nav>
+
+      {/* About Section */}
+      <section ref={sectionRefs.about} className="py-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+            <motion.div
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.7 }}
+              viewport={{ once: true }}
+            >
+              <h2 className="text-3xl font-bold text-gray-900 mb-4">About SS Overseas Education</h2>
+              <p className="text-gray-600 mb-6">
+                SS Overseas Education is a premier consultancy dedicated to guiding students through the study abroad process. With experienced counselors and a global network of institutions, we provide comprehensive services to help students achieve their academic and career goals.
+              </p>
+              <p className="text-gray-600 mb-6">
+                Our expertise covers counseling, institution selection, applications, visas, and pre-departure preparations. We are committed to making international education accessible and achievable for all students.
+              </p>
+              <div className="bg-gradient-to-r from-purple-50 to-blue-50 p-4 rounded-lg border-l-4 border-purple-500">
+                <div className="flex items-start gap-3">
+                  <Quote className="w-6 h-6 text-purple-500 flex-shrink-0" />
+                  <p className="text-purple-800 font-medium text-sm">
+                    We provide comprehensive support, including preparation for exams like GRE, TOEFL, IELTS, ACT, SAT, and more, along with personalized guidance.
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, x: 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.7 }}
+              viewport={{ once: true }}
+            >
+              <div className="bg-gradient-to-br from-purple-500 to-blue-600 rounded-lg p-1 shadow-md">
+                <img
+                  src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                  alt="Students studying abroad"
+                  className="rounded-lg w-full h-80 object-cover"
+                />
+              </div>
+              <div className="bg-white rounded-lg p-4 shadow-md mt-4 text-center">
+                <div className="text-2xl font-bold text-purple-600">15+</div>
+                <div className="text-sm text-gray-600">Years of Experience</div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Stats and Values Section */}
+      <section ref={sectionRefs.stats} className="py-12 px-4 sm:px-6 lg:px-8 bg-white">
+        <div className="max-w-7xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="text-center mb-8"
+          >
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Our Impact</h2>
+            <p className="text-gray-600">Transforming dreams into reality</p>
+          </motion.div>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
+            {statsData.map((stat, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                viewport={{ once: true }}
+                className={`bg-gradient-to-r ${stat.color} rounded-lg p-4 text-white text-center shadow-md hover:shadow-lg transition-all duration-300`}
+              >
+                <div className="flex justify-center mb-2">{stat.icon}</div>
+                <div className="text-2xl font-bold">{stat.number}</div>
+                <div className="text-sm">{stat.label}</div>
+              </motion.div>
+            ))}
+          </div>
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+          >
+            <h3 className="text-2xl font-bold text-center text-gray-900 mb-6">Our Core Values</h3>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+              {valuesData.map((value, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  viewport={{ once: true }}
+                  className="bg-white rounded-lg p-4 text-center shadow-md hover:shadow-lg transition-all duration-300"
+                >
+                  <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-blue-500 rounded-lg flex items-center justify-center mx-auto mb-2 text-white">
+                    {value.icon}
+                  </div>
+                  <h4 className="text-sm font-bold text-gray-900">{value.title}</h4>
+                  <p className="text-xs text-gray-600">{value.description}</p>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Mission Section */}
+      <section ref={sectionRefs.mission} className="py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-purple-600 to-blue-700 text-white">
+        <div className="max-w-7xl mx-auto text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="text-3xl font-bold mb-4">Our Mission</h2>
+            <p className="text-lg max-w-3xl mx-auto">
+              Empowering students to achieve their global education goals with personalized guidance and support.
+            </p>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Vision Section */}
+      <section ref={sectionRefs.vision} className="py-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="text-center mb-8"
+          >
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Our Vision</h2>
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+              To make international education accessible and seamless for all aspiring students worldwide.
+            </p>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="bg-white rounded-lg p-6 shadow-md"
+          >
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              {[
+                { title: 'Interviews', description: 'Direct online interviews', color: 'from-blue-500 to-cyan-500' },
+                { title: 'Process', description: 'Quick and easy process', color: 'from-green-500 to-emerald-500' },
+                { title: 'Visa Approvals', description: '98% visa approvals', color: 'from-purple-500 to-pink-500' },
+              ].map((item, index) => (
+                <div
+                  key={index}
+                  className={`bg-gradient-to-br ${item.color} rounded-lg p-4 text-white text-center shadow-md hover:shadow-lg transition-all duration-300`}
+                >
+                  <h3 className="text-sm font-bold mb-2">{item.title}</h3>
+                  <p className="text-xs">{item.description}</p>
+                </div>
+              ))}
+            </div>
+            <div className="text-center mt-6">
+              <button className="px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg font-medium hover:from-purple-700 hover:to-blue-700 transition-all duration-300">
+                Begin Your Journey
+              </button>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Leadership Section */}
+      <section ref={sectionRefs.leadership} className="py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-gray-50 to-blue-50">
+        <div className="max-w-7xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="text-center mb-8"
+          >
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Meet Our Leadership</h2>
+            <p className="text-gray-600">Our team of experts driving global education excellence</p>
+          </motion.div>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+            {leadershipData.map((person, index) => (
+              <motion.div
+                key={person.id}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                viewport={{ once: true }}
+                className="bg-white rounded-lg shadow-md overflow-hidden"
+              >
+                <div className={`h-1 bg-gradient-to-r ${person.color}`}></div>
+                <div className="p-4 text-center">
+                  <img
+                    src={person.image}
+                    alt={person.name}
+                    className="w-20 h-20 rounded-full mx-auto mb-2"
+                  />
+                  <h3 className="text-lg font-bold text-gray-900">{person.name}</h3>
+                  <p className={`text-xs font-medium bg-gradient-to-r ${person.color} bg-clip-text text-transparent`}>
+                    {person.role}
+                  </p>
+                  <p className="text-xs text-gray-600 mt-2">{person.quote}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Process Section */}
+      <section className="py-12 px-4 sm:px-6 lg:px-8 bg-white">
+        <div className="max-w-7xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="text-center mb-8"
+          >
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Our Process</h2>
+            <p className="text-gray-600">A structured approach to ensure your study abroad success</p>
+          </motion.div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {processData.map((step, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                viewport={{ once: true }}
+                className="text-center"
+              >
+                <div className={`w-12 h-12 bg-gradient-to-br ${step.color} rounded-lg mx-auto mb-2 flex items-center justify-center text-white`}>
+                  {step.icon}
+                </div>
+                <h4 className="text-sm font-bold text-gray-900 mb-2">{step.title}</h4>
+                <p className="text-xs text-gray-600">{step.description}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-purple-900 to-blue-900 text-white">
+        <div className="max-w-4xl mx-auto text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="text-3xl font-bold mb-4">Ready to Begin?</h2>
+            <p className="text-lg text-blue-100 mb-6">
+              Join thousands of students who achieved their dreams with SS Overseas.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <button className="px-6 py-3 bg-yellow-400 text-black rounded-lg font-medium hover:bg-yellow-500 transition-all duration-300">
+                Start Your Application
+              </button>
+              <button className="px-6 py-3 border-2 border-white text-white rounded-lg font-medium hover:bg-white/10 transition-all duration-300">
+                Free Consultation
+              </button>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+    </div>
   );
 };
 
-export default function About() {
-  const stats = [
-    { label: "Students Placed", value: "700+", icon: Users },
-    { label: "Partner Universities", value: "50+", icon: Building },
-    { label: "Countries Covered", value: "7+", icon: Globe },
-    { label: "Visa Success Rate", value: "95%", icon: Trophy },
-  ];
-
-  const values = [
-    {
-      title: "Student-First Approach",
-      description:
-        "We prioritize each student's unique needs, aspirations, and success above all else",
-      icon: Heart,
-      color: "bg-red-100 text-red-700",
-    },
-    {
-      title: "Global Opportunities",
-      description:
-        "Connecting Indian students with world-class education across 7+ countries",
-      icon: Globe,
-      color: "bg-blue-100 text-blue-700",
-    },
-    {
-      title: "Transparency & Ethics",
-      description:
-        "Honest guidance and clear processes at every step of the journey",
-      icon: Shield,
-      color: "bg-green-100 text-green-700",
-    },
-    {
-      title: "Future-Focused",
-      description:
-        "We don't just help with admissions - we prepare students for long-term success",
-      icon: Target,
-      color: "bg-purple-100 text-purple-700",
-    },
-  ];
-
-  const team = [
-    {
-      name: "Rahul Sharma",
-      role: "Founder & CEO",
-      image: "👨‍💼",
-      description:
-        "Education entrepreneur with 10+ years in international student counseling",
-      specialties: ["University Partnerships", "Strategic Growth"],
-    },
-    {
-      name: "Priya Patel",
-      role: "Head of Admissions",
-      image: "👩‍🎓",
-      description:
-        "Expert in university applications with 8+ years of experience",
-      specialties: ["SOP/LOR Guidance", "Profile Building"],
-    },
-    {
-      name: "Amit Kumar",
-      role: "Visa & Documentation",
-      image: "👨‍💻",
-      description:
-        "Specialist in visa processing with 95% success rate across countries",
-      specialties: ["Visa Interview Prep", "Documentation"],
-    },
-    {
-      name: "Neha Gupta",
-      role: "Test Preparation",
-      image: "👩‍🏫",
-      description:
-        "IELTS/TOEFL/GRE expert with 7+ years of coaching experience",
-      specialties: ["Test Strategies", "Score Improvement"],
-    },
-  ];
-
-  const milestones = [
-    {
-      year: "2021",
-      title: "Company Founded",
-      description: "Started with UK and Canada university partnerships",
-    },
-    {
-      year: "2022",
-      title: "Service Expansion",
-      description: "Added test preparation and visa assistance services",
-    },
-    {
-      year: "2023",
-      title: "Global Reach",
-      description: "Partnered with institutions in USA, Australia and Germany",
-    },
-    {
-      year: "2024",
-      title: "500+ Students Placed",
-      description: "Crossed major milestone of student placements",
-    },
-    {
-      year: "2025",
-      title: "Virtual Services",
-      description: "Launched online counseling and mentorship programs",
-    },
-  ];
-
-  return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Hero Section */}
-      <section className="bg-purple-900 text-white py-20">
-        <div className="container-padding py-12 sm:py-6 sm:px-6 px-8">
-          <div className="text-center max-w-4xl mx-auto">
-            <h1 className="text-3xl lg:text-6xl font-bold mb-6">
-              Your Gateway to
-              <br />
-              <span className="text-yellow-300">Global Education</span>
-            </h1>
-            <p className="text-sm sm:text-xl text-teal-100 mb-8 leading-relaxed">
-              SS Global EduConnect is a trusted overseas education consultancy
-              helping Indian students achieve their dreams of studying in top
-              destinations like USA, UK, Canada, Australia, and Europe.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              {/* <Button
-                size="lg"
-                className="bg-yellow-400 hover:bg-yellow-500 text-black font-semibold px-8 py-4"
-              >
-                <Users className="w-5 h-5 mr-2" />
-                Meet Our Team
-              </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                className="border-white text-white hover:bg-white hover:text-primary"
-              >
-                <MessageSquare className="w-5 h-5 mr-2" />
-                Free Consultation
-              </Button> */}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Stats Section */}
-      <section className="py-16 bg-white">
-        <div className="container-padding">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
-            {stats.map((stat, index) => (
-              <div key={index} className="text-center">
-                <div className="w-16 h-16 bg-teal-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                  <stat.icon className="w-8 h-8 text-primary" />
-                </div>
-                <div className="text-3xl font-bold text-gray-900 mb-2">
-                  {stat.value}
-                </div>
-                <div className="text-gray-600">{stat.label}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Mission & Story */}
-      <section className="py-12 sm:py-20 sm:px-16 px-8 bg-gray-50">
-        <div className="container-padding">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <div>
-              <Badge className="mb-6 bg-teal-100 text-teal-800">
-                Our Story
-              </Badge>
-              <h2 className="text-4xl font-bold text-gray-900 mb-6">
-                Trusted Overseas Education Consultants
-              </h2>
-              <p className="text-lg text-gray-600 mb-6 leading-relaxed">
-                Founded in 2021, SS Global EduConnect began with a vision to
-                simplify the complex journey of studying abroad for Indian
-                students. Starting with just a few partner universities and a
-                small dedicated team, we've grown into a trusted brand known for
-                personalized guidance and ethical practices.
-              </p>
-              <p className="text-lg text-gray-600 mb-8 leading-relaxed">
-                Based in Nagpur with a growing global network, we serve aspiring
-                students who dream of studying in top destinations worldwide.
-                Our end-to-end support covers everything from university
-                selection to post-arrival assistance.
-              </p>
-              <div className="space-y-4">
-                <div className="flex items-center space-x-3">
-                  <CheckCircle className="w-6 h-6 text-green-500" />
-                  <span className="text-gray-700">
-                    Personalized counseling for each student
-                  </span>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <CheckCircle className="w-6 h-6 text-green-500" />
-                  <span className="text-gray-700">
-                    Strong network of 50+ university partnerships
-                  </span>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <CheckCircle className="w-6 h-6 text-green-500" />
-                  <span className="text-gray-700">
-                    95% visa success rate across countries
-                  </span>
-                </div>
-              </div>
-            </div>
-            <div className="relative">
-              <div className="bg-gradient-to-br from-teal-100 to-teal-200 rounded-3xl p-8 text-center">
-                <div className="text-6xl mb-6">🌍</div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-4">
-                  Our Mission
-                </h3>
-                <p className="text-gray-700 leading-relaxed">
-                  "To empower students with the right knowledge, tools, and
-                  guidance to pursue global education confidently. Your Future,
-                  Our Focus."
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Timeline */}
-      <section className="py-12 sm:py-20 sm:px-6 px-8 bg-white">
-        <div className="container-padding">
-          <div className="text-center mb-16">
-            <Badge className="mb-4 bg-purple-100 text-purple-800">
-              Our Journey
-            </Badge>
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
-              Milestones of Growth & Success
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              From our founding in 2021 to serving 700+ students across 7+
-              countries
-            </p>
-          </div>
-
-          <div className="max-w-4xl mx-auto">
-            <div className="relative">
-              <div className="absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-teal-200"></div>
-              <div className="space-y-12">
-                {milestones.map((milestone, index) => (
-                  <div
-                    key={index}
-                    className={`relative flex items-center ${
-                      index % 2 === 0 ? "justify-start" : "justify-end"
-                    }`}
-                  >
-                    <div
-                      className={`w-1/2 ${
-                        index % 2 === 0 ? "pr-8 text-right" : "pl-8 text-left"
-                      }`}
-                    >
-                      <Card className="border-0 shadow-lg">
-                        <CardContent className="p-6">
-                          <Badge className="mb-3 bg-primary text-white">
-                            {milestone.year}
-                          </Badge>
-                          <h3 className="text-xl font-bold text-gray-900 mb-3">
-                            {milestone.title}
-                          </h3>
-                          <p className="text-gray-600">
-                            {milestone.description}
-                          </p>
-                        </CardContent>
-                      </Card>
-                    </div>
-                    <div className="absolute left-1/2 transform -translate-x-1/2 w-4 h-4 bg-primary rounded-full border-4 border-white shadow-lg"></div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Values */}
-      <section className="py-12 sm:py-20 sm:px-6 px-8 bg-gray-50">
-        <div className="container-padding">
-          <div className="text-center mb-16">
-            <Badge className="mb-4 bg-yellow-100 text-yellow-800">
-              Our Values
-            </Badge>
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
-              What Guides Our Work
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              The principles that shape every interaction and decision we make
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {values.map((value, index) => (
-              <Card key={index} className="border-0 shadow-lg text-center">
-                <CardContent className="p-8">
-                  <div
-                    className={`w-16 h-16 ${value.color} rounded-2xl flex items-center justify-center mx-auto mb-6`}
-                  >
-                    <value.icon className="w-8 h-8" />
-                  </div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-3">
-                    {value.title}
-                  </h3>
-                  <p className="text-gray-600">{value.description}</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Contact CTA */}
-      {/* <section className="py-12 sm:py-20 sm:px-6 px-8 bg-purple-900 text-white">
-        <div className="container-padding text-center">
-          <h2 className="text-3xl sm:text-4xl font-bold mb-6">
-            Ready to Begin Your Global Education Journey?
-          </h2>
-          <p className="text-sm sm:text-xl text-teal-100 mb-8 max-w-2xl mx-auto">
-            Join 700+ students who have successfully pursued international education with our guidance
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button
-              size="lg"
-              className="bg-yellow-400 hover:bg-yellow-500 text-black font-semibold px-8 py-4"
-            >
-              <Calendar className="w-5 h-5 mr-2" />
-              Book Free Consultation
-            </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              className="border-white text-white hover:bg-white hover:text-primary"
-            >
-              <Phone className="w-5 h-5 mr-2" />
-              Call Us Now
-            </Button>
-          </div>
-          <div className="mt-12 flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-8 text-teal-100">
-            <div className="flex items-center space-x-2">
-              <Phone className="w-5 h-5" />
-              <span>+91 98765 43210</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <Mail className="w-5 h-5" />
-              <span>info@ssglobaleduconnect.com</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <MapPin className="w-5 h-5" />
-              <span>Nagpur, Maharashtra</span>
-            </div>
-          </div>
-        </div>
-      </section> */}
-    </div>
-  );
-}
+export default AboutUs;

@@ -466,35 +466,7 @@ export default function Contact() {
         </div>
       </section>
 
-      {/* Emergency Support Banner */}
-      <section className="py-12 sm:py-20 sm:px-6 px-8 bg-gradient-to-r from-red-500 to-red-600 text-white">
-        <div className="container-padding text-center">
-          <h3 className="text-2xl font-bold mb-4">
-            Need Immediate Assistance?
-          </h3>
-          <p className="text-red-100 mb-6 max-w-2xl mx-auto">
-            For urgent matters requiring immediate attention, our emergency
-            support team is available 24/7 to help you.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button
-              size="lg"
-              className="bg-white text-red-600 hover:bg-gray-100 font-semibold px-8 py-4"
-            >
-              <Phone className="w-5 h-5 mr-2" />
-              Call Emergency Line
-            </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              className="border-white text-white hover:bg-white hover:text-red-600"
-            >
-              <MessageSquare className="w-5 h-5 mr-2" />
-              Emergency Chat
-            </Button>
-          </div>
-        </div>
-      </section>
+
     </div>
   );
 }

@@ -7,9 +7,7 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/autoplay';
-
-// Import default image as fallback
-import defaultImage from '../assets/Trandingimage/cityscape50572631280.png';
+import defaultImage from '../assets/Trandingimage/cityscape50572631280.png'; // Verify this path
 
 const TrendingCourses = () => {
   const [loadedImages, setLoadedImages] = useState(new Set());
@@ -21,17 +19,14 @@ const TrendingCourses = () => {
   };
 
   const handleImageLoad = (courseId) => {
-    console.log(`Image loaded successfully for course ID: ${courseId}`);
-    setLoadedImages(prev => new Set([...prev, courseId]));
+    console.log(`Image loaded for course ID: ${courseId}`);
+    setLoadedImages((prev) => new Set([...prev, courseId]));
   };
 
   const handleImageError = (e, course) => {
-    console.log(`Image failed to load for ${course.name}, switching to default image`);
+    console.log(`Image failed for ${course.name} (URL: ${course.img}), using default`);
     e.target.src = defaultImage;
-    const courseId = course.id;
-    if (courseId) {
-      setLoadedImages(prev => new Set([...prev, courseId]));
-    }
+    setLoadedImages((prev) => new Set([...prev, course.id]));
   };
 
   const ImageSkeleton = () => (
@@ -40,7 +35,7 @@ const TrendingCourses = () => {
 
   const filteredCourses = useMemo(() => {
     if (selectedCountry === 'all') {
-      return countries.flatMap(country => 
+      return countries.flatMap(country =>
         country.courses.map(course => ({
           ...course,
           countryName: country.name,
@@ -117,6 +112,7 @@ const TrendingCourses = () => {
             pagination={{ clickable: true, dynamicBullets: true }}
             modules={[Navigation, Pagination, Autoplay]}
             className="courseSwiperAll"
+            preloadImages={true}
             breakpoints={{
               640: { slidesPerView: 2, spaceBetween: 20 },
               768: { slidesPerView: 3, spaceBetween: 25 },
@@ -135,7 +131,7 @@ const TrendingCourses = () => {
                         <img
                           src={course.img}
                           alt={course.alt || `${course.name} course`}
-                          className={`w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500 ${isImageLoaded ? 'block' : 'hidden'}`}
+                          className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
                           onLoad={() => handleImageLoad(course.id)}
                           onError={(e) => handleImageError(e, course)}
                           loading="lazy"
