@@ -2,8 +2,8 @@ import React from 'react';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "../components/ui/Card";
+import { Button } from "../components/ui/Button";
 import { Star } from 'lucide-react';
 import sneha from "../assets/test/sneha_singh.png";
 
