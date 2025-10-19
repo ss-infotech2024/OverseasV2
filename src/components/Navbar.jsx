@@ -85,13 +85,13 @@ const Navbar = () => {
       ref={navbarRef}
       className="bg-white sticky top-0 z-50 shadow-lg transition-all duration-300 supports-[position:sticky]:sticky supports-[position:sticky]:top-0 fixed"
     >
-      <div className="w-11/12 mx-auto flex items-center justify-between py-4 sm:px-6">
+      <div className="w-11/12 mx-auto flex items-center justify-between py-2 sm:px-6">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-3">
           <img
             src={Logo}
             alt="SS Overseas Logo"
-            className="h-16 sm:h-18 md:h-20 lg:h-24 w-auto object-contain transform transition-transform duration-300 hover:scale-110"
+            className="h-12 sm:h-14 md:h-16 lg:h-18 w-auto object-contain transform transition-transform duration-300 hover:scale-110"
           />
         </Link>
 
