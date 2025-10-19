@@ -1,4 +1,3 @@
-// File: src/pages/Courses.jsx
 import { useState, useMemo } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "../components/ui/Button";
@@ -43,7 +42,7 @@ const allCourses = countries.flatMap(country =>
     ...course,
     country: country.name,
     countryLink: country.viewMoreLink,
-    countryFlag: country.flag,
+    countryFlag: country.flag, // Note: 'flag' is not defined in the provided data; you may need to add flag URLs
   }))
 );
 
@@ -242,7 +241,6 @@ export default function Courses() {
   const currentCourses = activeTab === "premium" ? filteredPremiumCourses : filteredAbroadCourses;
   const showCountryFilter = activeTab === "abroad";
 
-
   // Function to handle image errors
   const handleImageError = (e, courseName) => {
     e.target.src = `https://via.placeholder.com/400x300/4F46E5/FFFFFF?text=${encodeURIComponent(courseName)}`;
@@ -359,7 +357,7 @@ export default function Courses() {
           {/* Course Header with Image */}
           <div className="relative h-48 bg-gradient-to-br from-purple-100 to-blue-100 overflow-hidden">
             <img 
-              src={`https://source.unsplash.com/featured/600x400/?${encodeURIComponent(course.name.replace(/\s+/g, '+'))}`}
+              src={course.img} // Updated to use the img path from countries data
               alt={course.alt}
               className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
               onError={(e) => handleImageError(e, course.name)}
@@ -382,14 +380,10 @@ export default function Courses() {
                 {course.qualification}
               </Badge>
             </div>
-
-          
-           
           </div>
 
           {/* Course Content */}
           <div className="p-6">
-            
             <h3 className="text-xl font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-purple-700 transition-colors">
               {course.name}
             </h3>
@@ -484,12 +478,9 @@ export default function Courses() {
                 Free Consultation
               </Button>
             </a>
-            
           </div>
         </div>
       </section>
-
-    
 
       {/* Tab Navigation */}
       <section className="py-8 sm:py-12 px-4 sm:px-6 bg-white/80 backdrop-blur-sm border-b border-gray-200/50">

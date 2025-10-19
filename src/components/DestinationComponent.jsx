@@ -7,54 +7,55 @@ const DestinationComponent = () => {
   const [selectedDestination, setSelectedDestination] = useState(null);
 
   const destinations = [
-    {
-      name: 'UK',
-      image: 'https://img.freepik.com/free-vector/illustration-uk-flag_53876-18166.jpg?semt=ais_hybrid&w=740&q=80',
-      link: 'study-abroad-uk.html',
-      flag: 'https://img.freepik.com/free-vector/illustration-uk-flag_53876-18166.jpg?semt=ais_hybrid&w=740&q=80',
-    },
-    {
-      name: 'USA',
-      image: 'https://cdn.britannica.com/33/4833-050-F6E415FE/Flag-United-States-of-America.jpg',
-      link: 'study-abroad-usa.html',
-      flag: 'https://cdn.britannica.com/33/4833-050-F6E415FE/Flag-United-States-of-America.jpg',
-    },
-    {
-      name: 'Canada',
-      image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Flag_of_Canada_%28Pantone%29.svg/1200px-Flag_of_Canada_%28Pantone%29.svg.png',
-      link: 'study-abroad-canada.html',
-      flag: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Flag_of_Canada_%28Pantone%29.svg/1200px-Flag_of_Canada_%28Pantone%29.svg.png',
-    },
-    {
-      name: 'Australia',
-      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRcKQhU14vTkBcz0M0CeUrG_H5a9A8bZxltJg&s',
-      link: 'study-abroad-australia.html',
-      flag: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRcKQhU14vTkBcz0M0CeUrG_H5a9A8bZxltJg&s',
-    },
-    {
-      name: 'Singapore',
-      image: 'https://img.freepik.com/free-vector/illustration-singapore-flag_53876-27129.jpg',
-      link: 'study-abroad-singapore.html',
-      flag: 'https://img.freepik.com/free-vector/illustration-singapore-flag_53876-27129.jpg',
-    },
-    {
-      name: 'New Zealand',
-      image: 'https://upload.wikimedia.org/wikipedia/commons/3/3e/Flag_of_New_Zealand.svg',
-      link: 'study-abroad-new-zealand.html',
-      flag: 'https://upload.wikimedia.org/wikipedia/commons/3/3e/Flag_of_New_Zealand.svg',
-    },
-    {
-      name: 'Switzerland',
-      image: 'https://media.istockphoto.com/id/1409845543/vector/switzerland-flag-design-waving-swiss-flag-made-of-satin-or-silk-fabric-vector-illustration.jpg?s=612x612&w=0&k=20&c=ienwQznGZSMbv3s-pIDW5Q8d-2bn3a15kQUXJeDGGJ8=',
-      link: 'https://media.istockphoto.com/id/1409845543/vector/switzerland-flag-design-waving-swiss-flag-made-of-satin-or-silk-fabric-vector-illustration.jpg?s=612x612&w=0&k=20&c=ienwQznGZSMbv3s-pIDW5Q8d-2bn3a15kQUXJeDGGJ8=',
-    },
-    {
-      name: 'Ireland',
-      image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Flag_of_Ireland.svg/1280px-Flag_of_Ireland.svg.png',
-      link: 'study-abroad-ireland.html',
-      flag: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Flag_of_Ireland.svg/1280px-Flag_of_Ireland.svg.png',
-    },
-  ];
+  {
+    name: 'University of Oxford',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFwY0wjD9u9zIDi3q46ft4XsMOJofeRcj2UA&s', // Oxford campus
+    link: 'https://www.ox.ac.uk/',
+    flag: 'https://img.freepik.com/free-vector/illustration-uk-flag_53876-18166.jpg?semt=ais_hybrid&w=740&q=80',
+  },
+  {
+    name: 'Harvard University',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRmOcGx2hvPbQLmEbMJahPPv5yik3nd50Zr6g&s', // Harvard campus
+    link: 'https://www.harvard.edu/',
+    flag: 'https://cdn.britannica.com/33/4833-050-F6E415FE/Flag-United-States-of-America.jpg',
+  },
+  {
+    name: 'University of Toronto',
+    image: 'https://d3d0lqu00lnqvz.cloudfront.net/media/media/UofT_cmh2315fl.jpg', // U of T campus
+    link: 'https://www.utoronto.ca/',
+    flag: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Flag_of_Canada_%28Pantone%29.svg/1200px-Flag_of_Canada_%28Pantone%29.svg.png',
+  },
+  {
+    name: 'University of Melbourne',
+    image: 'https://gatewayeduconnect.com/images/university/banner/University-of-Melbourne.webp', // Melbourne campus
+    link: 'https://www.unimelb.edu.au/',
+    flag: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRcKQhU14vTkBcz0M0CeUrG_H5a9A8bZxltJg&s',
+  },
+  {
+    name: 'National University of Singapore',
+    image: 'https://www.highereducationdigest.com/wp-content/uploads/2025/02/0-768x461.jpg', // NUS campus
+    link: 'https://www.nus.edu.sg/',
+    flag: 'https://img.freepik.com/free-vector/illustration-singapore-flag_53876-27129.jpg',
+  },
+  {
+    name: 'University of Auckland',
+    image: 'https://techportal.in/wp-content/uploads/2023/11/aculand.jpg', // Auckland campus
+    link: 'https://www.auckland.ac.nz/',
+    flag: 'https://upload.wikimedia.org/wikipedia/commons/3/3e/Flag_of_New_Zealand.svg',
+  },
+  {
+    name: 'ETH Zurich',
+    image: 'https://ethz.ch/en/campus/access/zentrum/_jcr_content/par/fullwidthimage/image.imageformat.1286.152068286.jpg', // ETH Zurich campus
+    link: 'https://ethz.ch/',
+    flag: 'https://media.istockphoto.com/id/1409845543/vector/switzerland-flag-design-waving-swiss-flag-made-of-satin-or-silk-fabric-vector-illustration.jpg?s=612x612&w=0&k=20&c=ienwQznGZSMbv3s-pIDW5Q8d-2bn3a15kQUXJeDGGJ8=',
+  },
+  {
+    name: 'Trinity College Dublin',
+    image: 'https://www.visittrinity.ie/wp-content/uploads/2023/02/Trinity-Stay.jpg?w=720', // Trinity College campus
+    link: 'https://www.tcd.ie/',
+    flag: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Flag_of_Ireland.svg/1280px-Flag_of_Ireland.svg.png',
+  },
+];
 
   const openModal = (destination) => setSelectedDestination(destination);
   const closeModal = () => setSelectedDestination(null);
@@ -71,7 +72,7 @@ const DestinationComponent = () => {
   }
 
   return (
-    <div className="bg-blue-900 text-white p-6 rounded-lg shadow-lg">
+    <div className="bg-blue-900 text-white p-6 shadow-lg">
       <div className="container mx-auto">
         {/* Center text block - above the carousel */}
         <motion.div
@@ -135,7 +136,7 @@ const DestinationComponent = () => {
                 ))}
                 {/* Pad empty cells if slide has less than 4 */}
                 {slideDests.length < 3 &&
-                  Array.from({ length: 4 - slideDests.length }).map((_, padIndex) => (
+                  Array.from({ length: 3 - slideDests.length }).map((_, padIndex) => (
                     <div key={`pad-${padIndex}`} className="w-full h-40" />
                   ))}
               </motion.div>

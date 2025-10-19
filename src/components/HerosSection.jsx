@@ -68,12 +68,14 @@ const HeroSection = () => {
         { opacity: 1, x: 0, duration: 1, ease: "power3.out", delay: 0.2 }
       );
 
-      // Animate right section (form)
-      gsap.fromTo(
-        rightSectionRef.current,
-        { opacity: 0, x: 50 },
-        { opacity: 1, x: 0, duration: 1, ease: "power3.out", delay: 0.4 }
-      );
+      // Animate right section (form) - only if exists
+      if (rightSectionRef.current) {
+        gsap.fromTo(
+          rightSectionRef.current,
+          { opacity: 0, x: 50 },
+          { opacity: 1, x: 0, duration: 1, ease: "power3.out", delay: 0.4 }
+        );
+      }
 
       // Animate form fields on load with stagger
       gsap.fromTo(
@@ -219,7 +221,7 @@ const HeroSection = () => {
   return (
     <section
       ref={sectionRef}
-      className="relative overflow-hidden min-h-screen px-4 sm:px-8 md:px-16 lg:px-20 pt-12 sm:pt-0"
+      className="relative overflow-hidden h-96 sm:min-h-screen px-3 xs:px-4 sm:px-8 md:px-12 lg:px-16 xl:px-20 pt-12 sm:pt-0"
     >
       {/* Background Slider (auto-swiping, mix of images and videos) */}
       <div
@@ -270,55 +272,55 @@ const HeroSection = () => {
         </div>
       </div>
 
-      <div className="relative z-20">
-        <div className="flex flex-col lg:flex-row gap-12 items-center min-h-[calc(100vh-180px)]">
-          {/* Left Section with white text */}
+      <div className="absolute inset-0 z-20 flex items-center justify-center sm:justify-start">
+        {/* Adjusted padding on sm+ to shift left content right (not fully left-aligned) */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 sm:gap-12 items-center w-full h-full px-4 sm:px-0 sm:pl-20 lg:pl-32">
+          {/* Left Section - Content (Text + Button) */}
+          {/* On desktop (sm+): Shifted right via parent pl-20/lg:pl-32 to avoid sticking to extreme left edge */}
+          {/* On mobile (xs): Additional right shift of 60px as requested previously */}
           <div
             ref={leftSectionRef}
-            className="text-white" // Ensures all text is white
+            className="text-white flex flex-col items-center sm:items-start text-center sm:text-left sm:pr-8 lg:pr-16 translate-x-0 sm:translate-x-0 xs:translate-x-[60px]"
           >
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight mb-6 drop-shadow-lg">
+            <h1 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-5xl xl:text-6xl font-bold leading-tight mb-4 drop-shadow-lg">
               We Help to <span className="text-purple-400">Build</span> 
               <br /> Your Dream
             </h1>
-            <p className="text-sm sm:text-base mb-6 leading-relaxed drop-shadow-md">
+            <p className="text-xs xs:text-sm sm:text-base mb-4 leading-relaxed drop-shadow-md max-w-md mx-auto sm:mx-0">
               Our team of experts is dedicated to guiding you through every step
               of the process, ensuring a smooth and successful journey towards
               your academic goals.
             </p>
 
-
-            <div className="flex flex-col sm:flex-row gap-4 mb-3 justify-center lg:justify-start">
-  <Link to="/contact">
-    <Button
-      ref={buttonRef}
-      size="lg"
-      onClick={handleButtonClick}
-      className="group bg-white text-purple-600 border-2 border-purple-600 font-semibold text-base sm:text-lg px-6 sm:px-10 py-7 rounded-xl transition-all duration-300 hover:bg-purple-600 hover:text-white hover:shadow-lg"
-      aria-label="Book an appointment"
-    >
-      Book Appointment
-      <FaArrowRight className="ml-4 group-hover:translate-x-2 transition-transform duration-300" />
-    </Button>
-  </Link>
-</div>
-
-
-
+            <div className="flex flex-col gap-3 w-full max-w-xs mx-auto sm:mx-0 mb-4">
+              <Link to="/contact">
+                <Button
+                  ref={buttonRef}
+                  size="lg"
+                  onClick={handleButtonClick}
+                  className="group w-full bg-white text-purple-600 border-2 border-purple-600 font-semibold text-sm xs:text-base px-4 xs:px-6 py-3 xs:py-4 rounded-xl transition-all duration-300 hover:bg-purple-600 hover:text-white hover:shadow-lg flex items-center justify-center"
+                  aria-label="Book an appointment"
+                >
+                  Book Appointment
+                  <FaArrowRight className="ml-2 xs:ml-4 group-hover:translate-x-2 transition-transform duration-300" />
+                </Button>
+              </Link>
+            </div>
           </div>
 
-          {/* Right Section - Responsive Form */}
+          {/* Right Section - Form (Hidden on xs and below, shown on sm+ */}
+          {/* On desktop: Bottom-aligned and shifted right as before */}
           <div
             ref={rightSectionRef}
-            className="w-full lg:w-1/2 flex justify-center items-center"
+            className="hidden sm:flex justify-center items-center sm:items-end sm:pb-10 lg:pb-16 sm:translate-x-4 lg:translate-x-8"
           >
             <form
               ref={formRef}
               onSubmit={handleSubmit(onSubmit)}
-              className="bg-white/95 backdrop-blur-md rounded-2xl p-6 sm:p-8 shadow-xl w-full max-w-md border border-purple-200"
+              className="bg-white/95 backdrop-blur-md rounded-2xl p-4 xs:p-6 shadow-xl w-full max-w-xs xs:max-w-sm sm:max-w-md border border-purple-200"
             >
-              <h2 className="text-2xl font-bold mb-4 text-purple-900">Start Your Career with SS Overseas</h2>
-              <p className="text-sm text-gray-600 mb-6">Fill in your details and we'll contact you!</p>
+              <h2 className="text-lg xs:text-xl font-bold mb-3 text-purple-900">Start Your Career with SS Overseas</h2>
+              <p className="text-xs xs:text-sm text-gray-600 mb-4">Fill in your details and we'll contact you!</p>
 
               <div className="space-y-4">
                 <div className="form-field">
@@ -328,7 +330,7 @@ const HeroSection = () => {
                     placeholder="Your Name"
                     onFocus={handleInputFocus}
                     onBlur={handleInputBlur}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-purple-900 transition-all"
+                    className="w-full px-3 xs:px-4 py-2 xs:py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-purple-900 transition-all text-sm"
                   />
                   {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name.message}</p>}
                 </div>
@@ -340,7 +342,7 @@ const HeroSection = () => {
                     placeholder="Your Email"
                     onFocus={handleInputFocus}
                     onBlur={handleInputBlur}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-purple-900 transition-all"
+                    className="w-full px-3 xs:px-4 py-2 xs:py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-purple-900 transition-all text-sm"
                   />
                   {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>}
                 </div>
@@ -352,7 +354,7 @@ const HeroSection = () => {
                     placeholder="Your Phone"
                     onFocus={handleInputFocus}
                     onBlur={handleInputBlur}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-purple-900 transition-all"
+                    className="w-full px-3 xs:px-4 py-2 xs:py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-purple-900 transition-all text-sm"
                   />
                   {errors.phone && <p className="text-red-500 text-xs mt-1">{errors.phone.message}</p>}
                 </div>
@@ -364,7 +366,7 @@ const HeroSection = () => {
                     placeholder="Your Message"
                     onFocus={handleInputFocus}
                     onBlur={handleInputBlur}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-purple-900 transition-all"
+                    className="w-full px-3 xs:px-4 py-2 xs:py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-purple-900 transition-all text-sm"
                   />
                   {errors.message && <p className="text-red-500 text-xs mt-1">{errors.message.message}</p>}
                 </div>
@@ -372,7 +374,7 @@ const HeroSection = () => {
 
               <Button
                 type="submit"
-                className="mt-6 w-full bg-purple-900 text-white hover:bg-purple-800 py-3 rounded-lg font-semibold flex items-center justify-center group"
+                className="mt-4 xs:mt-6 w-full bg-purple-900 text-white hover:bg-purple-800 py-2 xs:py-3 rounded-lg font-semibold flex items-center justify-center group text-sm xs:text-base"
                 disabled={submitStatus === "loading"}
               >
                 {submitStatus === "loading" ? "Submitting..." : "Submit"}
@@ -380,10 +382,10 @@ const HeroSection = () => {
               </Button>
 
               {submitStatus === "success" && (
-                <p className="text-green-600 text-center mt-4 animate-pulse">Thank you! We'll get back to you soon.</p>
+                <p className="text-green-600 text-center mt-3 xs:mt-4 animate-pulse text-xs xs:text-sm">Thank you! We'll get back to you soon.</p>
               )}
               {submitStatus === "error" && (
-                <p className="text-red-600 text-center mt-4">Something went wrong. Try again.</p>
+                <p className="text-red-600 text-center mt-3 xs:mt-4 text-xs xs:text-sm">Something went wrong. Try again.</p>
               )}
             </form>
           </div>
