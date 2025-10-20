@@ -332,27 +332,58 @@ export default function InquiryForm() {
           submissionDate: new Date().toISOString()
         };
 
-        // Simulate API call delay
-        await new Promise(resolve => setTimeout(resolve, 1500));
-
-        // Save to localStorage
+        // Save to localStorage (keeping as backup)
         const saveSuccess = saveToLocalStorage(completeData);
-        
-        if (saveSuccess) {
-          console.log("Form data saved:", completeData);
-          setSubmissionId(submissionId);
-          setIsSubmitted(true);
-          
-          // Auto-download Excel file
-          setTimeout(() => {
-            exportToExcel(completeData);
-          }, 1000);
-        } else {
-          throw new Error('Failed to save data');
+        if (!saveSuccess) {
+          throw new Error('Failed to save data locally');
         }
+
+        // Send to Google Apps Script
+        const url = 'https://script.google.com/macros/s/AKfycbxjnR8QM8Oak8V0J-mrcEmBZ9ozUtx9zkr_J8_qsjhkNrC-3P-SfW5f-sBS9KXZSvPZ/exec';
+        
+        // Send data as JSON instead of FormData to avoid CORS preflight issues
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(completeData),
+          // Remove redirect: 'follow' as it’s not needed
+          mode: 'cors', // Explicitly set CORS mode
+        });
+
+        if (!response.ok) {
+          const errorText = await response.text();
+          console.error('Google Apps Script error:', errorText);
+          throw new Error(`Failed to submit to Google Apps Script: ${errorText}`);
+        }
+
+        const result = await response.json();
+        if (result.status !== 'success') {
+          throw new Error('Submission failed on server');
+        }
+
+        console.log("Form data submitted:", completeData);
+        setSubmissionId(submissionId);
+        setIsSubmitted(true);
+        
+        // Auto-download Excel file
+        setTimeout(() => {
+          exportToExcel(completeData);
+        }, 1000);
       } catch (error) {
         console.error("Submission error:", error);
-        alert('There was an error submitting your form. Please try again.');
+        alert(`There was an error submitting your form: ${error.message}. Your data has been saved locally and you can download it as an Excel file.`);
+        // Still allow Excel download even if server submission fails
+        setSubmissionId(submissionId);
+        setIsSubmitted(true);
+        setTimeout(() => {
+          exportToExcel({
+            ...formData,
+            submissionId,
+            submissionDate: new Date().toISOString()
+          });
+        }, 1000);
       } finally {
         setIsSubmitting(false);
       }
@@ -371,7 +402,7 @@ export default function InquiryForm() {
       // Create data for Excel
       const worksheetData = [
         // Header
-        ["SS INFOTECH COUNSELLING OVERSEAS - ALL INQUIRIES"],
+        ["SS OVERSEAS - ALL INQUIRIES"],
         ["Generated on", new Date().toLocaleString()],
         ["Total Inquiries", allInquiries.length],
         [""], // Empty row
@@ -586,7 +617,7 @@ export default function InquiryForm() {
               <Globe className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">SS INFOTECH COUNSELLING OVERSEAS</h1>
+              <h1 className="text-3xl font-bold text-gray-900">SS OVERSEAS</h1>
               <p className="text-gray-600">Study Abroad Inquiry Form</p>
             </div>
           </div>
@@ -594,8 +625,6 @@ export default function InquiryForm() {
             Complete this form to get personalized guidance for your study abroad journey. 
             Our experts will contact you within 24 hours.
           </p>
-          
-          
         </div>
 
         {/* Progress Steps */}
