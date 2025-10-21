@@ -78,9 +78,7 @@ const UniversityDetails = () => {
                 </div>
                 <div className="text-purple-200">Annual Tuition</div>
               </div>
-              <button className="w-full bg-white text-purple-700 py-3 px-6 rounded-lg font-bold hover:bg-purple-100 transition-colors duration-300 mb-3">
-                Contact University
-              </button>
+            
 <button
   onClick={() => navigate("/inquiryform")}
   className="w-full bg-yellow-500 text-white py-3 px-6 rounded-lg font-bold hover:bg-yellow-600 transition-colors duration-300"
@@ -223,12 +221,13 @@ const UniversityDetails = () => {
                 Start your journey today.
               </p>
               <div className="space-y-3">
-                <button className="w-full bg-white text-purple-700 py-3 px-4 rounded-lg font-bold hover:bg-purple-50 transition-colors">
-                  Apply Now
-                </button>
-                <button className="w-full bg-transparent border-2 border-white text-white py-3 px-4 rounded-lg font-bold hover:bg-white hover:bg-opacity-10 transition-colors">
-                  Request Info
-                </button>
+              <button
+  onClick={() => navigate("/inquiryform")}
+  className="w-full bg-yellow-500 text-white py-3 px-6 rounded-lg font-bold hover:bg-yellow-600 transition-colors duration-300"
+>
+  Inquiry Now
+</button>
+               
               </div>
             </div>
           </div>

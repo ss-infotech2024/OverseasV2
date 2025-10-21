@@ -630,7 +630,7 @@ export default function InquiryForm() {
         {/* Progress Steps */}
         <Card className="mb-8">
           <CardContent className="p-6">
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between overflow-x-auto">
               {steps.map((step, index) => {
                 const Icon = step.icon;
                 const isActive = step.number === currentStep;
@@ -648,7 +648,7 @@ export default function InquiryForm() {
                       }`}>
                         {isCompleted ? <CheckCircle className="w-6 h-6" /> : <Icon className="w-5 h-5" />}
                       </div>
-                      <span className={`text-sm font-medium mt-2 ${
+                      <span className={`text-sm font-medium mt-2 hidden sm:block ${
                         isActive ? 'text-blue-600' : isCompleted ? 'text-green-600' : 'text-gray-500'
                       }`}>
                         {step.title}
