@@ -1,91 +1,43 @@
-// File: src/components/InquiryForm.jsx
 import { useState } from "react";
-import * as XLSX from 'xlsx';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
+import axios from 'axios';
 import {
-  User,
-  Mail,
-  MapPin,
-  Phone,
-  GraduationCap,
-  Calendar,
-  BookOpen,
-  Target,
-  Briefcase,
-  FileText,
-  Send,
-  Globe,
-  CheckCircle,
-  AlertCircle,
+  User, Mail, MapPin, Phone, GraduationCap, Calendar,
+  Target, Briefcase, FileText, Send, Globe, CheckCircle, AlertCircle,
   Download,
-  FileSpreadsheet,
-  Home,
 } from "lucide-react";
 
-// Button Component
-const Button = ({ 
-  children, 
-  variant = 'default', 
-  size = 'default', 
-  className = '', 
-  ...props 
-}) => {
-  const baseStyles = 'inline-flex items-center justify-center rounded-md font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none';
-  
+// === Reusable UI Components ===
+const Button = ({ children, variant = 'default', size = 'default', className = '', ...props }) => {
+  const base = 'inline-flex items-center justify-center rounded-md font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none';
   const variants = {
     default: 'bg-blue-600 text-white hover:bg-blue-700',
     outline: 'border border-gray-300 bg-white text-gray-700 hover:bg-gray-50',
     secondary: 'bg-gray-100 text-gray-900 hover:bg-gray-200',
   };
-  
-  const sizes = {
-    default: 'h-10 py-2 px-4',
-    sm: 'h-8 px-3 text-sm',
-    lg: 'h-12 px-8 text-lg',
-  };
-
+  const sizes = { default: 'h-10 py-2 px-4', sm: 'h-8 px-3 text-sm', lg: 'h-12 px-8 text-lg' };
   return (
-    <button
-      className={`${baseStyles} ${variants[variant]} ${sizes[size]} ${className}`}
-      {...props}
-    >
+    <button className={`${base} ${variants[variant]} ${sizes[size]} ${className}`} {...props}>
       {children}
     </button>
   );
 };
 
-// Card Components
 const Card = ({ children, className = '' }) => (
-  <div className={`bg-white rounded-lg border border-gray-200 shadow-sm ${className}`}>
-    {children}
-  </div>
+  <div className={`bg-white rounded-lg border border-gray-200 shadow-sm ${className}`}>{children}</div>
 );
+const CardHeader = ({ children, className = '' }) => <div className={`p-6 pb-4 ${className}`}>{children}</div>;
+const CardTitle = ({ children, className = '' }) => <h3
+  className={`text-lg font-semibold leading-none tracking-tight ${className}`}>{children}</h3>;
+const CardContent = ({ children, className = '' }) => <div className={`p-6 pt-0 ${className}`}>{children}</div>;
 
-const CardHeader = ({ children, className = '' }) => (
-  <div className={`p-6 pb-4 ${className}`}>
-    {children}
-  </div>
-);
-
-const CardTitle = ({ children, className = '' }) => (
-  <h3 className={`text-lg font-semibold leading-none tracking-tight ${className}`}>
-    {children}
-  </h3>
-);
-
-const CardContent = ({ children, className = '' }) => (
-  <div className={`p-6 pt-0 ${className}`}>
-    {children}
-  </div>
-);
-
-// Badge Component
 const Badge = ({ children, variant = 'default', className = '' }) => {
   const variants = {
     default: 'bg-blue-100 text-blue-800',
     secondary: 'bg-gray-100 text-gray-800',
     outline: 'border border-gray-300 text-gray-700',
   };
-
   return (
     <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${variants[variant]} ${className}`}>
       {children}
@@ -93,62 +45,15 @@ const Badge = ({ children, variant = 'default', className = '' }) => {
   );
 };
 
-// Tab Button Component
-const TabButton = ({ active, onClick, icon: Icon, children }) => (
-  <button
-    onClick={onClick}
-    className={`flex items-center gap-3 px-6 py-4 rounded-2xl font-semibold transition-all duration-300 transform hover:scale-105 ${
-      active
-        ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg shadow-blue-500/25"
-        : "bg-white text-gray-700 border-2 border-gray-200 hover:border-blue-300 hover:shadow-lg"
-    }`}
-  >
-    <Icon className="w-5 h-5" />
-    {children}
-  </button>
-);
-
+// === MAIN COMPONENT ===
 export default function InquiryForm() {
   const [formData, setFormData] = useState({
-    // Personal Information
-    firstName: "",
-    lastName: "",
-    dateOfBirth: "",
-    email: "",
-    address: "",
-    contactNumber: "",
-
-    // Educational Background
-    bachelorsDegree: "",
-    bachelorsCompletion: "",
-    bachelorsTitle: "",
-    bachelorsCGPA: "",
-    bachelorsSGPA: "",
-    hscGrade: "",
-    entranceExamScores: "",
-    
-    // Language & Certificates
-    ieltsToeflScore: "",
-    degreeLanguage: "",
-    apsCertificate: "",
-    
-    // Study Plans
-    targetIntake: "",
-    targetUniversities: "",
-    mastersSubject: "",
-    specialization: "",
-    researchTopic: "",
-    
-    // Career Goals
-    jobPosition: "",
-    jobLevel: "",
-    company: "",
-    jobTitle: "",
-    
-    // Source
+    firstName: "", lastName: "", dateOfBirth: "", email: "", address: "", contactNumber: "",
+    bachelorsDegree: "", bachelorsCompletion: "", bachelorsTitle: "", bachelorsCGPA: "", bachelorsSGPA: "", hscGrade: "", entranceExamScores: "",
+    ieltsToeflScore: "", degreeLanguage: "", apsCertificate: "",
+    targetIntake: "", targetUniversities: "", mastersSubject: "", specialization: "", researchTopic: "",
+    jobPosition: "", jobLevel: "", company: "", jobTitle: "",
     source: "",
-
-    // Timestamp
     submissionDate: new Date().toISOString()
   });
 
@@ -159,319 +64,207 @@ export default function InquiryForm() {
   const [submissionId, setSubmissionId] = useState("");
 
   const generateSubmissionId = () => {
-    const timestamp = new Date().getTime();
-    const random = Math.random().toString(36).substring(2, 8).toUpperCase();
-    return `SS${timestamp}${random}`;
+    const ts = Date.now();
+    const rand = Math.random().toString(36).substring(2, 8).toUpperCase();
+    return `SS${ts}${rand}`;
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-    
-    // Clear error when user starts typing
-    if (errors[name]) {
-      setErrors(prev => ({
-        ...prev,
-        [name]: ""
-      }));
-    }
+    setFormData(p => ({ ...p, [name]: value }));
+    if (errors[name]) setErrors(p => ({ ...p, [name]: "" }));
   };
 
+  // === VALIDATE EACH STEP ===
   const validateStep = (step) => {
-    const newErrors = {};
+    const err = {};
 
     if (step === 1) {
-      if (!formData.firstName.trim()) newErrors.firstName = "First name is required";
-      if (!formData.lastName.trim()) newErrors.lastName = "Last name is required";
-      if (!formData.dateOfBirth) newErrors.dateOfBirth = "Date of birth is required";
-      if (!formData.email.trim()) newErrors.email = "Email is required";
-      else if (!/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = "Email is invalid";
-      if (!formData.address.trim()) newErrors.address = "Address is required";
-      if (!formData.contactNumber.trim()) newErrors.contactNumber = "Contact number is required";
+      if (!formData.firstName.trim()) err.firstName = "First name required";
+      if (!formData.lastName.trim()) err.lastName = "Last name  name required";
+      if (!formData.dateOfBirth) err.dateOfBirth = "Date of birth required";
+      if (!formData.email.trim()) err.email = "Email required";
+      else if (!/\S+@\S+\.\S+/.test(formData.email)) err.email = "Invalid email";
+      if (!formData.address.trim()) err.address = "Address required";
+      if (!formData.contactNumber.trim()) err.contactNumber = "Contact required";
     }
 
     if (step === 2) {
-      if (!formData.bachelorsDegree) newErrors.bachelorsDegree = "This field is required";
-      if (!formData.bachelorsTitle.trim()) newErrors.bachelorsTitle = "Degree title is required";
-      if (!formData.bachelorsCGPA) newErrors.bachelorsCGPA = "CGPA is required";
-      if (!formData.hscGrade) newErrors.hscGrade = "HSC grade is required";
+      if (!formData.bachelorsDegree) err.bachelorsDegree = "Required";
+      if (!formData.bachelorsTitle.trim()) err.bachelorsTitle = "Degree title required";
+      if (!formData.bachelorsCGPA) err.bachelorsCGPA = "CGPA required";
+      if (!formData.hscGrade) err.hscGrade = "HSC grade required";
     }
 
     if (step === 4) {
-      if (!formData.targetIntake) newErrors.targetIntake = "Target intake is required";
-      if (!formData.mastersSubject.trim()) newErrors.mastersSubject = "Master's subject is required";
+      if (!formData.targetIntake) err.targetIntake = "Intake required";
+      if (!formData.mastersSubject.trim()) err.mastersSubject = "Master's subject required";
     }
 
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    if (step === 5) {
+      if (!formData.source) err.source = "Please select how you found us";
+    }
+
+    setErrors(prev => ({ ...prev, ...err }));
+    return Object.keys(err).length === 0;
   };
 
   const handleNext = () => {
     if (validateStep(currentStep)) {
-      setCurrentStep(prev => Math.min(prev + 1, 5));
+      setCurrentStep(p => Math.min(p + 1, 5));
     }
   };
 
   const handleBack = () => {
-    setCurrentStep(prev => Math.max(prev - 1, 1));
+    setCurrentStep(p => Math.max(p - 1, 1));
+    setErrors({});
   };
 
-  const exportToExcel = (data) => {
-    // Create worksheet data
-    const worksheetData = [
-      // Header
-      ["SS INFOTECH COUNSELLING OVERSEAS - INQUIRY FORM DATA"],
-      ["Submission ID", data.submissionId],
-      ["Submission Date", new Date(data.submissionDate).toLocaleString()],
-      [""], // Empty row
-      
-      // Personal Information
-      ["PERSONAL INFORMATION"],
-      ["First Name", data.firstName],
-      ["Last Name", data.lastName],
-      ["Date of Birth", data.dateOfBirth],
-      ["Email", data.email],
-      ["Address", data.address],
-      ["Contact Number", data.contactNumber],
-      [""], // Empty row
-      
-      // Educational Background
-      ["EDUCATIONAL BACKGROUND"],
-      ["Bachelor's Degree Status", data.bachelorsDegree],
-      ["Expected Completion", data.bachelorsCompletion || "N/A"],
-      ["Degree Title", data.bachelorsTitle],
-      ["Bachelor's CGPA", data.bachelorsCGPA],
-      ["Bachelor's SGPA", data.bachelorsSGPA || "N/A"],
-      ["12th HSC Grade", data.hscGrade],
-      ["Entrance Exam Scores", data.entranceExamScores || "N/A"],
-      [""], // Empty row
-      
-      // Language & Certificates
-      ["LANGUAGE & CERTIFICATES"],
-      ["IELTS/TOEFL Score", data.ieltsToeflScore || "N/A"],
-      ["Degree Language", data.degreeLanguage || "N/A"],
-      ["APS Certificate", data.apsCertificate || "N/A"],
-      [""], // Empty row
-      
-      // Study Plans
-      ["STUDY PLANS"],
-      ["Target Intake", data.targetIntake],
-      ["Target Universities", data.targetUniversities || "N/A"],
-      ["Master's Subject", data.mastersSubject],
-      ["Specialization", data.specialization || "N/A"],
-      ["Research Topic", data.researchTopic || "N/A"],
-      [""], // Empty row
-      
-      // Career Goals
-      ["CAREER GOALS IN GERMANY"],
-      ["Desired Job Position", data.jobPosition || "N/A"],
-      ["Job Level", data.jobLevel || "N/A"],
-      ["Target Company", data.company || "N/A"],
-      ["Job Title", data.jobTitle || "N/A"],
-      [""], // Empty row
-      
-      // Source
-      ["SOURCE INFORMATION"],
-      ["How did you find us?", data.source || "N/A"]
-    ];
+  // === PDF GENERATOR ===
+  const generateApplicationLetter = (data) => {
+    const doc = new jsPDF('p', 'mm', 'a4');
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const pageHeight = doc.internal.pageSize.getHeight();
 
-    // Create workbook and worksheet
-    const wb = XLSX.utils.book_new();
-    const ws = XLSX.utils.aoa_to_sheet(worksheetData);
+    // Header
+    doc.setFontSize(10);
+    doc.setTextColor(100, 100, 100);
+    doc.text('SS OVERSEAS – Study Abroad Consultants', 15, 15);
+    doc.text('Plot No. 26, Khandwekar Bungalow, Landewadi, Nagpur - 440010', 15, 20);
+    doc.text('Phone: 9422129534 | 8999972278 | Email: ssoverseas333@gmail.com', 15, 25);
 
-    // Style the worksheet
-    const columnWidths = [
-      { wch: 25 }, // First column width
-      { wch: 50 }  // Second column width
-    ];
-    ws['!cols'] = columnWidths;
+    // Logo placeholder
+    doc.setDrawColor(200);
+    doc.roundedRect(170, 10, 25, 25, 3, 3, 'S');
+    doc.setFontSize(8);
+    doc.setTextColor(150);
+    doc.text('LOGO', 178, 22, { align: 'center' });
 
-    // Add worksheet to workbook
-    XLSX.utils.book_append_sheet(wb, ws, "Inquiry Data");
+    doc.setLineWidth(0.5);
+    doc.setDrawColor(59, 130, 246);
+    doc.line(15, 30, pageWidth - 15, 30);
 
-    // Generate file name
-    const fileName = `SS_Infotech_Inquiry_${data.submissionId}.xlsx`;
+    // Title
+    doc.setFontSize(18);
+    doc.setTextColor(0, 0, 0);
+    doc.setFont('helvetica', 'bold');
+    doc.text('Study Abroad Application Form', pageWidth / 2, 42, { align: 'center' });
 
-    // Export to Excel
-    XLSX.writeFile(wb, fileName);
+    doc.setFontSize(11);
+    doc.setFont('helvetica', 'normal');
+    doc.text(`Submission ID: ${data.submissionId}`, pageWidth / 2, 50, { align: 'center' });
+    doc.text(`Date: ${new Date(data.submissionDate).toLocaleString()}`, pageWidth / 2, 56, { align: 'center' });
+
+    let y = 70;
+
+    const addSection = (title, items) => {
+      if (y > 250) { doc.addPage(); y = 40; }
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(13);
+      doc.setTextColor(59, 130, 246);
+      doc.text(title, 15, y);
+      y += 7;
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(11);
+      doc.setTextColor(0);
+      items.forEach(([label, value]) => {
+        const val = String(value || '—');
+        doc.text(`${label}:`, 20, y);
+        const lines = doc.splitTextToSize(val, pageWidth - 65);
+        doc.text(lines, 55, y);
+        y += lines.length * 5 + 3;
+      });
+      y += 5;
+    };
+
+    addSection('PERSONAL INFORMATION', [
+      ['First Name', data.firstName],
+      ['Last Name', data.lastName],
+      ['Date of Birth', data.dateOfBirth],
+      ['Email', data.email],
+      ['Address', data.address],
+      ['Contact', data.contactNumberData.contactNumber],
+    ]);
+
+    addSection('EDUCATIONAL BACKGROUND', [
+      ['Bachelor’s Degree', data.bachelorsDegree],
+      ['Expected Completion', data.bachelorsCompletion || 'N/A'],
+      ['Degree Title', data.bachelorsTitle],
+      ['CGPA', data.bachelorsCGPA],
+      ['SGPA', data.bachelorsSGPA || 'N/A'],
+      ['12th HSC Grade', data.hscGrade],
+      ['Entrance Exams', data.entranceExamScores || 'N/A'],
+    ]);
+
+    addSection('LANGUAGE & CERTIFICATES', [
+      ['IELTS/TOEFL', data.ieltsToeflScore || 'N/A'],
+      ['Degree Language', data.degreeLanguage || 'N/A'],
+      ['APS Certificate', data.apsCertificate || 'N/A'],
+    ]);
+
+    addSection('STUDY PLANS', [
+      ['Target Intake', data.targetIntake],
+      ['Target Universities', data.targetUniversities || 'N/A'],
+      ['Master’s Subject', data.mastersSubject],
+      ['Specialization', data.specialization || 'N/A'],
+      ['Research Topic', data.researchTopic || 'N/A'],
+    ]);
+
+    addSection('CAREER GOALS IN GERMANY', [
+      ['Job Position', data.jobPosition || 'N/A'],
+      ['Job Level', data.jobLevel || 'N/A'],
+      ['Target Company', data.company || 'N/A'],
+      ['Job Title', data.jobTitle || 'N/A'],
+    ]);
+
+    addSection('SOURCE INFORMATION', [
+      ['How did you find us?', data.source || 'N/A'],
+    ]);
+
+    // Footer
+    doc.setDrawColor(59, 130, 246);
+    doc.setLineWidth(0.5);
+    doc.line(15, pageHeight - 40, pageWidth - 15, pageHeight - 40);
+
+    doc.setFontSize(10);
+    doc.setTextColor(100);
+    doc.text('Applicant Signature: ___________________________', 20, pageHeight - 30);
+    doc.text('Date: _________________', 20, pageHeight - 23);
+
+    doc.setFontSize(9);
+    doc.setTextColor(120);
+    doc.text('Generated by SS OVERSEAS – Confidential Document', pageWidth / 2, pageHeight - 15, { align: 'center' });
+
+    doc.save(`SS_Application_${data.submissionId}.pdf`);
   };
 
-  const saveToLocalStorage = (data) => {
-    try {
-      // Get existing inquiries or initialize empty array
-      const existingInquiries = JSON.parse(localStorage.getItem('ssInfotechInquiries') || '[]');
-      
-      // Add new inquiry
-      const updatedInquiries = [...existingInquiries, data];
-      
-      // Save back to localStorage
-      localStorage.setItem('ssInfotechInquiries', JSON.stringify(updatedInquiries));
-      
-      return true;
-    } catch (error) {
-      console.error('Error saving to localStorage:', error);
-      return false;
-    }
-  };
-
+  // === SUBMIT WITH FULL VALIDATION ===
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    if (validateStep(5)) {
-      setIsSubmitting(true);
-      
-      try {
-        // Generate submission ID
-        const submissionId = generateSubmissionId();
-        const completeData = {
-          ...formData,
-          submissionId,
-          submissionDate: new Date().toISOString()
-        };
 
-        // Save to localStorage (keeping as backup)
-        const saveSuccess = saveToLocalStorage(completeData);
-        if (!saveSuccess) {
-          throw new Error('Failed to save data locally');
-        }
-
-        // Send to Google Apps Script
-        const url = 'https://script.google.com/macros/s/AKfycbxjnR8QM8Oak8V0J-mrcEmBZ9ozUtx9zkr_J8_qsjhkNrC-3P-SfW5f-sBS9KXZSvPZ/exec';
-        
-        // Send data as JSON instead of FormData to avoid CORS preflight issues
-        const response = await fetch(url, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(completeData),
-          // Remove redirect: 'follow' as it’s not needed
-          mode: 'cors', // Explicitly set CORS mode
-        });
-
-        if (!response.ok) {
-          const errorText = await response.text();
-          console.error('Google Apps Script error:', errorText);
-          throw new Error(`Failed to submit to Google Apps Script: ${errorText}`);
-        }
-
-        const result = await response.json();
-        if (result.status !== 'success') {
-          throw new Error('Submission failed on server');
-        }
-
-        console.log("Form data submitted:", completeData);
-        setSubmissionId(submissionId);
-        setIsSubmitted(true);
-        
-        // Auto-download Excel file
-        setTimeout(() => {
-          exportToExcel(completeData);
-        }, 1000);
-      } catch (error) {
-        console.error("Submission error:", error);
-        alert(`There was an error submitting your form: ${error.message}. Your data has been saved locally and you can download it as an Excel file.`);
-        // Still allow Excel download even if server submission fails
-        setSubmissionId(submissionId);
-        setIsSubmitted(true);
-        setTimeout(() => {
-          exportToExcel({
-            ...formData,
-            submissionId,
-            submissionDate: new Date().toISOString()
-          });
-        }, 1000);
-      } finally {
-        setIsSubmitting(false);
-      }
-    }
-  };
-
-  const downloadAllInquiries = () => {
-    try {
-      const allInquiries = JSON.parse(localStorage.getItem('ssInfotechInquiries') || '[]');
-      
-      if (allInquiries.length === 0) {
-        alert('No inquiries found in storage.');
+    // Validate ALL steps
+    for (let step = 1; step <= 5; step++) {
+      if (!validateStep(step)) {
+        setCurrentStep(step);
         return;
       }
-
-      // Create data for Excel
-      const worksheetData = [
-        // Header
-        ["SS OVERSEAS - ALL INQUIRIES"],
-        ["Generated on", new Date().toLocaleString()],
-        ["Total Inquiries", allInquiries.length],
-        [""], // Empty row
-        ["MASTER DATA"],
-        [
-          "Submission ID",
-          "Submission Date",
-          "First Name",
-          "Last Name",
-          "Email",
-          "Contact Number",
-          "Bachelor's Degree",
-          "Bachelor's Title",
-          "CGPA",
-          "Master's Subject",
-          "Target Intake",
-          "Source",
-          "Status"
-        ],
-        ...allInquiries.map(inquiry => [
-          inquiry.submissionId,
-          new Date(inquiry.submissionDate).toLocaleDateString(),
-          inquiry.firstName,
-          inquiry.lastName,
-          inquiry.email,
-          inquiry.contactNumber,
-          inquiry.bachelorsDegree,
-          inquiry.bachelorsTitle,
-          inquiry.bachelorsCGPA,
-          inquiry.mastersSubject,
-          inquiry.targetIntake,
-          inquiry.source,
-          "New"
-        ])
-      ];
-
-      const wb = XLSX.utils.book_new();
-      const ws = XLSX.utils.aoa_to_sheet(worksheetData);
-      
-      // Set column widths
-      ws['!cols'] = [
-        { wch: 20 }, // Submission ID
-        { wch: 15 }, // Date
-        { wch: 15 }, // First Name
-        { wch: 15 }, // Last Name
-        { wch: 25 }, // Email
-        { wch: 15 }, // Contact
-        { wch: 15 }, // Degree Status
-        { wch: 25 }, // Degree Title
-        { wch: 10 }, // CGPA
-        { wch: 20 }, // Master's Subject
-        { wch: 12 }, // Intake
-        { wch: 15 }, // Source
-        { wch: 10 }  // Status
-      ];
-
-      XLSX.utils.book_append_sheet(wb, ws, "All Inquiries");
-      XLSX.writeFile(wb, `SS_Infotech_All_Inquiries_${new Date().getTime()}.xlsx`);
-      
-    } catch (error) {
-      console.error('Error downloading all inquiries:', error);
-      alert('Error generating Excel file.');
     }
-  };
 
-  const clearAllInquiries = () => {
-    if (window.confirm('Are you sure you want to clear all inquiries? This action cannot be undone.')) {
-      localStorage.removeItem('ssInfotechInquiries');
-      alert('All inquiries have been cleared.');
+    setIsSubmitting(true);
+    try {
+      const id = generateSubmissionId();
+      const payload = { ...formData, submissionId: id, submissionDate: new Date().toISOString() };
+
+      const { data } = await axios.post('/api/inquiries', payload);
+      if (data.status !== 'success') throw new Error('Server rejected');
+
+      setSubmissionId(id);
+      setIsSubmitted(true);
+    } catch (err) {
+      console.error(err);
+      alert('Submission failed. Please try again.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -483,122 +276,54 @@ export default function InquiryForm() {
     { number: 5, title: "Career & Source", icon: Briefcase },
   ];
 
+  // === SUCCESS SCREEN ===
   if (isSubmitted) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-8 px-4 sm:px-6 lg:px-8">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-8 px-4">
         <div className="max-w-4xl mx-auto">
           <Card className="text-center py-12">
             <CardContent className="space-y-6">
               <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <CheckCircle className="w-10 h-10 text-green-600" />
               </div>
-              <h2 className="text-3xl font-bold text-gray-900 mb-4">
-                Thank You for Your Inquiry!
-              </h2>
-              
+              <h2 classThe="text-3xl font-bold text-gray-900 mb-4">Thank You!</h2>
+
               <div className="bg-blue-50 rounded-xl p-6 max-w-2xl mx-auto">
                 <Badge className="bg-blue-600 text-white mb-4 text-sm">
                   Submission ID: {submissionId}
                 </Badge>
                 <p className="text-lg text-gray-600 mb-6">
-                  We have received your inquiry and our education consultant will contact you within 24 hours. 
-                  Your Excel file has been downloaded automatically.
+                  Your inquiry has been saved successfully. Use this ID to download your application anytime.
                 </p>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <Button
-                    onClick={() => exportToExcel({
-                      ...formData,
-                      submissionId,
-                      submissionDate: new Date().toISOString()
-                    })}
-                    variant="outline"
-                    className="flex items-center gap-2"
+                    onClick={() => generateApplicationLetter({ ...formData, submissionId, submissionDate: new Date().toISOString() })}
+                    variant="default"
+                    className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
                   >
-                    <Download className="w-4 h-4" />
-                    Download Excel Again
+                    <Download className="w-4 h-4" /> Download Application (PDF)
                   </Button>
-                  
+
                   <Button
-                    onClick={downloadAllInquiries}
-                    className="bg-green-600 hover:bg-green-700 flex items-center gap-2 text-white"
+                    onClick={() => {
+                      setIsSubmitted(false);
+                      setCurrentStep(1);
+                      setFormData({
+                        firstName: "", lastName: "", dateOfBirth: "", email: "", address: "", contactNumber: "",
+                        bachelorsDegree: "", bachelorsCompletion: "", bachelorsTitle: "", bachelorsCGPA: "", bachelorsSGPA: "", hscGrade: "", entranceExamScores: "",
+                        ieltsToeflScore: "", degreeLanguage: "", apsCertificate: "",
+                        targetIntake: "", targetUniversities: "", mastersSubject: "", specialization: "", researchTopic: "",
+                        jobPosition: "", jobLevel: "", company: "", jobTitle: "", source: "",
+                        submissionDate: new Date().toISOString()
+                      });
+                      setErrors({});
+                    }}
+                    variant="outline"
                   >
-                    <FileSpreadsheet className="w-4 h-4" />
-                    Download All Inquiries
+                    Submit Another Inquiry
                   </Button>
                 </div>
-              </div>
-
-              <div className="bg-green-50 rounded-xl p-6 max-w-2xl mx-auto">
-                <h3 className="font-semibold text-green-900 mb-3">What's Next?</h3>
-                <ul className="text-left text-green-800 space-y-2">
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="w-4 h-4 text-green-500" />
-                    Our expert will review your profile
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="w-4 h-4 text-green-500" />
-                    Personalized university shortlisting
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="w-4 h-4 text-green-500" />
-                    Comprehensive guidance session
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="w-4 h-4 text-green-500" />
-                    Your data is securely stored
-                  </li>
-                </ul>
-              </div>
-
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button
-                  onClick={() => {
-                    setIsSubmitted(false);
-                    setCurrentStep(1);
-                    setFormData({
-                      firstName: "",
-                      lastName: "",
-                      dateOfBirth: "",
-                      email: "",
-                      address: "",
-                      contactNumber: "",
-                      bachelorsDegree: "",
-                      bachelorsCompletion: "",
-                      bachelorsTitle: "",
-                      bachelorsCGPA: "",
-                      bachelorsSGPA: "",
-                      hscGrade: "",
-                      entranceExamScores: "",
-                      ieltsToeflScore: "",
-                      degreeLanguage: "",
-                      apsCertificate: "",
-                      targetIntake: "",
-                      targetUniversities: "",
-                      mastersSubject: "",
-                      specialization: "",
-                      researchTopic: "",
-                      jobPosition: "",
-                      jobLevel: "",
-                      company: "",
-                      jobTitle: "",
-                      source: "",
-                      submissionDate: new Date().toISOString()
-                    });
-                  }}
-                  className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white"
-                >
-                  Submit Another Inquiry
-                </Button>
-                
-                <Button
-                  onClick={() => window.print()}
-                  variant="outline"
-                  className="flex items-center gap-2"
-                >
-                  <FileText className="w-4 h-4" />
-                  Print Confirmation
-                </Button>
               </div>
             </CardContent>
           </Card>
@@ -607,10 +332,11 @@ export default function InquiryForm() {
     );
   }
 
+  // === MAIN FORM ===
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-8 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-8 px-4">
       <div className="max-w-4xl mx-auto">
-        {/* Header with Admin Button */}
+        {/* Header */}
         <div className="text-center mb-8">
           <div className="flex items-center justify-center gap-3 mb-4">
             <div className="w-12 h-12 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl flex items-center justify-center">
@@ -621,43 +347,34 @@ export default function InquiryForm() {
               <p className="text-gray-600">Study Abroad Inquiry Form</p>
             </div>
           </div>
-          <p className="text-gray-600 max-w-2xl mx-auto">
-            Complete this form to get personalized guidance for your study abroad journey. 
-            Our experts will contact you within 24 hours.
-          </p>
         </div>
 
-        {/* Progress Steps */}
+        {/* Progress */}
         <Card className="mb-8">
           <CardContent className="p-6">
             <div className="flex items-center justify-between overflow-x-auto">
-              {steps.map((step, index) => {
-                const Icon = step.icon;
-                const isActive = step.number === currentStep;
-                const isCompleted = step.number < currentStep;
-                
+              {steps.map((s, i) => {
+                const Icon = s.icon;
+                const active = s.number === currentStep;
+                const done = s.number < currentStep;
                 return (
-                  <div key={step.number} className="flex items-center">
-                    <div className={`flex flex-col items-center ${index !== steps.length - 1 ? 'flex-1' : ''}`}>
-                      <div className={`w-12 h-12 rounded-full flex items-center justify-center border-2 font-semibold transition-all duration-300 ${
-                        isActive 
-                          ? 'bg-blue-600 border-blue-600 text-white scale-110' 
-                          : isCompleted
-                          ? 'bg-green-500 border-green-500 text-white'
-                          : 'bg-white border-gray-300 text-gray-400'
+                  <div key={s.number} className="flex items-center">
+                    <div className={`flex flex-col items-center ${i < steps.length - 1 ? 'flex-1' : ''}`}>
+                      <div className={`w-12 h-12 rounded-full flex items-center justify-center border-2 font-semibold transition-all ${
+                        active ? 'bg-blue-600 border-blue-600 text-white scale-110' :
+                        done ? 'bg-green-500 border-green-500 text-white' :
+                        'bg-white border-gray-300 text-gray-400'
                       }`}>
-                        {isCompleted ? <CheckCircle className="w-6 h-6" /> : <Icon className="w-5 h-5" />}
+                        {done ? <CheckCircle className="w-6 h-6" /> : <Icon className="w-5 h-5" />}
                       </div>
                       <span className={`text-sm font-medium mt-2 hidden sm:block ${
-                        isActive ? 'text-blue-600' : isCompleted ? 'text-green-600' : 'text-gray-500'
+                        active ? 'text-blue-600' : done ? 'text-green-600' : 'text-gray-500'
                       }`}>
-                        {step.title}
+                        {s.title}
                       </span>
                     </div>
-                    {index !== steps.length - 1 && (
-                      <div className={`flex-1 h-1 mx-4 rounded-full ${
-                        isCompleted ? 'bg-green-500' : 'bg-gray-200'
-                      }`} />
+                    {i < steps.length - 1 && (
+                      <div className={`flex-1 h-1 mx-4 rounded-full ${done ? 'bg-green-500' : 'bg-gray-200'}`} />
                     )}
                   </div>
                 );
@@ -675,351 +392,171 @@ export default function InquiryForm() {
               </CardTitle>
             </CardHeader>
             <CardContent className="p-6">
-              {/* Step 1: Personal Information */}
+              {/* STEP 1 */}
               {currentStep === 1 && (
                 <div className="space-y-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        First Name *
-                      </label>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">First Name *</label>
                       <div className="relative">
                         <User className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
-                        <input
-                          type="text"
-                          name="firstName"
-                          value={formData.firstName}
-                          onChange={handleChange}
-                          className={`w-full pl-10 pr-4 py-3 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${
-                            errors.firstName ? 'border-red-500' : 'border-gray-300'
-                          }`}
-                          placeholder="Enter your first name"
-                        />
+                        <input type="text" name="firstName" value={formData.firstName} onChange={handleChange}
+                          className={`w-full pl-10 pr-4 py-3 border rounded-xl focus:ring-2 focus:ring-blue-500 transition-colors ${errors.firstName ? 'border-red-500' : 'border-gray-300'}`}
+                          placeholder="Enter first name" />
                       </div>
-                      {errors.firstName && (
-                        <p className="text-red-500 text-sm mt-1 flex items-center gap-1">
-                          <AlertCircle className="w-4 h-4" />
-                          {errors.firstName}
-                        </p>
-                      )}
+                      {errors.firstName && <p className="text-red-500 text-sm mt-1 flex items-center gap-1"><AlertCircle className="w-4 h-4" />{errors.firstName}</p>}
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Last Name *
-                      </label>
-                      <input
-                        type="text"
-                        name="lastName"
-                        value={formData.lastName}
-                        onChange={handleChange}
-                        className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${
-                          errors.lastName ? 'border-red-500' : 'border-gray-300'
-                        }`}
-                        placeholder="Enter your last name"
-                      />
-                      {errors.lastName && (
-                        <p className="text-red-500 text-sm mt-1 flex items-center gap-1">
-                          <AlertCircle className="w-4 h-4" />
-                          {errors.lastName}
-                        </p>
-                      )}
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Last Name *</label>
+                      <input type="text" name="lastName" value={formData.lastName} onChange={handleChange}
+                        className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-blue-500 transition-colors ${errors.lastName ? 'border-red-500' : 'border-gray-300'}`}
+                        placeholder="Enter last name" />
+                      {errors.lastName && <p className="text-red-500 text-sm mt-1 flex items-center gap-1"><AlertCircle className="w-4 h-4" />{errors.lastName}</p>}
                     </div>
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Date Of Birth (DD/MM/YYYY) *
-                    </label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Date of Birth *</label>
                     <div className="relative">
                       <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
-                      <input
-                        type="date"
-                        name="dateOfBirth"
-                        value={formData.dateOfBirth}
-                        onChange={handleChange}
-                        className={`w-full pl-10 pr-4 py-3 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${
-                          errors.dateOfBirth ? 'border-red-500' : 'border-gray-300'
-                        }`}
-                      />
+                      <input type="date" name="dateOfBirth" value={formData.dateOfBirth} onChange={handleChange}
+                        className={`w-full pl-10 pr-4 py-3 border rounded-xl focus:ring-2 focus:ring-blue-500 transition-colors ${errors.dateOfBirth ? 'border-red-500' : 'border-gray-300'}`} />
                     </div>
-                    {errors.dateOfBirth && (
-                      <p className="text-red-500 text-sm mt-1 flex items-center gap-1">
-                        <AlertCircle className="w-4 h-4" />
-                        {errors.dateOfBirth}
-                      </p>
-                    )}
+                    {errors.dateOfBirth && <p className="text-red-500 text-sm mt-1 flex items-center gap-1"><AlertCircle className="w-4 h-4" />{errors.dateOfBirth}</p>}
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      E-mail ID *
-                    </label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">E-mail *</label>
                     <div className="relative">
                       <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
-                      <input
-                        type="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        className={`w-full pl-10 pr-4 py-3 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${
-                          errors.email ? 'border-red-500' : 'border-gray-300'
-                        }`}
-                        placeholder="Enter your email address"
-                      />
+                      <input type="email" name="email" value={formData.email} onChange={handleChange}
+                        className={`w-full pl-10 pr-4 py-3 border rounded-xl focus:ring-2 focus:ring-blue-500 transition-colors ${errors.email ? 'border-red-500' : 'border-gray-300'}`}
+                        placeholder="example@domain.com" />
                     </div>
-                    {errors.email && (
-                      <p className="text-red-500 text-sm mt-1 flex items-center gap-1">
-                        <AlertCircle className="w-4 h-4" />
-                        {errors.email}
-                      </p>
-                    )}
+                    {errors.email && <p className="text-red-500 text-sm mt-1 flex items-center gap-1"><AlertCircle className="w-4 h-4" />{errors.email}</p>}
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Address *
-                    </label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Address *</label>
                     <div className="relative">
                       <MapPin className="absolute left-3 top-3 text-gray-400 w-5 h-5" />
-                      <textarea
-                        name="address"
-                        value={formData.address}
-                        onChange={handleChange}
-                        rows={3}
-                        className={`w-full pl-10 pr-4 py-3 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${
-                          errors.address ? 'border-red-500' : 'border-gray-300'
-                        }`}
-                        placeholder="Enter your complete address"
-                      />
+                      <textarea name="address" value={formData.address} onChange={handleChange} rows={3}
+                        className={`w-full pl-10 pr-4 py-3 border rounded-xl focus:ring-2 focus:ring-blue-500 transition-colors ${errors.address ? 'border-red-500' : 'border-gray-300'}`}
+                        placeholder="Full address" />
                     </div>
-                    {errors.address && (
-                      <p className="text-red-500 text-sm mt-1 flex items-center gap-1">
-                        <AlertCircle className="w-4 h-4" />
-                        {errors.address}
-                      </p>
-                    )}
+                    {errors.address && <p className="text-red-500 text-sm mt-1 flex items-center gap-1"><AlertCircle className="w-4 h-4" />{errors.address}</p>}
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Contact Number *
-                    </label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Contact Number *</label>
                     <div className="relative">
                       <Phone className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
-                      <input
-                        type="tel"
-                        name="contactNumber"
-                        value={formData.contactNumber}
-                        onChange={handleChange}
-                        className={`w-full pl-10 pr-4 py-3 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${
-                          errors.contactNumber ? 'border-red-500' : 'border-gray-300'
-                        }`}
-                        placeholder="Enter your contact number"
-                      />
+                      <input type="tel" name="contactNumber" value={formData.contactNumber} onChange={handleChange}
+                        className={`w-full pl-10 pr-4 py- SEA-3 border rounded-xl focus:ring-2 focus:ring-blue-500 transition-colors ${errors.contactNumber ? 'border-red-500' : 'border-gray-300'}`}
+                        placeholder="+91 9876543210" />
                     </div>
-                    {errors.contactNumber && (
-                      <p className="text-red-500 text-sm mt-1 flex items-center gap-1">
-                        <AlertCircle className="w-4 h-4" />
-                        {errors.contactNumber}
-                      </p>
-                    )}
+                    {errors.contactNumber && <p className="text-red-500 text-sm mt-1 flex items-center gap-1"><AlertCircle className="w-4 h-4" />{errors.contactNumber}</p>}
                   </div>
                 </div>
               )}
 
-              {/* Step 2: Educational Background */}
+              {/* STEP 2 – FIXED TYPO */}
               {currentStep === 2 && (
                 <div className="space-y-6">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Bachelor's Degree *
-                    </label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Bachelor's Degree *</label>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      {['Completed', 'Ongoing'].map(option => (
-                        <label key={option} className="flex items-center space-x-3 p-4 border-2 border-gray-200 rounded-xl hover:border-blue-500 cursor-pointer transition-colors">
+                      {['Completed', 'Ongoing'].map(o => (
+                        <label key={o} className="flex items-center space-x-3 p-4 border-2 border-gray-200 rounded-xl hover:border-blue-500 cursor-pointer">
                           <input
                             type="radio"
                             name="bachelorsDegree"
-                            value={option}
-                            checked={formData.bachelorsDegree === option}
+                            value={o}
+                            checked={formData.bachelorsDegree === o}  
                             onChange={handleChange}
                             className="text-blue-600 focus:ring-blue-500"
                           />
-                          <span className="text-gray-700">{option}</span>
+                          <span>{o}</span>
                         </label>
                       ))}
                     </div>
-                    {errors.bachelorsDegree && (
-                      <p className="text-red-500 text-sm mt-1 flex items-center gap-1">
-                        <AlertCircle className="w-4 h-4" />
-                        {errors.bachelorsDegree}
-                      </p>
-                    )}
+                    {errors.bachelorsDegree && <p className="text-red-500 text-sm mt-1 flex items-center gap-1"><AlertCircle className="w-4 h-4" />{errors.bachelorsDegree}</p>}
                   </div>
 
                   {formData.bachelorsDegree === 'Ongoing' && (
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Bachelor's Degree expected completion (MM/YYYY) *
-                      </label>
-                      <input
-                        type="month"
-                        name="bachelorsCompletion"
-                        value={formData.bachelorsCompletion}
-                        onChange={handleChange}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-                      />
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Expected Completion (MM/YYYY)</label>
+                      <input type="month" name="bachelorsCompletion" value={formData.bachelorsCompletion} onChange={handleChange}
+                        className="w-full px-4 py-3 border border600 rounded-xl focus:ring-2 focus:ring-blue-500" />
                     </div>
                   )}
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Bachelor's Degree Title *
-                    </label>
-                    <input
-                      type="text"
-                      name="bachelorsTitle"
-                      value={formData.bachelorsTitle}
-                      onChange={handleChange}
-                      className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${
-                        errors.bachelorsTitle ? 'border-red-500' : 'border-gray-300'
-                      }`}
-                      placeholder="e.g., Bachelor of Engineering in Computer Science"
-                    />
-                    {errors.bachelorsTitle && (
-                      <p className="text-red-500 text-sm mt-1 flex items-center gap-1">
-                        <AlertCircle className="w-4 h-4" />
-                        {errors.bachelorsTitle}
-                      </p>
-                    )}
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Degree Title *</label>
+                    <input type="text" name="bachelorsTitle" value={formData.bachelorsTitle} onChange={handleChange}
+                      className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-blue-500 transition-colors ${errors.bachelorsTitle ? 'border-red-500' : 'border-gray-300'}`}
+                      placeholder="e.g. B.Tech Computer Science" />
+                    {errors.bachelorsTitle && <p className="text-red-500 text-sm mt-1 flex items-center gap-1"><AlertCircle className="w-4 h-4" />{errors.bachelorsTitle}</p>}
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Bachelor's CGPA (final grade) *
-                      </label>
-                      <input
-                        type="text"
-                        name="bachelorsCGPA"
-                        value={formData.bachelorsCGPA}
-                        onChange={handleChange}
-                        className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${
-                          errors.bachelorsCGPA ? 'border-red-500' : 'border-gray-300'
-                        }`}
-                        placeholder="e.g., 8.5/10 or 3.7/4"
-                      />
-                      {errors.bachelorsCGPA && (
-                        <p className="text-red-500 text-sm mt-1 flex items-center gap-1">
-                          <AlertCircle className="w-4 h-4" />
-                          {errors.bachelorsCGPA}
-                        </p>
-                      )}
+                      <label className="block text-sm font-medium text-gray-700 mb-2">CGPA (final) *</label>
+                      <input type="text" name="bachelorsCGPA" value={formData.bachelorsCGPA} onChange={handleChange}
+                        className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-blue-500 transition-colors ${errors.bachelorsCGPA ? 'border-red-500' : 'border-gray-300'}`}
+                        placeholder="8.5/10" />
+                      {errors.bachelorsCGPA && <p className="text-red-500 text-sm mt-1 flex items-center gap-1"><AlertCircle className="w-4 h-4" />{errors.bachelorsCGPA}</p>}
                     </div>
-
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Bachelor's SGPA (each Semester)
-                      </label>
-                      <input
-                        type="text"
-                        name="bachelorsSGPA"
-                        value={formData.bachelorsSGPA}
-                        onChange={handleChange}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-                        placeholder="e.g., Sem1: 8.0, Sem2: 8.5..."
-                      />
+                      <label className="block text-sm font-medium text-gray-700 mb-2">SGPA (per semester)</label>
+                      <input type="text" name="bachelorsSGPA" value={formData.bachelorsSGPA} onChange={handleChange}
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500"
+                        placeholder="Sem1: 8.0, ..." />
                     </div>
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        12 HSC Grade Percentage/ Score *
-                      </label>
-                      <input
-                        type="text"
-                        name="hscGrade"
-                        value={formData.hscGrade}
-                        onChange={handleChange}
-                        className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${
-                          errors.hscGrade ? 'border-red-500' : 'border-gray-300'
-                        }`}
-                        placeholder="e.g., 85% or 9.2 CGPA"
-                      />
-                      {errors.hscGrade && (
-                        <p className="text-red-500 text-sm mt-1 flex items-center gap-1">
-                          <AlertCircle className="w-4 h-4" />
-                          {errors.hscGrade}
-                        </p>
-                      )}
+                      <label className="block text-sm font-medium text-gray-700 mb-2">12th HSC Grade *</label>
+                      <input type="text" name="hscGrade" value={formData.hscGrade} onChange={handleChange}
+                        className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-blue-500 transition-colors ${errors.hscGrade ? 'border-red-500' : 'border-gray-300'}`}
+                        placeholder="85%" />
+                      {errors.hscGrade && <p className="text-red-500 text-sm mt-1 flex items-center gap-1"><AlertCircle className="w-4 h-4" />{errors.hscGrade}</p>}
                     </div>
-
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Entrance Exam Scores (JEE/MHTCET/NEET/GATE/etc.)
-                      </label>
-                      <input
-                        type="text"
-                        name="entranceExamScores"
-                        value={formData.entranceExamScores}
-                        onChange={handleChange}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-                        placeholder="e.g., JEE: 95 percentile"
-                      />
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Entrance Exams</label>
+                      <input type="text" name="entranceExamScores" value={formData.entranceExamScores} onChange={handleChange}
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500"
+                        placeholder="JEE: 95 percentile" />
                     </div>
                   </div>
                 </div>
               )}
 
-              {/* Step 3: Language & Certificates */}
+              {/* STEP 3 */}
               {currentStep === 3 && (
                 <div className="space-y-6">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Have you appeared for IELTS/TOEFL? If yes, score:
-                    </label>
-                    <input
-                      type="text"
-                      name="ieltsToeflScore"
-                      value={formData.ieltsToeflScore}
-                      onChange={handleChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-                      placeholder="e.g., IELTS: 7.5 or TOEFL: 105"
-                    />
+                    <label className="block text-sm font-medium text-gray-700 mb-2">IELTS/TOEFL Score</label>
+                    <input type="text" name="ieltsToeflScore" value={formData.ieltsToeflScore} onChange={handleChange}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500"
+                      placeholder="IELTS: 7.5" />
                   </div>
-
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Bachelor's degree's language of instruction
-                    </label>
-                    <input
-                      type="text"
-                      name="degreeLanguage"
-                      value={formData.degreeLanguage}
-                      onChange={handleChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-                      placeholder="e.g., English, German, etc."
-                    />
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Degree Language</label>
+                    <input type="text" name="degreeLanguage" value={formData.degreeLanguage} onChange={handleChange}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500"
+                      placeholder="English" />
                   </div>
-
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Have you obtained APS certificate?
-                    </label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">APS Certificate?</label>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      {['Yes', 'No'].map(option => (
-                        <label key={option} className="flex items-center space-x-3 p-4 border-2 border-gray-200 rounded-xl hover:border-blue-500 cursor-pointer transition-colors">
-                          <input
-                            type="radio"
-                            name="apsCertificate"
-                            value={option}
-                            checked={formData.apsCertificate === option}
-                            onChange={handleChange}
-                            className="text-blue-600 focus:ring-blue-500"
-                          />
-                          <span className="text-gray-700">{option}</span>
+                      {['Yes', 'No'].map(o => (
+                        <label key={o} className="flex items-center space-x-3 p-4 border-2 border-gray-200 rounded-xl hover:border-blue-500 cursor-pointer">
+                          <input type="radio" name="apsCertificate" value={o} checked={formData.apsCertificate === o} onChange={handleChange}
+                            className="text-blue-600 focus:ring-blue-500" />
+                          <span>{o}</span>
                         </label>
                       ))}
                     </div>
@@ -1027,209 +564,128 @@ export default function InquiryForm() {
                 </div>
               )}
 
-              {/* Step 4: Study Plans */}
+              {/* STEP 4 */}
               {currentStep === 4 && (
                 <div className="space-y-6">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Target semester intake *
-                    </label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Target Intake *</label>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      {['Summer', 'Winter'].map(option => (
-                        <label key={option} className="flex items-center space-x-3 p-4 border-2 border-gray-200 rounded-xl hover:border-blue-500 cursor-pointer transition-colors">
-                          <input
-                            type="radio"
-                            name="targetIntake"
-                            value={option}
-                            checked={formData.targetIntake === option}
-                            onChange={handleChange}
-                            className="text-blue-600 focus:ring-blue-500"
-                          />
-                          <span className="text-gray-700">{option}</span>
+                      {['Summer', 'Winter'].map(o => (
+                        <label key={o} className="flex items-center space-x-3 p-4 border-2 border-gray-200 rounded-xl hover:border-blue-500 cursor-pointer">
+                          <input type="radio" name="targetIntake" value={o} checked={formData.targetIntake === o} onChange={handleChange}
+                            className="text-blue-600 focus:ring-blue-500" />
+                          <span>{o}</span>
                         </label>
                       ))}
                     </div>
-                    {errors.targetIntake && (
-                      <p className="text-red-500 text-sm mt-1 flex items-center gap-1">
-                        <AlertCircle className="w-4 h-4" />
-                        {errors.targetIntake}
-                      </p>
-                    )}
+                    {errors.targetIntake && <p className="text-red-500 text-sm mt-1 flex items-center gap-1"><AlertCircle className="w-4 h-4" />{errors.targetIntake}</p>}
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Do you have any target universities? If yes, which university(s)?
-                    </label>
-                    <textarea
-                      name="targetUniversities"
-                      value={formData.targetUniversities}
-                      onChange={handleChange}
-                      rows={3}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-                      placeholder="e.g., Technical University of Munich, University of Stuttgart..."
-                    />
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Target Universities</label>
+                    <textarea name="targetUniversities" value={formData.targetUniversities} onChange={handleChange} rows={3}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500"
+                      placeholder="TU Munich, ..." />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      In which subject do you want to pursue Master's degree? *
-                    </label>
-                    <input
-                      type="text"
-                      name="mastersSubject"
-                      value={formData.mastersSubject}
-                      onChange={handleChange}
-                      className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${
-                        errors.mastersSubject ? 'border-red-500' : 'border-gray-300'
-                      }`}
-                      placeholder="e.g., Computer Science, Mechanical Engineering, MBA..."
-                    />
-                    {errors.mastersSubject && (
-                      <p className="text-red-500 text-sm mt-1 flex items-center gap-1">
-                        <AlertCircle className="w-4 h-4" />
-                        {errors.mastersSubject}
-                      </p>
-                    )}
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Master's Subject *</label>
+                    <input type="text" name="mastersSubject" value={formData.mastersSubject} onChange={handleChange}
+                      className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-blue-500 transition-colors ${errors.mastersSubject ? 'border-red-500' : 'border-gray-300'}`}
+                      placeholder="Computer Science" />
+                    {errors.mastersSubject && <p className="text-red-500 text-sm mt-1 flex items-center gap-1"><AlertCircle className="w-4 h-4" />{errors.mastersSubject}</p>}
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Have you thought about any specialization domain? If yes, which?
-                    </label>
-                    <input
-                      type="text"
-                      name="specialization"
-                      value={formData.specialization}
-                      onChange={handleChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-                      placeholder="e.g., Artificial Intelligence, Renewable Energy..."
-                    />
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Specialization</label>
+                    <input type="text" name="specialization" value={formData.specialization} onChange={handleChange}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500"
+                      placeholder="AI, Renewable Energy..." />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Do you have research or thesis topic in mind? If yes, topic?
-                    </label>
-                    <textarea
-                      name="researchTopic"
-                      value={formData.researchTopic}
-                      onChange={handleChange}
-                      rows={3}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-                      placeholder="Describe your research interests or thesis topic..."
-                    />
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Research Topic</label>
+                    <textarea name="researchTopic" value={formData.researchTopic} onChange={handleChange} rows={3}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500"
+                      placeholder="Describe..." />
                   </div>
                 </div>
               )}
 
-              {/* Step 5: Career & Source */}
+              {/* STEP 5 – REQUIRED */}
               {currentStep === 5 && (
                 <div className="space-y-6">
                   <div className="bg-blue-50 rounded-xl p-6">
                     <h3 className="font-semibold text-blue-900 mb-3 flex items-center gap-2">
-                      <Briefcase className="w-5 h-5" />
-                      Career Goals in Germany
+                      <Briefcase className="w-5 h-5" /> Career Goals in Germany
                     </h3>
-                    <p className="text-blue-700 text-sm mb-4">
-                      Share your career aspirations to help us guide you towards relevant programs and opportunities.
-                    </p>
-
                     <div className="space-y-4">
                       <div>
-                        <label className="block text-sm font-medium text-blue-900 mb-2">
-                          If you want to work in Germany after your studies, at which job position do you envision yourself?
-                        </label>
-                        <input
-                          type="text"
-                          name="jobPosition"
-                          value={formData.jobPosition}
-                          onChange={handleChange}
-                          className="w-full px-4 py-3 border border-blue-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors bg-white"
-                          placeholder="e.g., Software Developer, Mechanical Engineer..."
-                        />
+                        <label className="block text-sm font-medium text-blue-900 mb-2">Desired Job Position</label>
+                        <input type="text" name="jobPosition" value={formData.jobPosition} onChange={handleChange}
+                          className="w-full px-4 py-3 border border-blue-200 rounded-xl focus:ring-2 focus:ring-blue-500 bg-white"
+                          placeholder="Software Engineer..." />
                       </div>
-
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                          <label className="block text-sm font-medium text-blue-900 mb-2">
-                            Job Position Level
-                          </label>
-                          <select
-                            name="jobLevel"
-                            value={formData.jobLevel}
-                            onChange={handleChange}
-                            className="w-full px-4 py-3 border border-blue-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors bg-white"
-                          >
-                            <option value="">Select level</option>
-                            <option value="Junior">Junior</option>
-                            <option value="Senior">Senior</option>
-                            <option value="Manager">Manager</option>
-                            <option value="Other">Other</option>
+                          <label className="block text-sm font-medium text-blue-900 mb-2">Job Level</label>
+                          <select name="jobLevel" value={formData.jobLevel} onChange={handleChange}
+                            className="w-full px-4 py-3 border border-blue-200 rounded-xl focus:ring-2 focus:ring-blue-500 bg-white">
+                            <option value="">Select</option>
+                            <option>Junior</option><option>Senior</option><option>Manager</option><option>Other</option>
                           </select>
                         </div>
-
                         <div>
-                          <label className="block text-sm font-medium text-blue-900 mb-2">
-                            Company
-                          </label>
-                          <input
-                            type="text"
-                            name="company"
-                            value={formData.company}
-                            onChange={handleChange}
-                            className="w-full px-4 py-3 border border-blue-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors bg-white"
-                            placeholder="e.g., Siemens, BMW, SAP..."
-                          />
+                          <label className="block text-sm font-medium text-blue-900 mb-2">Target Company</label>
+                          <input type="text" name="company" value={formData.company} onChange={handleChange}
+                            className="w-full px-4 py-3 border border-blue-200 rounded-xl focus:ring-2 focus:ring-blue-500 bg-white"
+                            placeholder="Siemens, BMW..." />
                         </div>
                       </div>
-
                       <div>
-                        <label className="block text-sm font-medium text-blue-900 mb-2">
-                          Job Title
-                        </label>
-                        <input
-                          type="text"
-                          name="jobTitle"
-                          value={formData.jobTitle}
-                          onChange={handleChange}
-                          className="w-full px-4 py-3 border border-blue-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors bg-white"
-                          placeholder="e.g., Senior Software Engineer, Project Manager..."
-                        />
+                        <label className="block text-sm font-medium text-blue-900 mb-2">Job Title</label>
+                        <input type="text" name="jobTitle" value={formData.jobTitle} onChange={handleChange}
+                          className="w-full px-4 py-3 border border-blue-200 rounded-xl focus:ring-2 focus:ring-blue-500 bg-white"
+                          placeholder="Senior Software Engineer..." />
                       </div>
                     </div>
                   </div>
 
+                  {/* REQUIRED SOURCE */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Please mention the source through which you found SS Overseas Education Consultants
-                    </label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">How did you find us? *</label>
                     <select
                       name="source"
                       value={formData.source}
                       onChange={handleChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                      className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-blue-500 ${
+                        errors.source ? 'border-red-500' : 'border-gray-300'
+                      }`}
                     >
                       <option value="">Select source</option>
-                      <option value="Google Search">Google Search</option>
-                      <option value="Social Media">Social Media</option>
-                      <option value="Friend Referral">Friend Referral</option>
-                      <option value="Advertisement">Advertisement</option>
-                      <option value="College Event">College Event</option>
-                      <option value="Other">Other</option>
+                      <option>Google Search</option>
+                      <option>Social Media</option>
+                      <option>Friend Referral</option>
+                      <option>Advertisement</option>
+                      <option>College Event</option>
+                      <option>Other</option>
                     </select>
+                    {errors.source && (
+                      <p className="text-red-500 text-sm mt-1 flex items-center gap-1">
+                        <AlertCircle className="w-4 h-4" />
+                        {errors.source}
+                      </p>
+                    )}
                   </div>
 
-                  {/* Instructions */}
                   <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6">
                     <h4 className="font-semibold text-yellow-800 mb-3 flex items-center gap-2">
-                      <AlertCircle className="w-5 h-5" />
-                      Important Instructions
+                      <AlertCircle className="w-5 h-5" /> Important
                     </h4>
-                    <ul className="text-yellow-700 text-sm space-y-2">
-                      <li>• Please answer only the questions relevant to you</li>
-                      <li>• Attach transcripts or scorecards wherever possible</li>
-                      <li>• Ensure all details are accurate to help us guide you better</li>
+                    <ul className="text-yellow-700 text-sm space-y-1">
+                      <li>• Answer only relevant fields</li>
+                      <li>• Attach transcripts if possible</li>
+                      <li>• Accurate info helps us serve you better</li>
                     </ul>
                   </div>
                 </div>
@@ -1237,32 +693,20 @@ export default function InquiryForm() {
             </CardContent>
           </Card>
 
-          {/* Navigation Buttons */}
+          {/* Navigation */}
           <div className="flex justify-between mt-8">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={handleBack}
-              disabled={currentStep === 1}
-              className="px-8 py-3 rounded-xl"
-            >
+            <Button type="button" variant="outline" onClick={handleBack} disabled={currentStep === 1} className="px-8 py-3 rounded-xl">
               Back
             </Button>
 
             {currentStep < 5 ? (
-              <Button
-                type="button"
-                onClick={handleNext}
-                className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-3 rounded-xl"
-              >
+              <Button type="button" onClick={handleNext}
+                className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-3 rounded-xl">
                 Next
               </Button>
             ) : (
-              <Button
-                type="submit"
-                disabled={isSubmitting}
-                className="bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white px-8 py-3 rounded-xl disabled:opacity-50"
-              >
+              <Button type="submit" disabled={isSubmitting}
+                className="bg-gradient +#+ from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white px-8 py-3 rounded-xl disabled:opacity-50">
                 {isSubmitting ? (
                   <div className="flex items-center gap-2">
                     <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
@@ -1270,8 +714,7 @@ export default function InquiryForm() {
                   </div>
                 ) : (
                   <div className="flex items-center gap-2">
-                    <Send className="w-4 h-4" />
-                    Submit Inquiry
+                    <Send className="w-4 h-4" /> Submit Inquiry
                   </div>
                 )}
               </Button>
@@ -1279,31 +722,22 @@ export default function InquiryForm() {
           </div>
         </form>
 
-        {/* Contact Information */}
+        {/* Footer Contact */}
         <Card className="mt-8 bg-gradient-to-r from-gray-900 to-blue-900 text-white">
           <CardContent className="p-6">
             <h3 className="text-lg font-semibold mb-4 text-center">CONTACT US</h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
               <div>
                 <MapPin className="w-6 h-6 mx-auto mb-2 text-yellow-400" />
-                <p className="text-sm">
-                  Plot.no.26 Khandwerkar Bunglow,<br />
-                  Landra Park, Behind Ishita Clinic,<br />
-                  Ramdaspeth, Nagpur- 440010
-                </p>
+                <p className="text-sm">Plot.no.26 Khandwerkar Bunglow, Landra Park, Nagpur-440010</p>
               </div>
               <div>
                 <Phone className="w-6 h-6 mx-auto mb-2 text-yellow-400" />
-                <p className="text-sm font-semibold">
-                  9422129534<br />
-                  8999972278
-                </p>
+                <p className="text-sm font-semibold">9422129534<br />8999972278</p>
               </div>
               <div>
                 <Mail className="w-6 h-6 mx-auto mb-2 text-yellow-400" />
-                <p className="text-sm font-semibold">
-                  ssoverseas333@gmail.com
-                </p>
+                <p className="text-sm font-semibold">ssoverseas333@gmail.com</p>
               </div>
             </div>
           </CardContent>

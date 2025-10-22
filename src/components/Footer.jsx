@@ -85,7 +85,21 @@ const Footer = () => {
           &copy; {new Date().getFullYear()} SS Overseas. All rights reserved.
         </p>
         <p className="text-xs text-yellow-400 mt-2">
-          <a href="/terms" className="hover:text-yellow-300">Terms & Conditions</a> | <a href="/privacy" className="hover:text-yellow-300">Privacy Policy</a>
+          <a href="/terms" className="hover:text-yellow-300">Terms & Conditions</a> | 
+          <a href="/privacy" className="hover:text-yellow-300 ml-1">Privacy Policy</a>
+        </p>
+
+        {/* Developer Credit */}
+        <p className="text-xs text-gray-500 mt-4">
+          Design & Developed by{" "}
+          <a
+            href="https://www.linkedin.com/in/tejas-khope/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-yellow-400 hover:text-yellow-300 font-medium underline transition-colors"
+          >
+            Tejas Khope
+          </a>
         </p>
       </div>
     </footer>
