@@ -1,7 +1,13 @@
-
 import React, { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { Link } from "react-router-dom";
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Autoplay, Navigation, Pagination } from 'swiper/modules';
+
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
 
 export const countries = [
   {
@@ -490,7 +496,7 @@ export const countries = [
         location: "Munich, Bavaria",
         type: "Public Research",
         acceptanceRate: "8%",
-        fees: "€0-€3,000",
+        fees: "€0",
         internationalStudents: "34%",
         scholarships: "DAAD, TUM Scholarships",
         founded: "1868",
@@ -678,8 +684,6 @@ export const countries = [
 ];
 
 const OfferedCountriesSection = () => {
-  const marqueeRef = useRef(null);
-  const tweenRef = useRef(null);
   const sectionRef = useRef(null);
 
   useEffect(() => {
@@ -688,54 +692,75 @@ const OfferedCountriesSection = () => {
         { opacity: 0, y: 50 },
         { opacity: 1, y: 0, duration: 1, ease: "power3.out" }
       );
-
-      const marquee = marqueeRef.current;
-      if (!marquee) return;
-
-      const totalWidth = marquee.scrollWidth / 2;
-
-      tweenRef.current = gsap.fromTo(
-        marquee,
-        { x: 0 },
-        {
-          x: -totalWidth,
-          duration: 40,
-          ease: "linear",
-          repeat: -1,
-          modifiers: {
-            x: (x) => {
-              const modX = parseFloat(x) % totalWidth;
-              return `${modX}px`;
-            },
-          },
-        }
-      );
     });
 
     return () => ctx.revert();
   }, []);
 
-  const handleMouseEnter = () => {
-    if (tweenRef.current) {
-      gsap.to(tweenRef.current, {
-        timeScale: 0.3,
-        duration: 0.5,
-        ease: "power2.out"
-      });
-    }
-  };
+  const CountryCard = ({ country }) => (
+    <Link
+      to={`/universities/${encodeURIComponent(country.name)}`}
+      className="flex-shrink-0 transform transition-transform duration-300 hover:scale-105 h-full"
+    >
+      <div className="flex flex-col items-center p-5 sm:p-6 rounded-xl bg-white shadow-sm hover:shadow-lg transition-all duration-300 h-full border border-gray-100 cursor-pointer group hover:border-purple-300">
+        <div className="flex items-center gap-3 w-full mb-4">
+          <div className="w-14 h-10 sm:w-16 sm:h-12 overflow-hidden rounded-lg bg-white shadow-sm group-hover:shadow-purple-200 transition-all duration-300">
+            <img
+              src={country.flag}
+              alt={`${country.name} flag`}
+              className="w-full h-full object-cover"
+            />
+          </div>
+          <div className="flex-1 text-left">
+            <h3 className="text-lg sm:text-xl font-bold text-purple-900 group-hover:text-purple-700 transition-colors duration-300 truncate">
+              {country.name}
+            </h3>
+            <p className="text-sm text-gray-500">
+              {country.capital}
+            </p>
+          </div>
+        </div>
+        
+        <div className="grid grid-cols-3 gap-2 sm:gap-3 w-full mb-4">
+          <div className="text-center">
+            <div className="text-sm sm:text-base font-bold text-purple-600">{country.universities.length}</div>
+            <div className="text-xs sm:text-sm text-gray-500">Unis</div>
+          </div>
+          <div className="text-center">
+            <div className="text-sm sm:text-base font-bold text-blue-600">{country.topRanked}</div>
+            <div className="text-xs sm:text-sm text-gray-500">Top 100</div>
+          </div>
+          <div className="text-center">
+            <div className="text-sm sm:text-base font-bold text-green-600">{country.students}</div>
+            <div className="text-xs sm:text-sm text-gray-500">Students</div>
+          </div>
+        </div>
 
-  const handleMouseLeave = () => {
-    if (tweenRef.current) {
-      gsap.to(tweenRef.current, {
-        timeScale: 1,
-        duration: 0.5,
-        ease: "power2.out"
-      });
-    }
-  };
+        <div className="w-full mb-4">
+          <p className="text-sm font-semibold text-purple-800 mb-2 text-left">Top Universities:</p>
+          <div className="space-y-2">
+            {country.universities.slice(0, 2).map((uni, index) => (
+              <div key={index} className="flex items-center gap-2 text-sm text-gray-600">
+                <div className="w-2 h-2 bg-purple-500 rounded-full flex-shrink-0"></div>
+                <span className="truncate" title={uni.name}>
+                  {uni.name}
+                </span>
+              </div>
+            ))}
+            {country.universities.length > 2 && (
+              <div className="text-sm text-purple-600 font-medium mt-2 text-left">
+                +{country.universities.length - 2} more universities
+              </div>
+            )}
+          </div>
+        </div>
 
-  const scrollingCountries = [...countries, ...countries];
+        <button className="w-full bg-gradient-to-r from-purple-500 to-purple-700 text-white py-2.5 px-4 rounded-lg text-sm font-semibold hover:from-purple-600 hover:to-purple-800 transition-all duration-300 transform group-hover:translate-y-[-1px] shadow-sm hover:shadow-md mt-auto">
+          Explore Universities
+        </button>
+      </div>
+    </Link>
+  );
 
   return (
     <section 
@@ -751,96 +776,62 @@ const OfferedCountriesSection = () => {
         </p>
       </div>
 
-      <div
-        className="relative w-full max-w-[95%] sm:max-w-[90%] lg:max-w-[1200px] overflow-hidden rounded-2xl bg-gradient-to-r from-white to-gray-50 border border-purple-100 shadow-lg hover:shadow-xl transition-all duration-500 py-8"
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-      >
-        <div className="absolute left-0 top-0 bottom-0 w-12 sm:w-16 lg:w-20 bg-gradient-to-r from-white to-transparent z-10" />
-        <div className="absolute right-0 top-0 bottom-0 w-12 sm:w-16 lg:w-20 bg-gradient-to-l from-white to-transparent z-10" />
-        
-        <div ref={marqueeRef} className="flex w-max gap-4 sm:gap-6 px-4">
-          {scrollingCountries.map((country, i) => (
-            <Link
-              key={i}
-              to={`/universities/${encodeURIComponent(country.name)}`}
-              className="flex-shrink-0 transform transition-transform duration-300 hover:scale-105"
-            >
-              <div className="flex flex-col items-center p-5 sm:p-6 rounded-xl bg-white shadow-sm hover:shadow-lg transition-all duration-300 min-w-[240px] sm:min-w-[280px] lg:min-w-[320px] border border-gray-100 cursor-pointer group hover:border-purple-300">
-                <div className="flex items-center gap-3 w-full mb-4">
-                  <div className="w-14 h-10 sm:w-16 sm:h-12 overflow-hidden rounded-lg bg-white shadow-sm group-hover:shadow-purple-200 transition-all duration-300">
-                    <img
-                      src={country.flag}
-                      alt={`${country.name} flag`}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <div className="flex-1 text-left">
-                    <h3 className="text-lg sm:text-xl font-bold text-purple-900 group-hover:text-purple-700 transition-colors duration-300 truncate">
-                      {country.name}
-                    </h3>
-                    <p className="text-sm text-gray-500">
-                      {country.capital}
-                    </p>
-                  </div>
-                </div>
-                
-                <div className="grid grid-cols-3 gap-2 sm:gap-3 w-full mb-4">
-                  <div className="text-center">
-                    <div className="text-sm sm:text-base font-bold text-purple-600">{country.universities.length}</div>
-                    <div className="text-xs sm:text-sm text-gray-500">Unis</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-sm sm:text-base font-bold text-blue-600">{country.topRanked}</div>
-                    <div className="text-xs sm:text-sm text-gray-500">Top 100</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-sm sm:text-base font-bold text-green-600">{country.students}</div>
-                    <div className="text-xs sm:text-sm text-gray-500">Students</div>
-                  </div>
-                </div>
-
-                <div className="w-full mb-4">
-                  <p className="text-sm font-semibold text-purple-800 mb-2 text-left">Top Universities:</p>
-                  <div className="space-y-2">
-                    {country.universities.slice(0, 2).map((uni, index) => (
-                      <div key={index} className="flex items-center gap-2 text-sm text-gray-600">
-                        <div className="w-2 h-2 bg-purple-500 rounded-full flex-shrink-0"></div>
-                        <span className="truncate" title={uni.name}>
-                          {uni.name}
-                        </span>
-                      </div>
-                    ))}
-                    {country.universities.length > 2 && (
-                      <div className="text-sm text-purple-600 font-medium mt-2 text-left">
-                        +{country.universities.length - 2} more universities
-                      </div>
-                    )}
-                  </div>
-                </div>
-
-                <button className="w-full bg-gradient-to-r from-purple-500 to-purple-700 text-white py-2.5 px-4 rounded-lg text-sm font-semibold hover:from-purple-600 hover:to-purple-800 transition-all duration-300 transform group-hover:translate-y-[-1px] shadow-sm hover:shadow-md">
-                  Explore Universities
-                </button>
-              </div>
-            </Link>
+      <div className="relative w-full max-w-[95%] sm:max-w-[90%] lg:max-w-[1200px] rounded-2xl bg-gradient-to-r from-white to-gray-50 border border-purple-100 shadow-lg hover:shadow-xl transition-all duration-500 py-8">
+        <Swiper
+          modules={[Autoplay, Navigation, Pagination]}
+          spaceBetween={20}
+          slidesPerView={1}
+          breakpoints={{
+            640: {
+              slidesPerView: 2,
+              spaceBetween: 20,
+            },
+            768: {
+              slidesPerView: 2,
+              spaceBetween: 25,
+            },
+            1024: {
+              slidesPerView: 3,
+              spaceBetween: 30,
+            },
+            1280: {
+              slidesPerView: 4,
+              spaceBetween: 30,
+            },
+          }}
+          autoplay={{
+            delay: 3000,
+            disableOnInteraction: false,
+            pauseOnMouseEnter: true,
+          }}
+          navigation={{
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          }}
+          pagination={{
+            clickable: true,
+            el: '.swiper-pagination',
+          }}
+          loop={true}
+          speed={800}
+          className="w-full"
+        >
+          {countries.map((country, index) => (
+            <SwiperSlide key={index} className="h-auto">
+              <CountryCard country={country} />
+            </SwiperSlide>
           ))}
-        </div>
+        </Swiper>
+
+        {/* Custom Navigation */}
+        <div className="swiper-button-prev !text-purple-600 !bg-white !shadow-lg !w-10 !h-10 !rounded-full after:!text-sm"></div>
+        <div className="swiper-button-next !text-purple-600 !bg-white !shadow-lg !w-10 !h-10 !rounded-full after:!text-sm"></div>
+        
+        {/* Custom Pagination */}
+        <div className="swiper-pagination !relative !mt-6 [&>.swiper-pagination-bullet]:!bg-purple-300 [&>.swiper-pagination-bullet-active]:!bg-purple-600"></div>
       </div>
 
-      <div className="mt-10 text-center max-w-3xl">
-        <p className="text-gray-600 text-base sm:text-lg mb-6">
-          Can't find your preferred destination? We work with hundreds of universities across 30+ countries worldwide.
-        </p>
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <button className="bg-white text-purple-700 border border-purple-300 py-3 px-6 rounded-lg font-semibold hover:bg-purple-50 hover:border-purple-400 transition-all duration-300 shadow-sm hover:shadow-md text-sm sm:text-base">
-            Contact Our Advisors
-          </button>
-          <button className="bg-purple-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-purple-700 transition-all duration-300 shadow-sm hover:shadow-md text-sm sm:text-base">
-            View All Countries
-          </button>
-        </div>
-      </div>
+      
     </section>
   );
 };
