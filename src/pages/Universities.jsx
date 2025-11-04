@@ -126,7 +126,7 @@ const Universities = () => {
                   </div>
                   <div className="text-center">
                     <div className="text-sm sm:text-base font-bold text-blue-600">{uni.fees}</div>
-                    <div className="text-[8px] sm:text-[10px] text-gray-500">Annual Fees</div>
+               
                   </div>
                   <div className="text-center">
                     <div className="text-sm sm:text-base font-bold text-green-600">{uni.employmentRate}</div>

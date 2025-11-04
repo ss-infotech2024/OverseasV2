@@ -12,7 +12,6 @@ import {
   CheckCircle,
   MessageSquare,
   MapPin,
-  DollarSign,
   ArrowRight,
   Shield,
   Award,
@@ -36,7 +35,7 @@ const courseImages = {
   "default": "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
 };
 
-// Our premium courses with proper images
+// Our premium courses
 const ourCourses = [
   {
     id: 1,
@@ -136,16 +135,15 @@ const ourCourses = [
   },
 ];
 
-// Sample study abroad courses with proper images
+// Study abroad courses (tuition removed)
 const studyAbroadCourses = [
   {
     id: 1,
     name: "Computer Science",
     description: "AI and software development program.",
     duration: "4 years",
-    tuition: "$25,000/year",
     country: "USA",
-    countryFlag: "🇺🇸",
+    countryFlag: "USA Flag",
     qualification: "Bachelor's",
     entryRequirements: "SAT 1200+, IELTS 6.5",
     careerProspects: "Software Engineer",
@@ -157,9 +155,8 @@ const studyAbroadCourses = [
     name: "MBA in Business",
     description: "Global business strategies and leadership.",
     duration: "2 years",
-    tuition: "$35,000/year",
     country: "UK",
-    countryFlag: "🇬🇧",
+    countryFlag: "UK Flag",
     qualification: "Master's",
     entryRequirements: "GMAT 650+, IELTS 7.0",
     careerProspects: "Business Consultant",
@@ -171,9 +168,8 @@ const studyAbroadCourses = [
     name: "Mechanical Engineering",
     description: "Robotics and sustainable energy program.",
     duration: "4 years",
-    tuition: "€15,000/year",
     country: "Germany",
-    countryFlag: "🇩🇪",
+    countryFlag: "Germany Flag",
     qualification: "Bachelor's",
     entryRequirements: "Abitur equivalent, IELTS 6.0",
     careerProspects: "Mechanical Engineer",
@@ -185,9 +181,8 @@ const studyAbroadCourses = [
     name: "Medicine (MBBS)",
     description: "Medical program with clinical rotations.",
     duration: "6 years",
-    tuition: "$40,000/year",
     country: "Australia",
-    countryFlag: "🇦🇺",
+    countryFlag: "Australia Flag",
     qualification: "Doctoral",
     entryRequirements: "NEET qualified, IELTS 7.0",
     careerProspects: "Doctor",
@@ -199,9 +194,8 @@ const studyAbroadCourses = [
     name: "Data Science",
     description: "Big data and machine learning program.",
     duration: "2 years",
-    tuition: "$28,000/year",
     country: "Canada",
-    countryFlag: "🇨🇦",
+    countryFlag: "Canada Flag",
     qualification: "Master's",
     entryRequirements: "GRE 310+, IELTS 6.5",
     careerProspects: "Data Scientist",
@@ -213,9 +207,8 @@ const studyAbroadCourses = [
     name: "International Relations",
     description: "Global politics and diplomacy study.",
     duration: "3 years",
-    tuition: "£18,000/year",
     country: "UK",
-    countryFlag: "🇬🇧",
+    countryFlag: "UK Flag",
     qualification: "Bachelor's",
     entryRequirements: "IELTS 6.5, Personal Statement",
     careerProspects: "Diplomat",
@@ -224,7 +217,7 @@ const studyAbroadCourses = [
   }
 ];
 
-// Tab components
+// Tab Button Component
 const TabButton = ({ active, onClick, icon: Icon, children }) => (
   <motion.button
     onClick={onClick}
@@ -247,10 +240,10 @@ export default function Courses() {
   const [activeTab, setActiveTab] = useState("premium");
   const navigate = useNavigate();
 
-  // Country filters for study abroad courses
+  // Country filters
   const countryFilters = ["All", ...new Set(studyAbroadCourses.map(course => course.country))];
 
-  // Filter courses based on active tab and search
+  // Filter courses
   const filteredCourses = useMemo(() => {
     const courses = activeTab === "premium" ? ourCourses : studyAbroadCourses;
     
@@ -265,7 +258,7 @@ export default function Courses() {
     });
   }, [activeTab, searchQuery, selectedCountry]);
 
-  // Handle image errors
+  // Handle image error
   const handleImageError = (e, courseName, category = "default") => {
     e.target.src = courseImages[category] || courseImages.default;
   };
@@ -285,7 +278,7 @@ export default function Courses() {
         className="bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden group cursor-pointer border border-gray-100 hover:border-purple-200 h-full flex flex-col"
         onClick={() => navigate('/inquiryform', { state: { course: isPremium ? course.title : course.name, country: course.country } })}
       >
-        {/* Course Header with Image */}
+        {/* Image Header */}
         <div className="relative h-16 sm:h-20 md:h-24 overflow-hidden">
           <img 
             src={courseImage}
@@ -335,7 +328,7 @@ export default function Courses() {
           )}
         </div>
 
-        {/* Course Content */}
+        {/* Content */}
         <div className="p-2 sm:p-3 flex-1 flex flex-col">
           <div className="flex items-center justify-between mb-1 sm:mb-2">
             <span className="inline-flex items-center px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-full text-[8px] sm:text-[10px] border border-blue-200 text-blue-700 bg-blue-50">
@@ -358,25 +351,19 @@ export default function Courses() {
             {course.description}
           </p>
 
-          {/* Instructor/Country */}
+          {/* Instructor / Country */}
           <div className="flex items-center gap-1 sm:gap-1.5 text-[10px] sm:text-xs text-gray-500 mb-2 sm:mb-3">
             <Users className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
             <span>{isPremium ? course.instructor : course.country}</span>
           </div>
 
-          {/* Course Details */}
-          <div className="flex items-center justify-between text-[10px] sm:text-xs text-gray-500 mb-2 sm:mb-3">
-            <span className="flex items-center gap-1">
-              <Clock className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
-              {course.duration}
-            </span>
-            <span className="flex items-center gap-1">
-              <DollarSign className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
-              {isPremium ? course.price : course.tuition}
-            </span>
+          {/* Duration Only */}
+          <div className="flex items-center text-[10px] sm:text-xs text-gray-500 mb-2 sm:mb-3">
+            <Clock className="w-3 h-3 sm:w-3.5 sm:h-3.5 mr-1" />
+            {course.duration}
           </div>
 
-          {/* Features for premium courses - Show 1 on mobile, all on larger screens */}
+          {/* Features (Premium Only) */}
           {isPremium && course.features && (
             <>
               <div className="space-y-1 mb-2 sm:mb-3 hidden sm:block">
@@ -398,8 +385,9 @@ export default function Courses() {
             </>
           )}
 
+          {/* CTA Button */}
           <button className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white rounded-md py-1.5 sm:py-2 font-medium transition-all duration-300 group/btn flex items-center justify-center text-[10px] sm:text-xs">
-            {isPremium ? "Inquire" : "Explore"}
+            {isPremium ? "Inquire Now" : "Explore Course"}
             <ArrowRight className="w-3 h-3 sm:w-3.5 sm:h-3.5 ml-1 group-hover/btn:translate-x-0.5 transition-transform" />
           </button>
         </div>
@@ -416,11 +404,7 @@ export default function Courses() {
         <div className="absolute bottom-0 right-0 w-64 h-64 sm:w-80 sm:h-80 bg-blue-500/10 rounded-full translate-x-1/3 translate-y-1/3"></div>
         
         <div className="max-w-7xl mx-auto text-center relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
+          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
             <div className="inline-flex items-center gap-1.5 bg-white/10 backdrop-blur-sm rounded-full px-2.5 py-1 sm:px-3 sm:py-1.5 mb-3 sm:mb-4 border border-white/20">
               <TrendingUp className="w-3 h-3 sm:w-4 sm:h-4" />
               <span className="text-[10px] sm:text-xs font-medium">1000+ Study Abroad Courses</span>
@@ -478,30 +462,17 @@ export default function Courses() {
           </div>
           
           <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 justify-center mb-6 sm:mb-8">
-            <TabButton
-              active={activeTab === "premium"}
-              onClick={() => setActiveTab("premium")}
-              icon={Crown}
-            >
+            <TabButton active={activeTab === "premium"} onClick={() => setActiveTab("premium")} icon={Crown}>
               Premium Courses
             </TabButton>
-            <TabButton
-              active={activeTab === "abroad"}
-              onClick={() => setActiveTab("abroad")}
-              icon={Globe}
-            >
+            <TabButton active={activeTab === "abroad"} onClick={() => setActiveTab("abroad")} icon={Globe}>
               Study Abroad
             </TabButton>
           </div>
 
-          {/* Country Filters - Only show for Study Abroad tab */}
+          {/* Country Filters */}
           {activeTab === "abroad" && (
-            <motion.div 
-              className="text-center mb-6"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-            >
+            <motion.div className="text-center mb-6" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
               <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-3 sm:mb-4">
                 Filter by Destination
               </h3>
@@ -527,15 +498,11 @@ export default function Courses() {
         </div>
       </section>
 
-      {/* Courses Grid Section */}
+      {/* Courses Grid */}
       <section className="py-8 px-3 sm:px-6 bg-gradient-to-br from-gray-50 to-purple-50/30">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-6 sm:mb-8">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-            >
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
               <div className={`inline-flex items-center gap-1.5 ${
                 activeTab === "premium" ? "bg-blue-100 text-blue-700" : "bg-purple-100 text-purple-700"
               } px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full text-[10px] sm:text-xs font-medium mb-3 sm:mb-4`}>
@@ -554,31 +521,18 @@ export default function Courses() {
             </motion.div>
           </div>
 
-          <motion.div 
-            layout
-            className="grid grid-cols-2 gap-3 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 sm:gap-4 lg:gap-6"
-          >
-            {filteredCourses.map((course) => 
-              renderCourseCard(course, activeTab === "premium")
-            )}
+          <motion.div layout className="grid grid-cols-2 gap-3 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 sm:gap-4 lg:gap-6">
+            {filteredCourses.map((course) => renderCourseCard(course, activeTab === "premium"))}
           </motion.div>
 
           {filteredCourses.length === 0 && (
-            <motion.div 
-              className="text-center py-8 sm:py-12"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.6 }}
-            >
+            <motion.div className="text-center py-8 sm:py-12" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6 }}>
               <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6">
                 <Search className="w-6 h-6 sm:w-8 sm:h-8 text-gray-400" />
               </div>
               <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-3 sm:mb-4">No courses found</h3>
               <p className="text-sm sm:text-base text-gray-600 mb-4 sm:mb-6 max-w-md mx-auto">
-                {activeTab === "premium" 
-                  ? "No premium courses match your search."
-                  : "No courses match your filters."
-                }
+                {activeTab === "premium" ? "No premium courses match your search." : "No courses match your filters."}
               </p>
               <button
                 onClick={() => {
@@ -597,12 +551,7 @@ export default function Courses() {
       {/* CTA Section */}
       <section className="py-8 px-3 sm:px-6 bg-gradient-to-br from-purple-900 to-blue-900 text-white">
         <div className="max-w-4xl mx-auto text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-          >
+          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} viewport={{ once: true }}>
             <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-3 sm:mb-4">
               Start Your Study Abroad Journey
             </h2>

@@ -74,9 +74,9 @@ const UniversityDetails = () => {
             <div className="bg-white bg-opacity-10 backdrop-blur-lg rounded-2xl p-6 border border-white border-opacity-20">
               <div className="text-center mb-4">
                 <div className="text-3xl font-bold text-white mb-2">
-                  {selectedUniversity.fees || "$50,000"}
+                  {selectedUniversity.fees || ""}
                 </div>
-                <div className="text-purple-200">Annual Tuition</div>
+              
               </div>
             
 <button

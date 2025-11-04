@@ -29,7 +29,6 @@ export const countries = [
         location: "Cambridge, MA",
         type: "Private Ivy League",
         acceptanceRate: "5%",
-        fees: "$55,000",
         internationalStudents: "22%",
         scholarships: "Generous Available",
         founded: "1636",
@@ -59,7 +58,6 @@ export const countries = [
         location: "Stanford, CA",
         type: "Private Research",
         acceptanceRate: "4%",
-        fees: "$58,000",
         internationalStudents: "24%",
         scholarships: "Need-based",
         founded: "1885",
@@ -88,7 +86,6 @@ export const countries = [
         location: "Cambridge, MA",
         type: "Private Research",
         acceptanceRate: "7%",
-        fees: "$59,000",
         internationalStudents: "29%",
         scholarships: "Merit-based",
         founded: "1861",
@@ -117,7 +114,6 @@ export const countries = [
         location: "Pasadena, CA",
         type: "Private Research",
         acceptanceRate: "6%",
-        fees: "$60,000",
         internationalStudents: "33%",
         scholarships: "Available",
         founded: "1891",
@@ -161,7 +157,6 @@ export const countries = [
         location: "Oxford, England",
         type: "Public Research",
         acceptanceRate: "17%",
-        fees: "£32,000",
         internationalStudents: "43%",
         scholarships: "Rhodes & Others",
         founded: "1096",
@@ -190,7 +185,6 @@ export const countries = [
         location: "Cambridge, England",
         type: "Public Research",
         acceptanceRate: "21%",
-        fees: "£33,000",
         internationalStudents: "37%",
         scholarships: "Gates Cambridge",
         founded: "1209",
@@ -219,7 +213,6 @@ export const countries = [
         location: "London, England",
         type: "Public Research",
         acceptanceRate: "14%",
-        fees: "£35,000",
         internationalStudents: "60%",
         scholarships: "President's Scholarships",
         founded: "1907",
@@ -248,7 +241,6 @@ export const countries = [
         location: "London, England",
         type: "Public Research",
         acceptanceRate: "9%",
-        fees: "£27,000",
         internationalStudents: "70%",
         scholarships: "Available",
         founded: "1895",
@@ -279,7 +271,7 @@ export const countries = [
     capital: "Ottawa",
     language: "English, French",
     currency: "CAD ($)",
-    details: "Canada offers high-quality education with affordable tuition fees and excellent post-study work opportunities in a multicultural and welcoming environment.",
+    details: "Canada offers high-quality education with excellent post-study work opportunities in a multicultural and welcoming environment.",
     rank: "Top 15 Globally",
     programs: "2500+ Programs",
     topRanked: "12",
@@ -292,7 +284,6 @@ export const countries = [
         location: "Toronto, Ontario",
         type: "Public Research",
         acceptanceRate: "43%",
-        fees: "CA$45,000",
         internationalStudents: "25%",
         scholarships: "Lester B. Pearson",
         founded: "1827",
@@ -321,7 +312,6 @@ export const countries = [
         location: "Vancouver, British Columbia",
         type: "Public Research",
         acceptanceRate: "52%",
-        fees: "CA$42,000",
         internationalStudents: "30%",
         scholarships: "International Scholars",
         founded: "1908",
@@ -350,7 +340,6 @@ export const countries = [
         location: "Montreal, Quebec",
         type: "Public Research",
         acceptanceRate: "46%",
-        fees: "CA$29,000",
         internationalStudents: "32%",
         scholarships: "Entrance Scholarships",
         founded: "1821",
@@ -394,7 +383,6 @@ export const countries = [
         location: "Melbourne, Victoria",
         type: "Public Research",
         acceptanceRate: "70%",
-        fees: "A$40,000",
         internationalStudents: "42%",
         scholarships: "Melbourne Scholarships",
         founded: "1853",
@@ -423,7 +411,6 @@ export const countries = [
         location: "Canberra, ACT",
         type: "Public Research",
         acceptanceRate: "35%",
-        fees: "A$36,000",
         internationalStudents: "37%",
         scholarships: "ANU Chancellor's",
         founded: "1946",
@@ -452,7 +439,6 @@ export const countries = [
         location: "Sydney, New South Wales",
         type: "Public Research",
         acceptanceRate: "30%",
-        fees: "A$42,000",
         internationalStudents: "43%",
         scholarships: "Sydney Scholars",
         founded: "1850",
@@ -496,7 +482,6 @@ export const countries = [
         location: "Munich, Bavaria",
         type: "Public Research",
         acceptanceRate: "8%",
-        fees: "€0",
         internationalStudents: "34%",
         scholarships: "DAAD, TUM Scholarships",
         founded: "1868",
@@ -525,7 +510,6 @@ export const countries = [
         location: "Munich, Bavaria",
         type: "Public Research",
         acceptanceRate: "10%",
-        fees: "€0-€3,000",
         internationalStudents: "17%",
         scholarships: "LMU Scholarships",
         founded: "1472",
@@ -554,7 +538,6 @@ export const countries = [
         location: "Heidelberg, Baden-Württemberg",
         type: "Public Research",
         acceptanceRate: "16%",
-        fees: "€0-€3,000",
         internationalStudents: "20%",
         scholarships: "Germany Scholarships",
         founded: "1386",
@@ -598,7 +581,6 @@ export const countries = [
         location: "Tokyo",
         type: "Public Research",
         acceptanceRate: "21%",
-        fees: "¥535,800",
         internationalStudents: "12%",
         scholarships: "MEXT Scholarships",
         founded: "1877",
@@ -627,7 +609,6 @@ export const countries = [
         location: "Kyoto",
         type: "Public Research",
         acceptanceRate: "30%",
-        fees: "¥535,800",
         internationalStudents: "9%",
         scholarships: "MEXT, Kyoto University",
         founded: "1897",
@@ -656,7 +637,6 @@ export const countries = [
         location: "Tokyo",
         type: "Public Research",
         acceptanceRate: "15%",
-        fees: "¥535,800",
         internationalStudents: "16%",
         scholarships: "MEXT, Tokyo Tech",
         founded: "1881",
@@ -709,6 +689,7 @@ const OfferedCountriesSection = () => {
               src={country.flag}
               alt={`${country.name} flag`}
               className="w-full h-full object-cover"
+              onError={(e) => { e.target.src = 'https://flagcdn.com/w40/gb.svg'; }}
             />
           </div>
           <div className="flex-1 text-left">
@@ -782,22 +763,10 @@ const OfferedCountriesSection = () => {
           spaceBetween={20}
           slidesPerView={1}
           breakpoints={{
-            640: {
-              slidesPerView: 2,
-              spaceBetween: 20,
-            },
-            768: {
-              slidesPerView: 2,
-              spaceBetween: 25,
-            },
-            1024: {
-              slidesPerView: 3,
-              spaceBetween: 30,
-            },
-            1280: {
-              slidesPerView: 4,
-              spaceBetween: 30,
-            },
+            640: { slidesPerView: 2, spaceBetween: 20 },
+            768: { slidesPerView: 2, spaceBetween: 25 },
+            1024: { slidesPerView: 3, spaceBetween: 30 },
+            1280: { slidesPerView: 4, spaceBetween: 30 },
           }}
           autoplay={{
             delay: 3000,
@@ -823,15 +792,13 @@ const OfferedCountriesSection = () => {
           ))}
         </Swiper>
 
-        {/* Custom Navigation */}
+        {/* Navigation Arrows */}
         <div className="swiper-button-prev !text-purple-600 !bg-white !shadow-lg !w-10 !h-10 !rounded-full after:!text-sm"></div>
         <div className="swiper-button-next !text-purple-600 !bg-white !shadow-lg !w-10 !h-10 !rounded-full after:!text-sm"></div>
         
-        {/* Custom Pagination */}
+        {/* Pagination */}
         <div className="swiper-pagination !relative !mt-6 [&>.swiper-pagination-bullet]:!bg-purple-300 [&>.swiper-pagination-bullet-active]:!bg-purple-600"></div>
       </div>
-
-      
     </section>
   );
 };

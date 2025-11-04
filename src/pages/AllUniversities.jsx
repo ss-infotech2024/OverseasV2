@@ -228,10 +228,7 @@ const AllUniversities = () => {
                     <div className="text-sm font-bold text-blue-600">{uni.internationalStudents}</div>
                     <div className="text-xs text-gray-600">International</div>
                   </div>
-                  <div className="text-center">
-                    <div className="text-sm font-bold text-blue-600">{uni.fees}</div>
-                    <div className="text-xs text-gray-600">Annual Fees</div>
-                  </div>
+                 
                   <div className="text-center">
                     <div className="text-sm font-bold text-green-600">{uni.employmentRate}</div>
                     <div className="text-xs text-gray-600">Employment</div>
