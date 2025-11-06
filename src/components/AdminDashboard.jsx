@@ -4,7 +4,7 @@ import * as XLSX from "xlsx";
 import {
   Download, LogOut, Menu, X, Home, FileText, Image, Settings,
   ChevronRight, Calendar, Target, Trash2, User, AlertCircle,
-  GraduationCap, Globe, Briefcase
+  GraduationCap, Globe, Briefcase, Eye, EyeOff
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
@@ -28,7 +28,6 @@ export default function AdminDashboard() {
       })
       .then((res) => {
         console.log("Fetched inquiries:", res.data);
-        // ✅ Handle if API returns { data: [...] } or just [...]
         const arr = Array.isArray(res.data)
           ? res.data
           : Array.isArray(res.data.data)
@@ -149,6 +148,136 @@ export default function AdminDashboard() {
               </button>
             </div>
 
+            {/* === DETAILED VIEW MODAL === */}
+            {selected && (
+              <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+                <div className="bg-white rounded-xl shadow-2xl max-w-4xl w-full max-h-screen overflow-y-auto">
+                  <div className="sticky top-0 bg-white border-b p-4 flex justify-between items-center">
+                    <h3 className="text-2xl font-bold text-gray-900">
+                      Inquiry Details – {selected.submissionId}
+                    </h3>
+                    <button
+                      onClick={() => setSelected(null)}
+                      className="text-gray-500 hover:text-gray-700"
+                    >
+                      <X className="w-6 h-6" />
+                    </button>
+                  </div>
+
+                  <div className="p-6 space-y-8">
+                    {/* Personal Info */}
+                    <section>
+                      <h4 className="text-lg font-semibold text-blue-600 mb-4 flex items-center gap-2">
+                        <User className="w-5 h-5" /> Personal Information
+                      </h4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                          <p className="text-sm text-gray-500">Full Name</p>
+                          <p className="font-medium">{selected.firstName} {selected.lastName}</p>
+                        </div>
+                        <div>
+                          <p className="text-sm text-gray-500">Email</p>
+                          <p className="font-medium">{selected.email}</p>
+                        </div>
+                        <div>
+                          <p className="text-sm text-gray-500">Contact Number</p>
+                          <p className="font-medium">{selected.contactNumber}</p>
+                        </div>
+                        <div>
+                          <p className="text-sm text-gray-500">Date of Birth</p>
+                          <p className="font-medium">{selected.dob || "-"}</p>
+                        </div>
+                      </div>
+                    </section>
+
+                    {/* Academic Background */}
+                    <section>
+                      <h4 className="text-lg font-semibold text-blue-600 mb-4 flex items-center gap-2">
+                        <GraduationCap className="w-5 h-5" /> Academic Background
+                      </h4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                          <p className="text-sm text-gray-500">Bachelor's Degree</p>
+                          <p className="font-medium">{selected.bachelorsTitle || "-"}</p>
+                        </div>
+                        <div>
+                          <p className="text-sm text-gray-500">CGPA / Percentage</p>
+                          <p className="font-medium">{selected.bachelorsCGPA || "-"}</p>
+                        </div>
+                        <div>
+                          <p className="text-sm text-gray-500">Master's Subject (if any)</p>
+                          <p className="font-medium">{selected.mastersSubject || "-"}</p>
+                        </div>
+                      </div>
+                    </section>
+
+                    {/* Study Preferences */}
+                    <section>
+                      <h4 className="text-lg font-semibold text-blue-600 mb-4 flex items-center gap-2">
+                        <Target className="w-5 h-5" /> Study Preferences
+                      </h4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                          <p className="text-sm text-gray-500">Preferred Country</p>
+                          <p className="font-medium">{selected.preferredCountry || "-"}</p>
+                        </div>
+                        <div>
+                          <p className="text-sm text-gray-500">Target Intake</p>
+                          <p className="font-medium">{selected.targetIntake || "-"}</p>
+                        </div>
+                        <div>
+                          <p className="text-sm text-gray-500">Interested Programs</p>
+                          <p className="font-medium">{selected.interestedPrograms?.join(", ") || "-"}</p>
+                        </div>
+                      </div>
+                    </section>
+
+                    {/* Additional Info */}
+                    <section>
+                      <h4 className="text-lg font-semibold text-blue-600 mb-4 flex items-center gap-2">
+                        <AlertCircle className="w-5 h-5" /> Additional Information
+                      </h4>
+                      <div className="space-y-4">
+                        <div>
+                          <p className="text-sm text-gray-500">Source</p>
+                          <p className="font-medium">{selected.source || "-"}</p>
+                        </div>
+                        <div>
+                          <p className="text-sm text-gray-500">Message / Notes</p>
+                          <p className="font-medium whitespace-pre-wrap">{selected.message || "-"}</p>
+                        </div>
+                        <div>
+                          <p className="text-sm text-gray-500">Submitted On</p>
+                          <p className="font-medium">
+                            {new Date(selected.submissionDate).toLocaleString()}
+                          </p>
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+
+                  <div className="border-t p-4 flex justify-end gap-3">
+                    <button
+                      onClick={() => setSelected(null)}
+                      className="px-5 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition"
+                    >
+                      Close
+                    </button>
+                    <button
+                      onClick={() => {
+                        deleteInquiry(selected._id);
+                        setSelected(null);
+                      }}
+                      disabled={deletingId === selected._id}
+                      className="px-5 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition disabled:opacity-50"
+                    >
+                      {deletingId === selected._id ? "Deleting..." : "Delete Inquiry"}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+
             <div className="bg-white rounded-lg shadow overflow-hidden">
               <div className="overflow-x-auto">
                 <table className="min-w-full divide-y divide-gray-200">
@@ -215,25 +344,23 @@ export default function AdminDashboard() {
                             {i.targetIntake || "-"}
                           </td>
                           <td className="px-4 py-2 text-sm">{i.source || "-"}</td>
-                          <td className="px-4 py-2 text-sm flex gap-2">
+                          <td className="px-4 py-2 text-sm flex gap-3">
                             <button
                               onClick={() => setSelected(i)}
-                              className="text-blue-600 hover:underline text-xs font-medium"
+                              className="text-blue-600 hover:text-blue-800 flex items-center gap-1 text-xs font-medium"
                             >
-                              View
+                              <Eye className="w-4 h-4" /> View
                             </button>
                             <button
                               onClick={() => deleteInquiry(i._id)}
                               disabled={deletingId === i._id}
-                              className="text-red-600 hover:underline text-xs font-medium flex items-center gap-1 disabled:opacity-50"
+                              className="text-red-600 hover:text-red-800 flex items-center gap-1 text-xs font-medium disabled:opacity-50"
                             >
                               {deletingId === i._id ? (
-                                <span className="animate-pulse">
-                                  Deleting...
-                                </span>
+                                <span className="animate-pulse">Deleting...</span>
                               ) : (
                                 <>
-                                  <Trash2 className="w-3 h-3" /> Delete
+                                  <Trash2 className="w-4 h-4" /> Delete
                                 </>
                               )}
                             </button>
