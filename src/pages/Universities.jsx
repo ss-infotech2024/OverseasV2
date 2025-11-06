@@ -86,7 +86,7 @@ const Universities = () => {
                     </div>
                     <div>
                       <span className="text-[8px] sm:text-[10px] bg-green-100 text-green-800 py-0.5 px-1.5 sm:px-2 rounded-full font-semibold">
-                        Rank #{uni.rank}
+                       
                       </span>
                     </div>
                   </div>
