@@ -15,7 +15,7 @@ export default defineConfig({
     // ---- DEV PROXY ----
     proxy: {
       '/api': {
-        target: 'http://localhost:5000',   // local Express
+        target: 'https://overseas-server.onrender.com',   // local Express
         changeOrigin: true,
         secure: false,
       },
