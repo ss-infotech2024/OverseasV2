@@ -10,7 +10,7 @@ import User from './models/User.js';
 dotenv.config();
 
 const app = express();
-app.use(cors({ origin: process.env.CLIENT_URL || 'http://localhost:5173' }));
+app.use(cors({ origin: process.env.CLIENT_URL || 'https://ssoverseas.in' }));
 app.use(express.json());
 
 // ---- MongoDB connection ----
