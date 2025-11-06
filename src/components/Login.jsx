@@ -24,7 +24,7 @@ export default function Login() {
     try {
       // ✅ Full backend URL added here
       const { data } = await axios.post(
-        'http://localhost:5000/api/auth/login',
+        'https://overseas-server.onrender.com/api/auth/login',
         { email, password },
         { headers: { 'Content-Type': 'application/json' } }
       );

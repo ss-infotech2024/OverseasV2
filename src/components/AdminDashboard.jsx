@@ -23,7 +23,7 @@ export default function AdminDashboard() {
     if (!token) return navigate("/login");
 
     axios
-      .get(`${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}/api/inquiries`, {
+      .get(`${import.meta.env.VITE_BACKEND_URL || "https://overseas-server.onrender.com"}/api/inquiries`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
@@ -54,7 +54,7 @@ export default function AdminDashboard() {
 
     try {
       await axios.delete(
-        `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}/api/inquiries/${id}`,
+        `${import.meta.env.VITE_BACKEND_URL || "https://overseas-server.onrender.com"}/api/inquiries/${id}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setData((prev) => prev.filter((i) => i._id !== id));

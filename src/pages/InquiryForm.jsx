@@ -256,7 +256,7 @@ export default function InquiryForm() {
 
       // FIXED: Use absolute URL in development
       const API_URL = import.meta.env.DEV
-        ? "http://localhost:5000/api/inquiries"
+        ? "https://overseas-server.onrender.com/api/inquiries"
         : "/api/inquiries";
 
       const { data } = await axios.post(API_URL, payload);
