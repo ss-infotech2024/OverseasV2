@@ -254,20 +254,33 @@ export default function InquiryForm() {
       const id = generateSubmissionId();
       const payload = { ...formData, submissionId: id, submissionDate: new Date().toISOString() };
 
-      // FIXED: Use absolute URL in development
+      // Use proxy in dev, full URL in production
       const API_URL = import.meta.env.DEV
-        ? "https://overseas-server.onrender.com/api/inquiries"
-        : "/api/inquiries";
+        ? "/api/inquiries"  // Proxied via Vite
+        : `${import.meta.env.VITE_API_URL}/api/inquiries`;
 
-      const { data } = await axios.post(API_URL, payload);
+      const { data } = await axios.post(API_URL, payload, {
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 15000,
+      });
 
       if (data.status !== "success") throw new Error("Server rejected");
 
       setSubmissionId(id);
       setIsSubmitted(true);
     } catch (err) {
-      console.error(err);
-      alert("Submission failed. Please try again.");
+      console.error("Submission error:", err);
+      let message = "Submission failed. Please try again.";
+
+      if (err.code === "ERR_NETWORK") {
+        message = "Server is unreachable. It may be asleep (Render free tier). Wait 30s and retry.";
+      } else if (err.response) {
+        message = `Server Error: ${err.response.data?.msg || err.response.status}`;
+      } else if (err.request) {
+        message = "No response. Check internet or server status.";
+      }
+
+      alert(message);
     } finally {
       setIsSubmitting(false);
     }

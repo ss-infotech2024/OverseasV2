@@ -11,13 +11,26 @@ dotenv.config();
 
 const app = express();
 
-// ---- Middleware ----
+// ---- Allowed Origins ----
+const allowedOrigins = [
+    'https://ssoverseas.in',
+    'http://localhost:5173',
+    'http://127.0.0.1:5173',
+];
+
 app.use(
     cors({
-        origin: process.env.CLIENT_URL || 'https://ssoverseas.in',
+        origin: (origin, callback) => {
+            if (!origin || allowedOrigins.includes(origin)) {
+                callback(null, true);
+            } else {
+                callback(new Error('Not allowed by CORS'));
+            }
+        },
         credentials: true,
     })
 );
+
 app.use(express.json());
 
 // ---- MongoDB connection ----
@@ -26,8 +39,8 @@ mongoose
         useNewUrlParser: true,
         useUnifiedTopology: true,
     })
-    .then(() => console.log('✅ MongoDB connected'))
-    .catch((e) => console.error('❌ MongoDB error:', e));
+    .then(() => console.log('MongoDB connected'))
+    .catch((e) => console.error('MongoDB error:', e));
 
 // ---- JWT middleware ----
 const auth = (req, res, next) => {
@@ -44,20 +57,15 @@ const auth = (req, res, next) => {
 // ---- LOGIN ----
 app.post('/api/auth/login', async (req, res) => {
     const { email, password } = req.body;
-    console.log('Login attempt:', { email, password }); // 👈 Add this
 
     if (!email || !password)
         return res.status(400).json({ msg: 'Email and password required' });
 
     try {
         const user = await User.findOne({ email });
-        console.log('Found user:', user); // 👈 Add this
-
         if (!user) return res.status(400).json({ msg: 'Invalid credentials' });
 
         const isMatch = await bcrypt.compare(password, user.password);
-        console.log('Password match:', isMatch); // 👈 Add this
-
         if (!isMatch) return res.status(400).json({ msg: 'Invalid credentials' });
 
         const token = jwt.sign({ email: user.email }, process.env.JWT_SECRET, {
@@ -116,4 +124,4 @@ app.get('/', (req, res) => {
 
 // ---- Start Server ----
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
