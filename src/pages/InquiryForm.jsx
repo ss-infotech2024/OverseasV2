@@ -1,11 +1,13 @@
-import { useState } from "react";
+'use client';
+
+import React, { useState } from "react";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 import axios from "axios";
 import {
   User, Mail, MapPin, Phone, GraduationCap, Calendar,
   Target, Briefcase, FileText, Send, Globe, CheckCircle, AlertCircle,
-  Download,
+  Download, ChevronLeft, ChevronRight, Loader2
 } from "lucide-react";
 
 // === Reusable UI Components ===
@@ -85,7 +87,7 @@ export default function InquiryForm() {
       if (!formData.email.trim()) err.email = "Email required";
       else if (!/\S+@\S+\.\S+/.test(formData.email)) err.email = "Invalid email";
       if (!formData.address.trim()) err.address = "Address required";
-      if (!formData.contactNumber.trim()) err.contactNumber = "Contact required";
+      if (!formData.contactNumber.trim()) err.contactNumber = " Contact required";
     }
 
     if (step === 2) {
@@ -274,6 +276,8 @@ export default function InquiryForm() {
 
       if (err.code === "ERR_NETWORK") {
         message = "Server is unreachable. It may be asleep (Render free tier). Wait 30s and retry.";
+      } else if (err.response?.status === 404) {
+        message = "API endpoint not found. Check backend URL.";
       } else if (err.response) {
         message = `Server Error: ${err.response.data?.msg || err.response.status}`;
       } else if (err.request) {
@@ -840,25 +844,39 @@ export default function InquiryForm() {
 
           {/* Navigation */}
           <div className="flex justify-between mt-8">
-            <Button type="button" variant="outline" onClick={handleBack} disabled={currentStep === 1} className="px-8 py-3 rounded-xl">
-              Back
+            <Button 
+              type="button" 
+              variant="outline" 
+              onClick={handleBack} 
+              disabled={currentStep === 1} 
+              className="px-8 py-3 rounded-xl flex items-center gap-2"
+            >
+              <ChevronLeft className="w-5 h-5" /> Back
             </Button>
 
             {currentStep < 5 ? (
-              <Button type="button" onClick={handleNext} className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-3 rounded-xl">
-                Next
+              <Button 
+                type="button" 
+                onClick={handleNext} 
+                className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-3 rounded-xl flex items-center gap-2"
+              >
+                Next <ChevronRight className="w-5 h-5" />
               </Button>
             ) : (
-              <Button type="submit" disabled={isSubmitting} className="bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white px-8 py-3 rounded-xl disabled:opacity-50">
+              <Button 
+                type="submit" 
+                disabled={isSubmitting} 
+                className="bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white px-8 py-3 rounded-xl disabled:opacity-50 flex items-center gap-2"
+              >
                 {isSubmitting ? (
-                  <div className="flex items-center gap-2">
-                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
                     Submitting...
-                  </div>
+                  </>
                 ) : (
-                  <div className="flex items-center gap-2">
+                  <>
                     <Send className="w-4 h-4" /> Submit Inquiry
-                  </div>
+                  </>
                 )}
               </Button>
             )}

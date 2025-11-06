@@ -11,11 +11,13 @@ dotenv.config();
 
 const app = express();
 
-// ---- Allowed Origins ----
+// ---------- CORS ----------
 const allowedOrigins = [
     'https://ssoverseas.in',
+    'https://www.ssoverseas.in',
     'http://localhost:5173',
     'http://127.0.0.1:5173',
+
 ];
 
 app.use(
@@ -33,16 +35,16 @@ app.use(
 
 app.use(express.json());
 
-// ---- MongoDB connection ----
+// ---------- MongoDB ----------
 mongoose
     .connect(process.env.MONGO_URI, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
     })
     .then(() => console.log('MongoDB connected'))
-    .catch((e) => console.error('MongoDB error:', e));
+    .catch(e => console.error('MongoDB error:', e));
 
-// ---- JWT middleware ----
+// ---------- JWT Middleware ----------
 const auth = (req, res, next) => {
     const token = req.headers.authorization?.split(' ')[1];
     if (!token) return res.status(401).json({ msg: 'No token' });
@@ -54,24 +56,19 @@ const auth = (req, res, next) => {
     });
 };
 
-// ---- LOGIN ----
+// ---------- Routes ----------
 app.post('/api/auth/login', async (req, res) => {
     const { email, password } = req.body;
-
-    if (!email || !password)
-        return res.status(400).json({ msg: 'Email and password required' });
+    if (!email || !password) return res.status(400).json({ msg: 'Email & password required' });
 
     try {
         const user = await User.findOne({ email });
         if (!user) return res.status(400).json({ msg: 'Invalid credentials' });
 
-        const isMatch = await bcrypt.compare(password, user.password);
-        if (!isMatch) return res.status(400).json({ msg: 'Invalid credentials' });
+        const match = await bcrypt.compare(password, user.password);
+        if (!match) return res.status(400).json({ msg: 'Invalid credentials' });
 
-        const token = jwt.sign({ email: user.email }, process.env.JWT_SECRET, {
-            expiresIn: '2h',
-        });
-
+        const token = jwt.sign({ email: user.email }, process.env.JWT_SECRET, { expiresIn: '2h' });
         res.json({ token });
     } catch (err) {
         console.error(err);
@@ -79,21 +76,17 @@ app.post('/api/auth/login', async (req, res) => {
     }
 });
 
-// ---- SUBMIT INQUIRY ----
 app.post('/api/inquiries', async (req, res) => {
     try {
         const inquiry = new Inquiry(req.body);
         await inquiry.save();
-        res
-            .status(201)
-            .json({ status: 'success', submissionId: inquiry.submissionId });
+        res.status(201).json({ status: 'success', submissionId: inquiry.submissionId });
     } catch (e) {
         console.error(e);
         res.status(500).json({ msg: 'Server error' });
     }
 });
 
-// ---- GET ALL INQUIRIES (Protected) ----
 app.get('/api/inquiries', auth, async (req, res) => {
     try {
         const list = await Inquiry.find().sort({ submissionDate: -1 });
@@ -103,12 +96,10 @@ app.get('/api/inquiries', auth, async (req, res) => {
     }
 });
 
-// ---- DELETE INQUIRY (Protected) ----
 app.delete('/api/inquiries/:id', auth, async (req, res) => {
     try {
         const inquiry = await Inquiry.findById(req.params.id);
         if (!inquiry) return res.status(404).json({ msg: 'Inquiry not found' });
-
         await Inquiry.findByIdAndDelete(req.params.id);
         res.json({ msg: 'Inquiry deleted' });
     } catch (e) {
@@ -117,11 +108,10 @@ app.delete('/api/inquiries/:id', auth, async (req, res) => {
     }
 });
 
-// ---- Default Route ----
-app.get('/', (req, res) => {
-    res.send('API is running...');
-});
+// Keep-alive ping (Render free tier)
+app.get('/ping', (req, res) => res.send('OK'));
 
-// ---- Start Server ----
+app.get('/', (req, res) => res.send('API is running...'));
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
