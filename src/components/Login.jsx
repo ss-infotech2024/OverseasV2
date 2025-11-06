@@ -22,8 +22,17 @@ export default function Login() {
     if (!password) return setMsg('Password is required');
 
     try {
-      const { data } = await axios.post('/api/auth/login', { email, password });
+      // ✅ Full backend URL added here
+      const { data } = await axios.post(
+        'http://localhost:5000/api/auth/login',
+        { email, password },
+        { headers: { 'Content-Type': 'application/json' } }
+      );
+
+      // Save JWT token locally
       localStorage.setItem('token', data.token);
+
+      // Redirect to admin page
       navigate('/admin');
     } catch (err) {
       const errorMsg =
