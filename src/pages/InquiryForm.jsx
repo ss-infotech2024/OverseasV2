@@ -240,56 +240,59 @@ export default function InquiryForm() {
   };
 
   // === SUBMIT WITH FULL VALIDATION ===
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+ const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    // Validate ALL steps
-    for (let step = 1; step <= 5; step++) {
-      if (!validateStep(step)) {
-        setCurrentStep(step);
-        return;
-      }
+  for (let step = 1; step <= 5; step++) {
+    if (!validateStep(step)) {
+      setCurrentStep(step);
+      return;
+    }
+  }
+
+  setIsSubmitting(true);
+
+  try {
+    const id = generateSubmissionId();
+    const payload = {
+      ...formData,
+      submissionId: id,
+      submissionDate: new Date().toISOString(),
+    };
+
+    const API_URL = "https://overseas-server.onrender.com/api/inquiries";
+
+    console.log("Submitting to:", API_URL); // Debug
+
+    const { data } = await axios.post(API_URL, payload, {
+      headers: { "Content-Type": "application/json" },
+      timeout: 30000, // Increased
+    });
+
+    if (data.status !== "success") {
+      throw new Error(data.msg || "Submission failed");
     }
 
-    setIsSubmitting(true);
-    try {
-      const id = generateSubmissionId();
-      const payload = { ...formData, submissionId: id, submissionDate: new Date().toISOString() };
+    setSubmissionId(id);
+    setIsSubmitted(true);
+  } catch (err) {
+    console.error("Submission error:", err);
 
-      // Use proxy in dev, full URL in production
-      const API_URL = import.meta.env.DEV
-        ? "/api/inquiries"  // Proxied via Vite
-        : `${import.meta.env.VITE_API_URL}/api/inquiries`;
+    let message = "Submission failed. Please try again.";
 
-      const { data } = await axios.post(API_URL, payload, {
-        headers: { 'Content-Type': 'application/json' },
-        timeout: 15000,
-      });
-
-      if (data.status !== "success") throw new Error("Server rejected");
-
-      setSubmissionId(id);
-      setIsSubmitted(true);
-    } catch (err) {
-      console.error("Submission error:", err);
-      let message = "Submission failed. Please try again.";
-
-      if (err.code === "ERR_NETWORK") {
-        message = "Server is unreachable. It may be asleep (Render free tier). Wait 30s and retry.";
-      } else if (err.response?.status === 404) {
-        message = "API endpoint not found. Check backend URL.";
-      } else if (err.response) {
-        message = `Server Error: ${err.response.data?.msg || err.response.status}`;
-      } else if (err.request) {
-        message = "No response. Check internet or server status.";
-      }
-
-      alert(message);
-    } finally {
-      setIsSubmitting(false);
+    if (err.code === "ERR_NETWORK" || err.message.includes("timeout")) {
+      message = "Server is starting up (free hosting). Wait 30s and retry.";
+    } else if (err.response?.status === 404) {
+      message = "API not found. Contact admin.";
+    } else if (err.response?.data?.msg) {
+      message = err.response.data.msg;
     }
-  };
 
+    alert(message);
+  } finally {
+    setIsSubmitting(false);
+  }
+};
   const steps = [
     { number: 1, title: "Personal Info", icon: User },
     { number: 2, title: "Education", icon: GraduationCap },
