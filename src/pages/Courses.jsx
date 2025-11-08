@@ -240,6 +240,15 @@ export default function Courses() {
   const [activeTab, setActiveTab] = useState("premium");
   const navigate = useNavigate();
 
+  // ---- Open Google Form in a new tab ----
+  const openInquiryForm = (course, isPremium = false) => {
+    window.open(
+      "https://docs.google.com/forms/d/e/1FAIpQLSfqs_SYWB2r1B9tJYXCoIUuBFjXgNAoRwFePYSp88vagVvAHw/viewform",
+      "_blank",
+      "noopener,noreferrer"
+    );
+  };
+
   // Country filters
   const countryFilters = ["All", ...new Set(studyAbroadCourses.map(course => course.country))];
 
@@ -276,7 +285,7 @@ export default function Courses() {
         exit={{ opacity: 0, scale: 0.9 }}
         transition={{ duration: 0.3 }}
         className="bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden group cursor-pointer border border-gray-100 hover:border-purple-200 h-full flex flex-col"
-        onClick={() => navigate('/inquiryform', { state: { course: isPremium ? course.title : course.name, country: course.country } })}
+        onClick={() => openInquiryForm(course, isPremium)}
       >
         {/* Image Header */}
         <div className="relative h-16 sm:h-20 md:h-24 overflow-hidden">
@@ -386,7 +395,13 @@ export default function Courses() {
           )}
 
           {/* CTA Button */}
-          <button className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white rounded-md py-1.5 sm:py-2 font-medium transition-all duration-300 group/btn flex items-center justify-center text-[10px] sm:text-xs">
+          <button 
+            onClick={(e) => {
+              e.stopPropagation();
+              openInquiryForm(course, isPremium);
+            }}
+            className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white rounded-md py-1.5 sm:py-2 font-medium transition-all duration-300 group/btn flex items-center justify-center text-[10px] sm:text-xs"
+          >
             {isPremium ? "Inquire Now" : "Explore Course"}
             <ArrowRight className="w-3 h-3 sm:w-3.5 sm:h-3.5 ml-1 group-hover/btn:translate-x-0.5 transition-transform" />
           </button>
@@ -435,15 +450,13 @@ export default function Courses() {
             </div>
             
             <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 justify-center items-center">
-              <a
-                href="https://wa.me/919422129534"
-                target="_blank"
-                rel="noopener noreferrer"
+              <button
+                onClick={() => openInquiryForm({ title: "Free Consultation" })}
                 className="inline-flex items-center gap-1.5 px-4 py-2 sm:px-6 sm:py-3 bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-black font-semibold rounded-xl shadow-md hover:shadow-yellow-500/25 transition-all duration-300 transform hover:-translate-y-1 text-xs sm:text-sm"
               >
                 <MessageSquare className="w-4 h-4 sm:w-5 sm:h-5" />
                 Free Consultation
-              </a>
+              </button>
             </div>
           </motion.div>
         </div>
@@ -559,17 +572,15 @@ export default function Courses() {
               Achieve your dreams with our guidance.
             </p>
             <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 justify-center">
-              <a
-                href="https://wa.me/919422129534"
-                target="_blank"
-                rel="noopener noreferrer"
+              <button
+                onClick={() => openInquiryForm({ title: "Free Consultation" })}
                 className="inline-flex items-center gap-1.5 px-4 py-2 sm:px-6 sm:py-3 bg-yellow-400 hover:bg-yellow-500 text-black font-semibold rounded-xl transition-all duration-300 transform hover:-translate-y-1 text-xs sm:text-sm"
               >
                 <MessageSquare className="w-4 h-4 sm:w-5 sm:h-5" />
                 Free Consultation
-              </a>
+              </button>
               <button
-                onClick={() => navigate('/inquiryform')}
+                onClick={() => openInquiryForm({ title: "Contact Experts" })}
                 className="px-4 py-2 sm:px-6 sm:py-3 border border-white text-white hover:bg-white hover:text-purple-900 rounded-xl font-semibold transition-all duration-300 transform hover:-translate-y-1 text-xs sm:text-sm"
               >
                 Contact Experts
