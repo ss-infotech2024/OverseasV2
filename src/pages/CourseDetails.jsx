@@ -42,6 +42,15 @@ const CourseDetails = () => {
   const [inquiryForm, setInquiryForm] = useState({ name: '', email: '', message: '' });
   const [showModal, setShowModal] = useState(false);
 
+  // ---- Open Google Form in a new tab ----
+  const openInquiryForm = () => {
+    window.open(
+      "https://docs.google.com/forms/d/e/1FAIpQLSfqs_SYWB2r1B9tJYXCoIUuBFjXgNAoRwFePYSp88vagVvAHw/viewform",
+      "_blank",
+      "noopener,noreferrer"
+    );
+  };
+
   if (!course) {
     return (
       <section className="py-16 px-4 sm:px-6 lg:px-16 text-center min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-50 via-blue-50 to-white">
@@ -138,16 +147,15 @@ const CourseDetails = () => {
                 <div className="text-3xl font-bold text-white mb-2">
                   {course.tuition}
                 </div>
-                <div className="text-purple-200">Annual Tuition</div>
               </div>
               
+              {/* CORRECTED: Use openInquiryForm function instead of navigate */}
               <button
-  onClick={() => navigate("/inquiryform")}
-  className="w-full bg-yellow-500 text-white py-3 px-6 rounded-lg font-bold hover:bg-yellow-600 transition-colors duration-300"
->
-  Inquiry Now
-</button>
-
+                onClick={openInquiryForm}
+                className="w-full bg-yellow-500 text-white py-3 px-6 rounded-lg font-bold hover:bg-yellow-600 transition-colors duration-300"
+              >
+                Inquiry Now
+              </button>
             </div>
           </div>
         </div>
@@ -345,47 +353,6 @@ const CourseDetails = () => {
                 )}
               </div>
             </div>
-
-            {/* Inquiry Form */}
-            <div className="bg-white rounded-2xl shadow-lg p-8">
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">Inquire About This Course</h2>
-              <form onSubmit={handleInquirySubmit} className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <input
-                    type="text"
-                    name="name"
-                    placeholder="Your Full Name"
-                    value={inquiryForm.name}
-                    onChange={handleInquiryChange}
-                    className="w-full p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
-                    required
-                  />
-                  <input
-                    type="email"
-                    name="email"
-                    placeholder="Your Email Address"
-                    value={inquiryForm.email}
-                    onChange={handleInquiryChange}
-                    className="w-full p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent"
-                    required
-                  />
-                </div>
-                <textarea
-                  name="message"
-                  placeholder="Tell us about your interests and questions..."
-                  value={inquiryForm.message}
-                  onChange={handleInquiryChange}
-                  className="w-full p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent h-32"
-                  required
-                />
-                <button 
-                  type="submit" 
-                  className="px-8 py-4 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors duration-300 font-bold text-lg"
-                >
-                  Submit Inquiry
-                </button>
-              </form>
-            </div>
           </div>
 
           {/* Sidebar */}
@@ -457,14 +424,13 @@ const CourseDetails = () => {
                 Start your educational journey in {course.countryFullName || course.country} today.
               </p>
               <div className="space-y-3">
-<button
-  onClick={() => navigate("/inquiryform")}
-  className="w-full bg-yellow-500 text-white py-3 px-6 rounded-lg font-bold hover:bg-yellow-600 transition-colors duration-300"
->
-  Inquiry Now
-</button>
-
-                
+                {/* CORRECTED: Use openInquiryForm function instead of navigate */}
+                <button
+                  onClick={openInquiryForm}
+                  className="w-full bg-yellow-500 text-white py-3 px-6 rounded-lg font-bold hover:bg-yellow-600 transition-colors duration-300"
+                >
+                  Inquiry Now
+                </button>
               </div>
             </div>
           </div>

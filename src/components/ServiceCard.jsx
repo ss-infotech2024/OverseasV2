@@ -24,6 +24,15 @@ export default function Services() {
   const [showBookingModal, setShowBookingModal] = useState(false);
   const [selectedService, setSelectedService] = useState(null);
 
+  // ---- Open Google Form in a new tab ----
+  const openInquiryForm = (service) => {
+    window.open(
+      "https://docs.google.com/forms/d/e/1FAIpQLSfqs_SYWB2r1B9tJYXCoIUuBFjXgNAoRwFePYSp88vagVvAHw/viewform",
+      "_blank",
+      "noopener,noreferrer"
+    );
+  };
+
   const services = [
     {
       id: 1,
@@ -204,7 +213,7 @@ export default function Services() {
   ];
 
   const handleDirectInquiry = (service) => {
-    navigate("/inquiryform", { state: { service: service.title } });
+    openInquiryForm(service);
   };
 
   return (
