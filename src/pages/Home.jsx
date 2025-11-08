@@ -154,10 +154,6 @@ const Home = () => {
 
       
 
-        <section className="section">
-        <VideoAD1 />
-      </section> 
-
       {/* Our Services Section */}
       <section className="section">
         <OurServices />

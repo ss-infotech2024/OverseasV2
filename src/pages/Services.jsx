@@ -446,65 +446,7 @@ export default function Services() {
         </div>
       </section>
 
-      {/* Process Section */}
-      <section className="py-12 px-3 sm:px-6 lg:px-8 bg-gradient-to-br from-purple-900 to-purple-700 text-white">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              viewport={{ once: true }}
-            >
-              <span className="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium bg-white/20 text-white mb-4">
-                How It Works
-              </span>
-              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4">
-                Your Journey in 4 Simple Steps
-              </h2>
-              <p className="text-lg text-purple-100 max-w-2xl mx-auto">
-                A proven process that has helped thousands of students achieve their study abroad dreams
-              </p>
-            </motion.div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
-            {process.map((step, index) => (
-              <motion.div
-                key={step.step}
-                className="text-center group relative"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                viewport={{ once: true }}
-              >
-                {/* Connection Line */}
-                {index < process.length - 1 && (
-                  <div className="hidden lg:block absolute top-8 left-1/2 w-full h-0.5 bg-white/20 -z-10">
-                    <div className="w-full h-0.5 bg-yellow-400 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
-                  </div>
-                )}
-
-                <div className="relative mb-6">
-                  <div className="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:bg-white/20 transition-colors duration-300 shadow-lg">
-                    <step.icon className="w-8 h-8 text-white" />
-                  </div>
-                  <div className="absolute -top-2 -right-2 w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center text-purple-900 font-bold text-sm shadow-lg">
-                    {step.step}
-                  </div>
-                </div>
-                
-                <h3 className="text-xl font-bold mb-3 group-hover:text-yellow-300 transition-colors">
-                  {step.title}
-                </h3>
-                <p className="text-purple-100 mb-2 text-lg font-medium">{step.description}</p>
-                <p className="text-purple-200 text-sm">{step.duration}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
+     
       {/* Support Features Section */}
       <section className="py-12 px-3 sm:px-6 lg:px-8 bg-white">
         <div className="max-w-7xl mx-auto">

@@ -47,11 +47,12 @@ const Footer = () => {
         <div>
           <h4 className="font-semibold text-lg text-yellow-400 mb-4">Top Destinations</h4>
           <ul className="text-sm space-y-3">
-            <li><a href="/all-universities" className="hover:text-yellow-400 transition-colors">USA</a></li>
-            <li><a href="/all-universities" className="hover:text-yellow-400 transition-colors">UK</a></li>
-            <li><a href="/all-universities" className="hover:text-yellow-400 transition-colors">Canada</a></li>
-            <li><a href="/all-universities" className="hover:text-yellow-400 transition-colors">Australia</a></li>
-            <li><a href="/all-universities" className="hover:text-yellow-400 transition-colors">Germany</a></li>
+           <li><a href="/all-universities" className="hover:text-yellow-400 transition-colors">United States of America</a></li>
+<li><a href="/all-universities" className="hover:text-yellow-400 transition-colors">United Kingdom</a></li>
+<li><a href="/all-universities" className="hover:text-yellow-400 transition-colors">Canada</a></li>
+<li><a href="/all-universities" className="hover:text-yellow-400 transition-colors">Australia</a></li>
+<li><a href="/all-universities" className="hover:text-yellow-400 transition-colors">Germany</a></li>
+
           </ul>
         </div>
 
@@ -84,11 +85,7 @@ const Footer = () => {
         <p className="text-gray-300">
           &copy; {new Date().getFullYear()} SS Overseas. All rights reserved.
         </p>
-        <p className="text-xs text-yellow-400 mt-2">
-          <a href="/terms" className="hover:text-yellow-300">Terms & Conditions</a> | 
-          <a href="/privacy" className="hover:text-yellow-300 ml-1">Privacy Policy</a>
-        </p>
-
+       
         {/* Developer Credit */}
         <p className="text-xs text-gray-500 mt-4">
           Design & Developed by{" "}

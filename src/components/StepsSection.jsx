@@ -1,306 +1,281 @@
-import React, { useState, useRef, useEffect } from 'react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import * as z from 'zod';
-import image4step from '../assets/4step.png';
-import { Target, BookOpen, DollarSign, Plane } from 'lucide-react'; // Using Lucide icons instead of emojis
-
-gsap.registerPlugin(ScrollTrigger);
-
-// Form schema for popup
-const popupSchema = z.object({
-  name: z.string().min(2, 'Name must be at least 2 characters'),
-  email: z.string().email('Invalid email address'),
-  phone: z.string().min(10, 'Phone must be at least 10 digits'),
-});
-
-const icons = [Target, BookOpen, DollarSign, Plane]; // Icons for steps
+import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import { 
+  Users,
+  FileText,
+  DollarSign,
+  Award,
+  ArrowRight,
+  CheckCircle,
+  MessageCircle
+} from 'lucide-react';
 
 const StepsSection = () => {
-  const [activeStep, setActiveStep] = useState(0);
-  const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const [popupContent, setPopupContent] = useState('');
-  
-  const containerRef = useRef(null);
-  const stepsRefs = useRef([]);
-  const imageRef = useRef(null);
+  const [activeStep, setActiveStep] = useState(1);
+  const [hoveredStep, setHoveredStep] = useState(null);
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    reset,
-  } = useForm({
-    resolver: zodResolver(popupSchema),
-  });
+  const WHATSAPP_NUMBER = "918999972278";
+  const WHATSAPP_BASE = `https://wa.me/${WHATSAPP_NUMBER}`;
+
+  const openWhatsApp = (stepTitle, message) => {
+    const text = `*Inquiry:* ${stepTitle}\n${message}`;
+    const encoded = encodeURIComponent(text);
+    window.open(`${WHATSAPP_BASE}?text=${encoded}`, "_blank");
+  };
 
   const steps = [
     {
       number: 1,
       title: "Education Counseling",
-      description: "One on One counseling with our country specialist. Shortlist your ideal destination, institution and program.",
-      buttonText: "Free Consultation",
-      color: "from-purple-50 to-white border-purple-200",
+      description: "One-on-one counseling with our country specialists. Shortlist your ideal destination, institution, and program with expert guidance tailored to your aspirations.",
+      shortDescription: "Personalized guidance for your study abroad journey",
+      buttonText: "Get Free Counseling",
+      bgColor: "bg-purple-50",
+      borderColor: "border-purple-200",
+      gradient: "bg-purple-600",
+      icon: Users,
+      textColor: "text-purple-700",
+      features: ["Country Selection", "University Shortlisting", "Course Guidance", "Career Planning"]
     },
     {
       number: 2,
       title: "University Applications",
-      description: "Apply to your dream university. Our team will guide you through the application process.",
-      buttonText: "Free Consultation",
-      color: "from-blue-50 to-white border-blue-200",
+      description: "Streamlined application process with our expert team. We handle everything from document preparation to submission, maximizing your admission chances.",
+      shortDescription: "Seamless application process for top universities",
+      buttonText: "Start Application",
+      bgColor: "bg-blue-50",
+      borderColor: "border-blue-200",
+      gradient: "bg-blue-600",
+      icon: FileText,
+      textColor: "text-blue-700",
+      features: ["SOP & LOR Support", "Document Preparation", "Application Tracking", "Admission Support"]
     },
     {
       number: 3,
       title: "Loans & Scholarships",
-      description: "Explore financial options with our loan and scholarship expertise, making your dream education affordable.",
-      buttonText: "Free Consultation",
-      color: "from-green-50 to-white border-green-200",
+      description: "Unlock financial opportunities with our dedicated support. Access exclusive scholarships and education loans to make your dream education affordable.",
+      shortDescription: "Financial support for your education dreams",
+      buttonText: "Explore Funding",
+      bgColor: "bg-green-50",
+      borderColor: "border-green-200",
+      gradient: "bg-green-600",
+      icon: DollarSign,
+      textColor: "text-green-700",
+      features: ["Scholarship Guidance", "Loan Assistance", "Financial Planning", "Document Support"]
     },
     {
       number: 4,
       title: "Visa Processing",
-      description: "Apply for your visa with the help of our Visa experts. Our team has a 99% visa success rate.",
-      buttonText: "Free Consultation",
-      color: "from-orange-50 to-white border-orange-200",
+      description: "Expert visa guidance with a proven success rate. Our comprehensive support ensures your visa application stands the best chance of approval.",
+      shortDescription: "Expert visa assistance with high success rate",
+      buttonText: "Get Visa Help",
+      bgColor: "bg-orange-50",
+      borderColor: "border-orange-200",
+      gradient: "bg-orange-600",
+      icon: Award,
+      textColor: "text-orange-700",
+      features: ["Document Checklist", "Mock Interviews", "Application Review", "99% Success Rate"]
     }
   ];
 
-  // GSAP Animations: Clean and subtle
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      // Simple fade and slide up for each step
-      stepsRefs.current.forEach((step, index) => {
-        if (step) {
-          gsap.fromTo(step, 
-            { 
-              opacity: 0, 
-              y: 50 
-            }, 
-            { 
-              opacity: 1, 
-              y: 0, 
-              duration: 0.8, 
-              ease: "power2.out", 
-              delay: index * 0.1,
-              scrollTrigger: {
-                trigger: step,
-                start: "top 90%",
-                toggleActions: "play none none reverse",
-                onEnter: () => setActiveStep(index + 1),
-                onEnterBack: () => setActiveStep(index + 1),
-              }
-            }
-          );
+    const interval = setInterval(() => {
+      setActiveStep((prev) => (prev % steps.length) + 1);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, []);
 
-          // Subtle hover scale
-          step.addEventListener('mouseenter', () => {
-            gsap.to(step, { scale: 1.02, duration: 0.3, ease: "power1.out" });
-          });
-          step.addEventListener('mouseleave', () => {
-            gsap.to(step, { scale: 1, duration: 0.3, ease: "power1.out" });
-          });
-        }
-      });
-
-      // Gentle parallax for image
-      if (imageRef.current) {
-        gsap.to(imageRef.current, {
-          yPercent: -15,
-          ease: "none",
-          scrollTrigger: {
-            trigger: containerRef.current,
-            start: "top bottom",
-            end: "bottom top",
-            scrub: true,
-          },
-        });
-      }
-
-      // Progress bar update
-      gsap.to('.progress-bar', {
-        width: `${(activeStep / steps.length) * 100}%`,
-        duration: 0.6,
-        ease: "power2.out",
-      });
-    });
-
-    return () => ctx.revert();
-  }, [activeStep]);
-
-  const openPopup = (stepTitle) => {
-    setPopupContent(`Get free consultation for: ${stepTitle}`);
-    setIsPopupOpen(true);
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: { staggerChildren: 0.2 } }
   };
 
-  const closePopup = () => {
-    setIsPopupOpen(false);
-    reset();
+  const itemVariants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
   };
 
-  const onPopupSubmit = (data) => {
-    console.log('Popup submitted:', data);
-    closePopup();
+  const progressVariants = {
+    initial: { width: "0%" },
+    animate: { width: `${(activeStep / steps.length) * 100}%`, transition: { duration: 0.8, ease: "easeInOut" } }
   };
 
   return (
-    <section ref={containerRef} className="py-20 bg-white">
-      <div className="container mx-auto px-4 max-w-6xl">
-        {/* Section Title */}
-        <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-gray-800">
-            4 Steps to Your Dream Destination
-          </h2>
-          <p className="text-gray-600 mt-4 max-w-2xl mx-auto">
-            Our straightforward process ensures a seamless journey to studying abroad.
-          </p>
-        </div>
-
-        {/* Steps Layout */}
-        <div className="flex flex-col lg:flex-row gap-12 items-start">
+    <section className="py-20 bg-gradient-to-br from-gray-50 via-white to-blue-50">
+      <div className="container mx-auto px-4 max-w-7xl">
+        {/* Section Header */}
+        <motion.div 
+          className="text-center mb-16"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          viewport={{ once: true }}
+        >
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            viewport={{ once: true }}
+            className="inline-flex items-center gap-2 px-4 py-2 bg-blue-100 text-blue-700 rounded-full text-sm font-medium mb-6"
+          >
+            <MessageCircle className="w-4 h-4" />
+            Your Journey Starts Here
+          </motion.div>
           
-          {/* Steps List */}
-          <div className="flex-1 space-y-6">
-            {steps.map((step, index) => {
-              const Icon = icons[index];
-              return (
-                <div
-                  key={step.number}
-                  ref={(el) => (stepsRefs.current[index] = el)}
-                  className={`
-                    p-6 rounded-lg border-2 bg-gradient-to-r ${step.color} shadow-sm 
-                    transition-all duration-300 cursor-pointer
-                    ${activeStep === index + 1 ? 'border-blue-400 shadow-md' : 'border-gray-200'}
-                  `}
-                  onClick={() => setActiveStep(index + 1)}
-                >
-                  <div className="flex items-start gap-4">
-                    {/* Step Number with Icon */}
-                    <div className={`
-                      w-12 h-12 rounded-full flex items-center justify-center font-bold text-lg
-                      ${activeStep === index + 1 ? 'bg-blue-500 text-white' : 'bg-gray-100 text-gray-700'}
-                      transition-colors duration-300 flex-shrink-0
-                    `}>
-                      {activeStep === index + 1 ? step.number : <Icon className="w-6 h-6" />}
-                    </div>
-                    
-                    {/* Content */}
-                    <div className="flex-1">
-                      <h3 className="text-xl font-semibold text-gray-800 mb-2">
-                        {step.title}
-                      </h3>
-                      <p className="text-gray-600 mb-4">
-                        {step.description}
-                      </p>
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          openPopup(step.title);
-                        }}
-                        className="px-4 py-2 bg-blue-500 text-white rounded-md font-medium hover:bg-blue-600 transition-colors text-sm"
-                      >
-                        {step.buttonText}
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-
-          {/* Image with Progress */}
-          <div 
-            ref={imageRef}
-            className="lg:sticky lg:top-24 flex-1 max-w-md"
+          <motion.h2 
+            className="text-4xl md:text-5xl font-bold text-gray-900 mb-6"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+            viewport={{ once: true }}
           >
-            <div className="bg-white rounded-xl shadow-lg p-4 border border-gray-100">
-              <img
-                src={image4step}
-                alt="Study abroad process"
-                className="w-full h-auto rounded-lg"
-              />
-              
-              {/* Step Indicator */}
-              <div className="absolute top-6 left-6 bg-white rounded-lg p-3 shadow-md border border-gray-100">
-                <div className="text-center">
-                  <div className="text-sm text-gray-500">Step</div>
-                  <div className="text-3xl font-bold text-blue-500">{activeStep || '-'}</div>
-                  <div className="text-sm text-gray-500">of 4</div>
-                </div>
-              </div>
+            Your Path to 
+            <span className="block text-blue-600">Global Education</span>
+          </motion.h2>
+          
+          <motion.p 
+            className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            viewport={{ once: true }}
+          >
+            Follow our proven 4-step process to turn your study abroad dreams into reality with expert guidance at every stage.
+          </motion.p>
+        </motion.div>
 
-              {/* Progress Bar */}
-              <div className="absolute bottom-6 left-6 right-6 bg-white rounded-full p-1 shadow-md border border-gray-100">
-                <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
-                  <div 
-                    className="progress-bar h-full bg-blue-500 transition-all duration-600 ease-out"
-                    style={{ width: '0%' }}
-                  ></div>
+        {/* Steps Grid */}
+        <motion.div 
+          className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16"
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+        >
+          {steps.map((step) => {
+            const Icon = step.icon;
+            const isActive = activeStep === step.number;
+
+            return (
+              <motion.div
+                key={step.number}
+                variants={itemVariants}
+                className={`relative rounded-2xl p-8 border-2 transition-all duration-500 cursor-pointer ${
+                  isActive 
+                    ? `${step.bgColor} ${step.borderColor} shadow-xl ring-2 ring-${step.gradient.split('-')[1]}-500 ring-opacity-30` 
+                    : 'bg-white border-gray-200 shadow-lg'
+                }`}
+                onMouseEnter={() => setHoveredStep(step.number)}
+                onMouseLeave={() => setHoveredStep(null)}
+                onClick={() => setActiveStep(step.number)}
+              >
+                {/* Step Number Badge */}
+                <motion.div
+                  className={`absolute -top-4 -left-4 w-12 h-12 rounded-full flex items-center justify-center font-bold text-white text-lg shadow-lg ${step.gradient}`}
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  {isActive ? step.number : <Icon className="w-6 h-6" />}
+                </motion.div>
+
+                {/* Content */}
+                <div className="space-y-4">
+                  <h3 className={`text-2xl font-bold ${isActive ? step.textColor : 'text-gray-900'}`}>
+                    {step.title}
+                  </h3>
+                  
+                  <p className={`text-gray-600 leading-relaxed ${isActive ? 'h-auto' : 'h-14'}`}>
+                    {isActive ? step.description : step.shortDescription}
+                  </p>
+
+                  {/* Features List */}
+                  {isActive && (
+                    <motion.div 
+                      className="grid grid-cols-2 gap-2 mt-4"
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      transition={{ duration: 0.4 }}
+                    >
+                      {step.features.map((feature, idx) => (
+                        <motion.div
+                          key={idx}
+                          className="flex items-center gap-2 text-sm text-gray-700"
+                          initial={{ opacity: 0, x: -20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: idx * 0.1 }}
+                        >
+                          <CheckCircle className="w-4 h-4 text-green-500" />
+                          {feature}
+                        </motion.div>
+                      ))}
+                    </motion.div>
+                  )}
+
+                  {/* CTA Button */}
+                  <motion.button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      openWhatsApp(
+                        step.title,
+                        `Hi, I'm interested in *${step.title}*. Can you help me get started?`
+                      );
+                    }}
+                    className={`w-full mt-6 px-6 py-3 rounded-xl font-semibold text-white ${step.gradient} shadow-lg flex items-center justify-center gap-2`}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    {step.buttonText}
+                    <ArrowRight className="w-4 h-4" />
+                  </motion.button>
                 </div>
-                <div className="text-xs text-gray-500 text-center mt-2">
-                  {Math.round((activeStep / steps.length) * 100)}% Progress
-                </div>
-              </div>
+              </motion.div>
+            );
+          })}
+        </motion.div>
+
+        {/* Progress Bar */}
+        <motion.div className="text-center">
+          <div className="max-w-2xl mx-auto">
+            <div className="flex justify-between mb-4 text-sm font-medium text-gray-600">
+              <span>Start</span>
+              <span>Step {activeStep} of {steps.length}</span>
+              <span>Ready!</span>
             </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Simple Popup Modal */}
-      {isPopupOpen && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={closePopup}>
-          <div 
-            className="bg-white rounded-lg p-6 max-w-md w-full shadow-xl"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <h3 className="text-xl font-bold text-gray-800 mb-4 text-center">Free Consultation</h3>
-            <p className="text-gray-600 mb-6 text-center">{popupContent}</p>
             
-            <form onSubmit={handleSubmit(onPopupSubmit)} className="space-y-4">
-              <input
-                {...register('name')}
-                type="text"
-                placeholder="Your Name"
-                className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
+            <div className="w-full bg-gray-200 rounded-full h-3 mb-8 overflow-hidden">
+              <motion.div
+                className="h-full bg-blue-600 rounded-full"
+                variants={progressVariants}
+                initial="initial"
+                animate="animate"
               />
-              {errors.name && <p className="text-red-500 text-xs">{errors.name.message}</p>}
-              
-              <input
-                {...register('email')}
-                type="email"
-                placeholder="Your Email"
-                className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
-              />
-              {errors.email && <p className="text-red-500 text-xs">{errors.email.message}</p>}
-              
-              <input
-                {...register('phone')}
-                type="tel"
-                placeholder="Your Phone"
-                className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
-              />
-              {errors.phone && <p className="text-red-500 text-xs">{errors.phone.message}</p>}
-              
-              <div className="flex gap-4 mt-6">
+            </div>
+
+            {/* Dots */}
+            <div className="flex justify-center gap-3 mb-8">
+              {steps.map((step) => (
                 <button
-                  type="button"
-                  onClick={closePopup}
-                  className="flex-1 px-4 py-3 border border-gray-300 text-gray-700 rounded-md font-medium hover:bg-gray-50 transition-colors"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="flex-1 px-4 py-3 bg-blue-500 text-white rounded-md font-medium hover:bg-blue-600 transition-colors"
-                >
-                  Submit
-                </button>
-              </div>
-            </form>
+                  key={step.number}
+                  onClick={() => setActiveStep(step.number)}
+                  className={`w-3 h-3 rounded-full transition-all ${
+                    activeStep === step.number ? 'bg-blue-600 scale-125' : 'bg-gray-300'
+                  }`}
+                />
+              ))}
+            </div>
+
+            {/* Global CTA */}
+            <motion.button
+              onClick={() => openWhatsApp("Complete Study Abroad Journey", "Hi, I want to start my full study abroad process. Please guide me!")}
+              className="px-8 py-4 bg-blue-600 text-white rounded-xl font-semibold text-lg shadow-xl hover:shadow-2xl"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              Start Your Free Consultation
+            </motion.button>
           </div>
-        </div>
-      )}
+        </motion.div>
+      </div>
     </section>
   );
 };

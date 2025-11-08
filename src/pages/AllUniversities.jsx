@@ -6,6 +6,8 @@ const AllUniversities = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCountry, setSelectedCountry] = useState("All");
   const [sortBy, setSortBy] = useState("rank");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
 
   // Get all universities from all countries
   const allUniversities = useMemo(() => {
@@ -14,7 +16,9 @@ const AllUniversities = () => {
         ...uni,
         country: country.name,
         countryFlag: country.flag,
-        countryDetails: country.details
+        countryDetails: country.details,
+        // Ensure rank is a number for proper sorting
+        rank: uni.rank === "N/A" ? 9999 : parseInt(uni.rank) || 9999
       }))
     );
   }, []);
@@ -44,13 +48,19 @@ const AllUniversities = () => {
     filtered = [...filtered].sort((a, b) => {
       switch (sortBy) {
         case "rank":
-          return parseInt(a.rank) - parseInt(b.rank);
+          return a.rank - b.rank;
         case "name":
           return a.name.localeCompare(b.name);
         case "country":
           return a.country.localeCompare(b.country);
         case "acceptance":
-          return parseFloat(a.acceptanceRate) - parseFloat(b.acceptanceRate);
+          const rateA = parseFloat(a.acceptanceRate) || 100;
+          const rateB = parseFloat(b.acceptanceRate) || 100;
+          return rateA - rateB;
+        case "students":
+          const studentsA = parseInt(a.totalStudents.replace(/,/g, '')) || 0;
+          const studentsB = parseInt(b.totalStudents.replace(/,/g, '')) || 0;
+          return studentsB - studentsA;
         default:
           return 0;
       }
@@ -58,6 +68,12 @@ const AllUniversities = () => {
 
     return filtered;
   }, [allUniversities, searchTerm, selectedCountry, sortBy]);
+
+  // Pagination
+  const totalPages = Math.ceil(filteredUniversities.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentUniversities = filteredUniversities.slice(startIndex, endIndex);
 
   // Get unique countries for filter
   const uniqueCountries = useMemo(() => {
@@ -67,17 +83,33 @@ const AllUniversities = () => {
 
   // Statistics
   const stats = useMemo(() => {
+    const rankedUniversities = allUniversities.filter(uni => uni.rank !== 9999);
+    const averageRank = rankedUniversities.length > 0 
+      ? Math.round(rankedUniversities.reduce((acc, uni) => acc + uni.rank, 0) / rankedUniversities.length)
+      : 0;
+
+    const countryCounts = allUniversities.reduce((acc, uni) => {
+      acc[uni.country] = (acc[uni.country] || 0) + 1;
+      return acc;
+    }, {});
+
+    const topCountry = Object.entries(countryCounts).reduce((prev, current) => 
+      current[1] > prev[1] ? current : prev
+    )[0];
+
     return {
       totalUniversities: allUniversities.length,
       totalCountries: new Set(allUniversities.map(uni => uni.country)).size,
-      averageRank: Math.round(
-        allUniversities.reduce((acc, uni) => acc + parseInt(uni.rank), 0) / allUniversities.length
-      ),
-      topCountry: countries.reduce((prev, current) => 
-        prev.universities.length > current.universities.length ? prev : current
-      ).name
+      averageRank,
+      topCountry,
+      rankedUniversities: rankedUniversities.length
     };
   }, [allUniversities]);
+
+  // Reset to first page when filters change
+  React.useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm, selectedCountry, sortBy]);
 
   return (
     <section className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-white">
@@ -92,6 +124,26 @@ const AllUniversities = () => {
               Explore {allUniversities.length} world-class universities across {stats.totalCountries} countries. 
               Find your perfect academic destination with detailed information and rankings.
             </p>
+            
+            {/* Quick Stats */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6 max-w-2xl mx-auto">
+              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3">
+                <div className="text-2xl font-bold text-white">{stats.totalUniversities}+</div>
+                <div className="text-sm text-gray-200">Universities</div>
+              </div>
+              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3">
+                <div className="text-2xl font-bold text-white">{stats.totalCountries}</div>
+                <div className="text-sm text-gray-200">Countries</div>
+              </div>
+              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3">
+                <div className="text-2xl font-bold text-white">{stats.rankedUniversities}</div>
+                <div className="text-sm text-gray-200">Ranked</div>
+              </div>
+              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3">
+                <div className="text-2xl font-bold text-white">{stats.topCountry}</div>
+                <div className="text-sm text-gray-200">Top Country</div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -100,7 +152,7 @@ const AllUniversities = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-6">
         {/* Filters and Search */}
         <div className="bg-white rounded-xl shadow-md p-4 mb-6 border border-gray-200">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
             {/* Search Input */}
             <div className="relative">
               <input
@@ -143,6 +195,22 @@ const AllUniversities = () => {
               <option value="name">Sort by Name</option>
               <option value="country">Sort by Country</option>
               <option value="acceptance">Sort by Acceptance Rate</option>
+              <option value="students">Sort by Student Size</option>
+            </select>
+
+            {/* Items Per Page */}
+            <select
+              value={itemsPerPage}
+              onChange={(e) => {
+                setItemsPerPage(Number(e.target.value));
+                setCurrentPage(1);
+              }}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 text-sm"
+            >
+              <option value="10">10 per page</option>
+              <option value="20">20 per page</option>
+              <option value="50">50 per page</option>
+              <option value="100">100 per page</option>
             </select>
           </div>
 
@@ -167,20 +235,11 @@ const AllUniversities = () => {
           </div>
         </div>
 
-        {/* Results Count */}
-        <div className="mb-4">
-          <p className="text-gray-700 font-medium text-sm">
-            Showing {filteredUniversities.length} of {allUniversities.length} universities
-            {selectedCountry !== "All" && ` in ${selectedCountry}`}
-            {searchTerm && ` matching "${searchTerm}"`}
-          </p>
-        </div>
-
         {/* Universities Grid */}
-        <div className="flex flex-col items-center gap-4 mb-10">
-          {filteredUniversities.map((uni, index) => (
+        <div className="flex flex-col items-center gap-4 mb-8">
+          {currentUniversities.map((uni, index) => (
             <div
-              key={`${uni.country}-${uni.name}`}
+              key={`${uni.country}-${uni.name}-${index}`}
               className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 border border-gray-200 hover:border-blue-300 w-full sm:w-[90%] lg:w-[85%] max-w-6xl flex flex-col sm:flex-row"
             >
               {/* Left Content */}
@@ -188,10 +247,18 @@ const AllUniversities = () => {
                 {/* University Header */}
                 <div className="flex items-start gap-3 mb-3">
                   <div className="flex flex-col gap-1">
-                    <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                      <span className="text-blue-800 font-bold text-sm">#{uni.rank}</span>
+                    <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
+                      uni.rank <= 100 ? 'bg-green-100' : 
+                      uni.rank <= 500 ? 'bg-blue-100' : 'bg-gray-100'
+                    }`}>
+                      <span className={`font-bold text-sm ${
+                        uni.rank <= 100 ? 'text-green-800' : 
+                        uni.rank <= 500 ? 'text-blue-800' : 'text-gray-600'
+                      }`}>
+                        {uni.rank === 9999 ? 'N/A' : `#${uni.rank}`}
+                      </span>
                     </div>
-                    <span className="text-xs bg-blue-50 text-blue-700 py-1 px-2 rounded-full font-semibold text-center">
+                    <span className="text-xs bg-gray-100 text-gray-700 py-1 px-2 rounded-full font-semibold text-center">
                       Global Rank
                     </span>
                   </div>
@@ -228,10 +295,13 @@ const AllUniversities = () => {
                     <div className="text-sm font-bold text-blue-600">{uni.internationalStudents}</div>
                     <div className="text-xs text-gray-600">International</div>
                   </div>
-                 
                   <div className="text-center">
                     <div className="text-sm font-bold text-green-600">{uni.employmentRate}</div>
                     <div className="text-xs text-gray-600">Employment</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-sm font-bold text-purple-600">{uni.totalStudents}</div>
+                    <div className="text-xs text-gray-600">Students</div>
                   </div>
                 </div>
 
@@ -287,7 +357,7 @@ const AllUniversities = () => {
                   to={`/university/${encodeURIComponent(uni.name)}`}
                   className="flex-1 sm:flex-none bg-blue-600 text-white py-2 px-3 rounded-lg text-xs font-semibold hover:bg-blue-700 transition-all duration-300 text-center shadow-sm hover:shadow-md"
                 >
-                  View Full Details
+                  View Details
                 </Link>
                 <Link 
                   to={`/universities/${encodeURIComponent(uni.country)}`}
@@ -303,6 +373,63 @@ const AllUniversities = () => {
           ))}
         </div>
 
+        {/* Pagination Controls */}
+        {totalPages > 1 && (
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mb-8">
+            <div className="text-sm text-gray-600">
+              Page {currentPage} of {totalPages}
+            </div>
+            
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                disabled={currentPage === 1}
+                className="px-3 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 text-sm"
+              >
+                Previous
+              </button>
+              
+              {/* Page Numbers */}
+              <div className="flex gap-1">
+                {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+                  let pageNum;
+                  if (totalPages <= 5) {
+                    pageNum = i + 1;
+                  } else if (currentPage <= 3) {
+                    pageNum = i + 1;
+                  } else if (currentPage >= totalPages - 2) {
+                    pageNum = totalPages - 4 + i;
+                  } else {
+                    pageNum = currentPage - 2 + i;
+                  }
+                  
+                  return (
+                    <button
+                      key={pageNum}
+                      onClick={() => setCurrentPage(pageNum)}
+                      className={`w-8 h-8 rounded-lg text-sm font-medium transition-all duration-300 ${
+                        currentPage === pageNum
+                          ? 'bg-blue-600 text-white'
+                          : 'border border-gray-300 hover:bg-gray-50 text-gray-700'
+                      }`}
+                    >
+                      {pageNum}
+                    </button>
+                  );
+                })}
+              </div>
+              
+              <button
+                onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                disabled={currentPage === totalPages}
+                className="px-3 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 text-sm"
+              >
+                Next
+              </button>
+            </div>
+          </div>
+        )}
+
         {/* No Results */}
         {filteredUniversities.length === 0 && (
           <div className="text-center py-10">
@@ -315,6 +442,7 @@ const AllUniversities = () => {
               onClick={() => {
                 setSearchTerm("");
                 setSelectedCountry("All");
+                setCurrentPage(1);
               }}
               className="bg-blue-600 text-white py-2 px-6 rounded-lg font-semibold hover:bg-blue-700 transition-all duration-300 shadow-sm hover:shadow-md text-sm"
             >
