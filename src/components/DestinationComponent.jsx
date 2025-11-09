@@ -470,10 +470,7 @@ const DestinationComponent = () => {
                               <p className="text-gray-500 mb-1">International</p>
                               <p className="font-semibold text-gray-800">{selectedDestination.international}</p>
                             </div>
-                            <div>
-                              <p className="text-gray-500 mb-1">Annual Tuition</p>
-                              <p className="font-semibold text-gray-800 text-xs leading-tight">{selectedDestination.tuition}</p>
-                            </div>
+                          
                             <div>
                               <p className="text-gray-500 mb-1">Established</p>
                               <p className="font-semibold text-gray-800">{selectedDestination.established}</p>
