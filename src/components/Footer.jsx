@@ -11,11 +11,12 @@ const Footer = () => {
             <div className="bg-yellow-400 p-2 rounded-lg">
               <GraduationCap className="w-6 h-6 text-white" />
             </div>
+            <h3 className="text-xl font-bold text-white">SS Overseas</h3>
           </div>
           <p className="text-sm leading-relaxed max-w-xs">
             Empowering students to achieve their global education dreams with expert guidance and personalized support.
           </p>
-          <div className="flex gap-4">
+          {/* <div className="flex gap-4">
             <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="hover:text-yellow-400 transition-colors">
               <Facebook className="w-5 h-5" />
             </a>
@@ -28,7 +29,7 @@ const Footer = () => {
             <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="hover:text-yellow-400 transition-colors">
               <Linkedin className="w-5 h-5" />
             </a>
-          </div>
+          </div> */}
         </div>
 
         {/* Services */}
@@ -47,12 +48,11 @@ const Footer = () => {
         <div>
           <h4 className="font-semibold text-lg text-yellow-400 mb-4">Top Destinations</h4>
           <ul className="text-sm space-y-3">
-           <li><a href="/all-universities" className="hover:text-yellow-400 transition-colors">United States of America</a></li>
-<li><a href="/all-universities" className="hover:text-yellow-400 transition-colors">United Kingdom</a></li>
-<li><a href="/all-universities" className="hover:text-yellow-400 transition-colors">Canada</a></li>
-<li><a href="/all-universities" className="hover:text-yellow-400 transition-colors">Australia</a></li>
-<li><a href="/all-universities" className="hover:text-yellow-400 transition-colors">Germany</a></li>
-
+            <li><a href="/all-universities" className="hover:text-yellow-400 transition-colors">United States of America</a></li>
+            <li><a href="/all-universities" className="hover:text-yellow-400 transition-colors">United Kingdom</a></li>
+            <li><a href="/all-universities" className="hover:text-yellow-400 transition-colors">Canada</a></li>
+            <li><a href="/all-universities" className="hover:text-yellow-400 transition-colors">Australia</a></li>
+            <li><a href="/all-universities" className="hover:text-yellow-400 transition-colors">Germany</a></li>
           </ul>
         </div>
 
@@ -60,21 +60,40 @@ const Footer = () => {
         <div>
           <h4 className="font-semibold text-lg text-yellow-400 mb-4">Get in Touch</h4>
           <ul className="text-sm space-y-3">
+            {/* Email 1 */}
             <li className="flex items-center gap-2">
-              <Mail className="w-4 h-4 text-yellow-400" />
-              <a href="mailto:ssoverseas333@gmail.com" className="hover:text-yellow-400 transition-colors">ssoverseas333@gmail.com</a>
+              <Mail className="w-4 h-4 text-yellow-400 flex-shrink-0" />
+              <a href="mailto:ssoverseas333@gmail.com" className="hover:text-yellow-400 transition-colors">
+                ssoverseas333@gmail.com
+              </a>
             </li>
+            {/* Email 2 */}
             <li className="flex items-center gap-2">
-              <Phone className="w-4 h-4 text-yellow-400" />
-              <a href="tel:+919422129534" className="hover:text-yellow-400 transition-colors">+91 94221 29534</a>
+              <Mail className="w-4 h-4 text-yellow-400 flex-shrink-0" />
+              <a href="mailto:ssoverseasmanisha@gmail.com" className="hover:text-yellow-400 transition-colors">
+                ssoverseasmanisha@gmail.com
+              </a>
             </li>
+            {/* Phone */}
             <li className="flex items-center gap-2">
-              <Clock className="w-4 h-4 text-yellow-400" />
+              <Phone className="w-4 h-4 text-yellow-400 flex-shrink-0" />
+              <a href="tel:+919422129534" className="hover:text-yellow-400 transition-colors">
+                +91 94221 29534
+              </a>
+            </li>
+            {/* Timings */}
+            <li className="flex items-center gap-2">
+              <Clock className="w-4 h-4 text-yellow-400 flex-shrink-0" />
               <span>10 AM – 6 PM (Mon–Sat)</span>
             </li>
-            <li className="flex items-center gap-2">
-              <MapPin className="w-4 h-4 text-yellow-400" />
-              <span>Nagpur, Maharashtra, India</span>
+            {/* Full Address */}
+            <li className="flex items-start gap-2">
+              <MapPin className="w-4 h-4 text-yellow-400 flex-shrink-0 mt-0.5" />
+              <span className="leading-tight">
+                Khandwekar Villa, 26,<br />
+                near Lendra Park, Ramdaspeth,<br />
+                Nagpur, Maharashtra 440010
+              </span>
             </li>
           </ul>
         </div>
@@ -83,9 +102,9 @@ const Footer = () => {
       {/* Bottom Bar */}
       <div className="max-w-7xl mx-auto mt-8 border-t border-gray-700 pt-6 text-center text-sm">
         <p className="text-gray-300">
-          &copy; {new Date().getFullYear()} SS Overseas. All rights reserved.
+          © {new Date().getFullYear()} SS Overseas. All rights reserved.
         </p>
-       
+
         {/* Developer Credit */}
         <p className="text-xs text-gray-500 mt-4">
           Design & Developed by{" "}

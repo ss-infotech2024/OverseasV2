@@ -17,6 +17,7 @@ import TrendingCourses from "../components/TrendingCourses"
 import Earth from "../components/Earth";
 import VideoAD from "../components/VideoAD"
 import VideoAD1 from "../components/VideoAD1"
+import PinterestGallery from "../components/PinterestGallery";
 
 // Register ScrollTrigger plugin
 gsap.registerPlugin(ScrollTrigger);
@@ -127,32 +128,36 @@ const Home = () => {
         <OfferedCountriesSection />
       </section>
 
-      
 
-       <section className="section">
+
+      <section className="section">
         <DestinationComponent />
       </section>
 
 
-        <section className="">
+      <section className="">
         < TrendingCourses />
       </section>
-     
+
+
+
+
 
       <section className="">
-        <BannerComponent />
+        < PinterestGallery />
       </section>
 
 
-    
 
+
+      {/* 
 
       <section className="section">
         <StepsSection />
-      </section>
+      </section> */}
 
 
-      
+
 
       {/* Our Services Section */}
       <section className="section">
@@ -161,17 +166,23 @@ const Home = () => {
 
 
 
-       {/* Testimonials Section */}
+      {/* Testimonials Section */}
       <section className="section">
         <TestimonialSection />
       </section>
 
-        {/* <section className="section">
+      <section className="">
+        <BannerComponent />
+      </section>
+      <br />
+      <br />
+
+      {/* <section className="section">
         <VideoAD />
       </section> */}
 
-      
-     
+
+
     </main>
   );
 };

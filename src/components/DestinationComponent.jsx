@@ -4,12 +4,11 @@ import useEmblaCarousel from 'embla-carousel-react';
 import Autoplay from 'embla-carousel-autoplay';
 import { Link } from "react-router-dom";
 
-
 const DestinationComponent = () => {
   const [selectedDestination, setSelectedDestination] = useState(null);
   const [emblaRef, emblaApi] = useEmblaCarousel(
-    { 
-      loop: true, 
+    {
+      loop: true,
       align: 'start',
       containScroll: 'trimSnaps'
     },
@@ -206,9 +205,12 @@ const DestinationComponent = () => {
   }, []);
 
   return (
-    <div className="bg-gradient-to-br from-blue-900 via-blue-800 to-purple-900 text-white p-3 xs:p-4 sm:p-6 lg:p-8 min-h-screen">
+    <div
+      className="text-white p-3 xs:p-4 sm:p-6 lg:p-8 min-h-screen"
+      style={{ backgroundColor: '#601D95' }} // ← Background color applied here
+    >
       <div className="container mx-auto max-w-7xl">
-        {/* Header Section - Optimized for 360px */}
+        {/* Header Section */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -219,8 +221,8 @@ const DestinationComponent = () => {
             Your <span className="text-yellow-300">Dream Study</span>{' '}
             <span className="text-red-300">Destination</span> Awaits
           </h2>
-          <p className="text-sm xs:text-base sm:text-lg md:text-xl text-blue-200 max-w-3xl mx-auto leading-relaxed px-2">
-            Discover world-class universities, generous scholarships, affordable living costs, 
+          <p className="text-sm xs:text-base sm:text-lg md:text-xl text-purple-200 max-w-3xl mx-auto leading-relaxed px-2">
+            Discover world-class universities, generous scholarships, affordable living costs,
             and excellent post-study work opportunities with expert guidance.
           </p>
           <motion.a
@@ -233,7 +235,7 @@ const DestinationComponent = () => {
           </motion.a>
         </motion.div>
 
-        {/* Carousel Section - Fully Responsive */}
+        {/* Carousel Section */}
         <div className="relative mb-4 sm:mb-6">
           <div className="overflow-hidden rounded-xl sm:rounded-2xl bg-white/5 backdrop-blur-sm p-2 sm:p-4" ref={emblaRef}>
             <div className="flex">
@@ -261,7 +263,7 @@ const DestinationComponent = () => {
                               className="w-6 h-4 xs:w-7 xs:h-5 sm:w-8 sm:h-6 rounded shadow-md object-cover"
                             />
                           </div>
-                          
+
                           {/* University Image */}
                           <div className="relative h-32 xs:h-36 sm:h-40 md:h-44 lg:h-48 overflow-hidden">
                             <img
@@ -270,20 +272,20 @@ const DestinationComponent = () => {
                               className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
-                            
+
                             {/* University Name Overlay */}
                             <div className="absolute bottom-2 left-2 right-2">
                               <h3 className="text-white font-bold text-sm xs:text-base sm:text-lg leading-tight line-clamp-2">
                                 {dest.name}
                               </h3>
-                              <p className="text-blue-200 text-xs xs:text-sm mt-0.5">{dest.country}</p>
+                              <p className="text-purple-200 text-xs xs:text-sm mt-0.5">{dest.country}</p>
                             </div>
                           </div>
 
                           {/* Quick Info */}
                           <div className="p-2 xs:p-3 sm:p-4 flex-1 flex flex-col">
                             <div className="flex items-center justify-between mb-1 xs:mb-2">
-                              <span className="text-xs bg-blue-100 text-blue-600 px-1.5 xs:px-2 py-0.5 xs:py-1 rounded text-xs font-semibold">
+                              <span className="text-xs bg-purple-100 text-purple-700 px-1.5 xs:px-2 py-0.5 xs:py-1 rounded text-xs font-semibold">
                                 {dest.ranking.split(' ')[0]}
                               </span>
                               <span className="text-xs text-gray-600">
@@ -292,22 +294,22 @@ const DestinationComponent = () => {
                             </div>
                             <div className="flex justify-between text-xs text-gray-600 mb-2 xs:mb-3">
                               <span className="flex items-center">
-                                <span className="hidden xs:inline">🎓</span>
+                                <span className="hidden xs:inline">Students</span>
                                 <span className="xs:ml-1">{dest.students.split('+')[0]}</span>
                               </span>
                               <span className="flex items-center">
-                                <span className="hidden xs:inline">🌍</span>
+                                <span className="hidden xs:inline">International</span>
                                 <span className="xs:ml-1">{dest.international}</span>
                               </span>
                             </div>
-                            
+
                             <div className="mt-auto flex items-center justify-between">
-                              <span className="text-xs xs:text-sm font-semibold text-blue-800">
+                              <span className="text-xs xs:text-sm font-semibold text-purple-700">
                                 View Details
                               </span>
                               <motion.div
                                 whileHover={{ x: 3 }}
-                                className="text-blue-600 text-sm xs:text-base"
+                                className="text-purple-600 text-sm xs:text-base"
                               >
                                 →
                               </motion.div>
@@ -322,16 +324,16 @@ const DestinationComponent = () => {
             </div>
           </div>
 
-          {/* Custom Navigation Buttons - Responsive */}
+          {/* Navigation Buttons */}
           <button
-            className="absolute left-1 xs:left-2 top-1/2 -translate-y-1/2 w-8 h-8 xs:w-10 xs:h-10 bg-white/90 hover:bg-white text-blue-900 rounded-full shadow-lg flex items-center justify-center transition-all z-10 text-sm xs:text-base"
+            className="absolute left-1 xs:left-2 top-1/2 -translate-y-1/2 w-8 h-8 xs:w-10 xs:h-10 bg-white/90 hover:bg-white text-purple-700 rounded-full shadow-lg flex items-center justify-center transition-all z-10 text-sm xs:text-base"
             onClick={scrollPrev}
             aria-label="Previous slide"
           >
             ‹
           </button>
           <button
-            className="absolute right-1 xs:right-2 top-1/2 -translate-y-1/2 w-8 h-8 xs:w-10 xs:h-10 bg-white/90 hover:bg-white text-blue-900 rounded-full shadow-lg flex items-center justify-center transition-all z-10 text-sm xs:text-base"
+            className="absolute right-1 xs:right-2 top-1/2 -translate-y-1/2 w-8 h-8 xs:w-10 xs:h-10 bg-white/90 hover:bg-white text-purple-700 rounded-full shadow-lg flex items-center justify-center transition-all z-10 text-sm xs:text-base"
             onClick={scrollNext}
             aria-label="Next slide"
           >
@@ -339,16 +341,15 @@ const DestinationComponent = () => {
           </button>
         </div>
 
-        {/* Dots Indicator - Responsive */}
+        {/* Dots Indicator */}
         <div className="flex justify-center mt-4 sm:mt-6 space-x-1.5 xs:space-x-2">
           {slides.map((_, index) => (
             <button
               key={index}
-              className={`transition-all rounded-full ${
-                emblaApi?.selectedScrollSnap() === index 
-                  ? 'bg-yellow-400' 
+              className={`transition-all rounded-full ${emblaApi?.selectedScrollSnap() === index
+                  ? 'bg-yellow-400'
                   : 'bg-white/50'
-              }`}
+                }`}
               style={{
                 width: emblaApi?.selectedScrollSnap() === index ? '20px' : '8px',
                 height: '8px'
@@ -359,7 +360,7 @@ const DestinationComponent = () => {
           ))}
         </div>
 
-        {/* Detailed Modal - Fully Responsive */}
+        {/* Modal */}
         <AnimatePresence>
           {selectedDestination && (
             <motion.div
@@ -384,7 +385,7 @@ const DestinationComponent = () => {
                     alt={selectedDestination.name}
                     className="w-full h-40 xs:h-48 sm:h-56 md:h-64 object-cover"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-r from-blue-900/80 to-purple-900/80" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-purple-900/80 to-indigo-900/80" />
                   <div className="absolute bottom-3 xs:bottom-4 left-3 xs:left-4 right-3 xs:right-4">
                     <div className="flex items-center space-x-2 xs:space-x-3 mb-1 xs:mb-2">
                       <img
@@ -396,11 +397,11 @@ const DestinationComponent = () => {
                         <h2 className="text-lg xs:text-xl sm:text-2xl md:text-3xl font-bold text-white leading-tight truncate">
                           {selectedDestination.name}
                         </h2>
-                        <p className="text-blue-200 text-sm xs:text-base">{selectedDestination.country}</p>
+                        <p className="text-purple-200 text-sm xs:text-base">{selectedDestination.country}</p>
                       </div>
                     </div>
                     <div className="flex flex-wrap gap-1 xs:gap-2">
-                      <span className="px-2 xs:px-3 py-1 bg-yellow-400 text-blue-900 text-xs xs:text-sm font-semibold rounded-full whitespace-nowrap">
+                      <span className="px-2 xs:px-3 py-1 bg-yellow-400 text-purple-900 text-xs xs:text-sm font-semibold rounded-full whitespace-nowrap">
                         {selectedDestination.ranking}
                       </span>
                       <span className="px-2 xs:px-3 py-1 bg-white/20 text-white text-xs xs:text-sm rounded-full whitespace-nowrap">
@@ -420,7 +421,6 @@ const DestinationComponent = () => {
                 {/* Modal Content */}
                 <div className="p-3 xs:p-4 sm:p-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 xs:gap-6">
-                    {/* Left Column */}
                     <div>
                       <h3 className="text-lg xs:text-xl font-bold text-gray-800 mb-2 xs:mb-4">Overview</h3>
                       <p className="text-gray-600 text-sm xs:text-base leading-relaxed mb-4 xs:mb-6">
@@ -434,7 +434,7 @@ const DestinationComponent = () => {
                             {selectedDestination.popularPrograms.map((program, index) => (
                               <span
                                 key={index}
-                                className="px-2 xs:px-3 py-1 bg-blue-100 text-blue-800 text-xs xs:text-sm rounded-full whitespace-nowrap"
+                                className="px-2 xs:px-3 py-1 bg-purple-100 text-purple-800 text-xs xs:text-sm rounded-full whitespace-nowrap"
                               >
                                 {program}
                               </span>
@@ -447,7 +447,7 @@ const DestinationComponent = () => {
                           <ul className="space-y-1 xs:space-y-2">
                             {selectedDestination.highlights.map((highlight, index) => (
                               <li key={index} className="flex items-start text-gray-600 text-sm xs:text-base">
-                                <span className="w-1.5 h-1.5 bg-blue-500 rounded-full mr-2 xs:mr-3 mt-1.5 xs:mt-2 flex-shrink-0"></span>
+                                <span className="w-1.5 h-1.5 bg-purple-500 rounded-full mr-2 xs:mr-3 mt-1.5 xs:mt-2 flex-shrink-0"></span>
                                 <span>{highlight}</span>
                               </li>
                             ))}
@@ -456,7 +456,6 @@ const DestinationComponent = () => {
                       </div>
                     </div>
 
-                    {/* Right Column */}
                     <div>
                       <h3 className="text-lg xs:text-xl font-bold text-gray-800 mb-2 xs:mb-4">Key Information</h3>
                       <div className="space-y-3 xs:space-y-4">
@@ -470,7 +469,6 @@ const DestinationComponent = () => {
                               <p className="text-gray-500 mb-1">International</p>
                               <p className="font-semibold text-gray-800">{selectedDestination.international}</p>
                             </div>
-                          
                             <div>
                               <p className="text-gray-500 mb-1">Established</p>
                               <p className="font-semibold text-gray-800">{selectedDestination.established}</p>
@@ -478,9 +476,9 @@ const DestinationComponent = () => {
                           </div>
                         </div>
 
-                        <div className="bg-blue-50 rounded-lg p-3 xs:p-4">
-                          <h4 className="font-semibold text-blue-800 text-sm xs:text-base mb-1 xs:mb-2">Why Choose This University?</h4>
-                          <ul className="text-xs xs:text-sm text-blue-700 space-y-0.5 xs:space-y-1">
+                        <div className="bg-purple-50 rounded-lg p-3 xs:p-4">
+                          <h4 className="font-semibold text-purple-800 text-sm xs:text-base mb-1 xs:mb-2">Why Choose This University?</h4>
+                          <ul className="text-xs xs:text-sm text-purple-700 space-y-0.5 xs:space-y-1">
                             <li>• World-class faculty and research</li>
                             <li>• Strong global reputation</li>
                             <li>• Excellent career opportunities</li>
@@ -491,20 +489,19 @@ const DestinationComponent = () => {
                     </div>
                   </div>
 
-                  {/* Action Buttons - Stack on mobile */}
+                  {/* Action Buttons */}
                   <div className="flex flex-col xs:flex-row gap-2 xs:gap-3 mt-4 xs:mt-6 pt-4 xs:pt-6 border-t border-gray-200">
                     <a
                       href={selectedDestination.link}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex-1 bg-blue-600 hover:bg-blue-700 text-white text-center py-2 xs:py-3 px-4 rounded-lg font-semibold transition-all text-sm xs:text-base"
+                      className="flex-1 bg-purple-600 hover:bg-purple-700 text-white text-center py-2 xs:py-3 px-4 rounded-lg font-semibold transition-all text-sm xs:text-base"
                     >
                       Visit Official Website
                     </a>
                     <Link to="/contact" className="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-800 py-2 xs:py-3 px-4 rounded-lg font-semibold transition-all text-sm xs:text-base">
-  Contact Advisor
-</Link>
-
+                      Contact Advisor
+                    </Link>
                     <button
                       onClick={closeModal}
                       className="flex-1 border border-gray-300 hover:bg-gray-50 text-gray-600 py-2 xs:py-3 px-4 rounded-lg font-semibold transition-all text-sm xs:text-base"

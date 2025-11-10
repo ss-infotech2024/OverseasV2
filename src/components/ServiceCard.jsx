@@ -297,10 +297,11 @@ export default function Services() {
       </section>
 
       {/* Process Section */}
-      <section className="py-6 px-3 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-600 to-blue-800 text-white">
+      {/* Process Section */}
+      <section className="py-6 px-3 sm:px-6 lg:px-8 bg-[#1D2B6C] text-white">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-6 sm:mb-10">
-            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-white/20 text-white mb-3">
+            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-white/20 text-white mb-3 backdrop-blur-sm">
               How It Works
             </span>
             <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-2 sm:mb-3">
@@ -317,7 +318,7 @@ export default function Services() {
                 transition={{ duration: 0.4 }}
                 viewport={{ once: true }}
               >
-                <div className="w-8 h-8 sm:w-10 sm:h-10 bg-blue-500 rounded-md flex items-center justify-center mx-auto mb-2 sm:mb-3">
+                <div className="w-8 h-8 sm:w-10 sm:h-10 bg-blue-500 rounded-md flex items-center justify-center mx-auto mb-2 sm:mb-3 shadow-lg">
                   <span className="text-sm sm:text-base font-bold text-white">{step.step}</span>
                 </div>
                 <h3 className="text-sm sm:text-base font-bold mb-1 sm:mb-2">{step.title}</h3>

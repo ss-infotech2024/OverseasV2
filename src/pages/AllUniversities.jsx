@@ -1,13 +1,14 @@
+// AllUniversities.js
 import React, { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
-import { countries } from "../components/offeredCountries";
+import { countries } from "../offeredCountries";
 
 const AllUniversities = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCountry, setSelectedCountry] = useState("All");
   const [sortBy, setSortBy] = useState("rank");
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [itemsPerPage, setItemsPerPage] = useState(5);
 
   // Get all universities from all countries
   const allUniversities = useMemo(() => {
@@ -198,20 +199,22 @@ const AllUniversities = () => {
               <option value="students">Sort by Student Size</option>
             </select>
 
-            {/* Items Per Page */}
-            <select
-              value={itemsPerPage}
-              onChange={(e) => {
-                setItemsPerPage(Number(e.target.value));
-                setCurrentPage(1);
-              }}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 text-sm"
-            >
-              <option value="10">10 per page</option>
-              <option value="20">20 per page</option>
-              <option value="50">50 per page</option>
-              <option value="100">100 per page</option>
-            </select>
+          {/* Items Per Page */}
+<select
+  value={itemsPerPage}
+  onChange={(e) => {
+    setItemsPerPage(Number(e.target.value));
+    setCurrentPage(1);
+  }}
+  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 text-sm"
+>
+  <option value="5">5 per page</option>
+  <option value="10">10 per page</option>
+  <option value="20">20 per page</option>
+  <option value="50">50 per page</option>
+  <option value="100">100 per page</option>
+</select>
+
           </div>
 
           {/* Active Filters */}
@@ -246,22 +249,7 @@ const AllUniversities = () => {
               <div className="flex-1 p-3 sm:p-4">
                 {/* University Header */}
                 <div className="flex items-start gap-3 mb-3">
-                  <div className="flex flex-col gap-1">
-                    <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
-                      uni.rank <= 100 ? 'bg-green-100' : 
-                      uni.rank <= 500 ? 'bg-blue-100' : 'bg-gray-100'
-                    }`}>
-                      <span className={`font-bold text-sm ${
-                        uni.rank <= 100 ? 'text-green-800' : 
-                        uni.rank <= 500 ? 'text-blue-800' : 'text-gray-600'
-                      }`}>
-                        {uni.rank === 9999 ? 'N/A' : `#${uni.rank}`}
-                      </span>
-                    </div>
-                    <span className="text-xs bg-gray-100 text-gray-700 py-1 px-2 rounded-full font-semibold text-center">
-                      Global Rank
-                    </span>
-                  </div>
+                 
                   <div className="flex-1">
                     <h3 className="text-base sm:text-lg font-bold text-gray-900 mb-1 line-clamp-2">
                       {uni.name}
