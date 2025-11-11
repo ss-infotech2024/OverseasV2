@@ -186,7 +186,7 @@ const DestinationComponent = () => {
     }
   ];
 
-  // Split destinations into slides for carousel
+  // Split destinations into slides for carousel (4 per slide)
   const slides = [];
   for (let i = 0; i < destinations.length; i += 4) {
     slides.push(destinations.slice(i, i + 4));
@@ -207,7 +207,7 @@ const DestinationComponent = () => {
   return (
     <div
       className="text-white p-3 xs:p-4 sm:p-6 lg:p-8 min-h-screen"
-      style={{ backgroundColor: '#601D95' }} // ← Background color applied here
+      style={{ backgroundColor: '#601D95' }}
     >
       <div className="container mx-auto max-w-7xl">
         {/* Header Section */}
@@ -225,14 +225,17 @@ const DestinationComponent = () => {
             Discover world-class universities, generous scholarships, affordable living costs,
             and excellent post-study work opportunities with expert guidance.
           </p>
-          <motion.a
-            href="/study-abroad"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="mt-4 sm:mt-6 inline-block px-4 xs:px-6 sm:px-8 py-2 xs:py-3 bg-yellow-400 text-blue-900 font-bold rounded-full hover:bg-yellow-300 transition-all shadow-lg hover:shadow-xl text-sm xs:text-base sm:text-lg"
-          >
-            Explore All Destinations
-          </motion.a>
+
+          {/* Updated Button: Now goes to /all-universities */}
+          <Link to="/all-universities">
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="mt-4 sm:mt-6 inline-block px-4 xs:px-6 sm:px-8 py-2 xs:py-3 bg-yellow-400 text-blue-900 font-bold rounded-full hover:bg-yellow-300 transition-all shadow-lg hover:shadow-xl text-sm xs:text-base sm:text-lg"
+            >
+              Explore All Destinations
+            </motion.button>
+          </Link>
         </motion.div>
 
         {/* Carousel Section */}
@@ -347,8 +350,8 @@ const DestinationComponent = () => {
             <button
               key={index}
               className={`transition-all rounded-full ${emblaApi?.selectedScrollSnap() === index
-                  ? 'bg-yellow-400'
-                  : 'bg-white/50'
+                ? 'bg-yellow-400'
+                : 'bg-white/50'
                 }`}
               style={{
                 width: emblaApi?.selectedScrollSnap() === index ? '20px' : '8px',
@@ -499,7 +502,7 @@ const DestinationComponent = () => {
                     >
                       Visit Official Website
                     </a>
-                    <Link to="/contact" className="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-800 py-2 xs:py-3 px-4 rounded-lg font-semibold transition-all text-sm xs:text-base">
+                    <Link to="/contact" className="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-800 py-2 xs:py-3 px-4 rounded-lg font-semibold transition-all text-sm xs:text-base text-center">
                       Contact Advisor
                     </Link>
                     <button

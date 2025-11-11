@@ -240,9 +240,8 @@ const HeroSection = () => {
             <button
               key={index}
               onClick={() => goToSlide(index)}
-              className={`w-3 h-3 rounded-full transition-all ${
-                currentIndex === index ? "bg-white w-8" : "bg-white/50"
-              }`}
+              className={`w-3 h-3 rounded-full transition-all ${currentIndex === index ? "bg-white w-8" : "bg-white/50"
+                }`}
               aria-label={`Go to slide ${index + 1}`}
             />
           ))}
@@ -258,17 +257,15 @@ const HeroSection = () => {
             className="text-white flex flex-col items-center sm:items-start text-center sm:text-left sm:pr-8 lg:pr-16 translate-x-0 sm:translate-x-0 xs:translate-x-[60px]"
           >
             <h1 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-5xl xl:text-6xl font-bold leading-tight mb-4 drop-shadow-lg">
-              We Help to <span className="text-purple-400">Build</span>
-              <br /> Your Dream
+              Your Dream Begins with  <span className="text-purple-400">SS Overseas</span>
+              {/* <br /> Your Dream */}
             </h1>
             <p className="text-xs xs:text-sm sm:text-base mb-4 leading-relaxed drop-shadow-md max-w-md mx-auto sm:mx-0">
-              Our team of experts is dedicated to guiding you through every step
-              of the process, ensuring a smooth and successful journey towards
-              your academic goals.
+              Start your global education journey with ₹0 tuition fees in Germany’s public universities or choose affordable private universities across Europe — all with personalized guidance and full support from SS Overseas Education.
             </p>
 
             <div className="flex flex-col gap-3 w-full max-w-xs mx-auto sm:mx-0 mb-4">
-              <Link to="/contact">
+              <Link to="/services">
                 <Button
                   ref={buttonRef}
                   size="lg"
@@ -276,7 +273,7 @@ const HeroSection = () => {
                   className="group w-full bg-white text-purple-600 border-2 border-purple-600 font-semibold text-sm xs:text-base px-4 xs:px-6 py-3 xs:py-4 rounded-xl transition-all duration-300 hover:bg-purple-600 hover:text-white hover:shadow-lg flex items-center justify-center"
                   aria-label="Book an appointment"
                 >
-                  Book Appointment
+                  Start Journey Today
                   <FaArrowRight className="ml-2 xs:ml-4 group-hover:translate-x-2 transition-transform duration-300" />
                 </Button>
               </Link>

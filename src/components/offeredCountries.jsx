@@ -1368,7 +1368,7 @@ const OfferedCountriesSection = () => {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      gsap.fromTo(sectionRef.current, 
+      gsap.fromTo(sectionRef.current,
         { opacity: 0, y: 50 },
         { opacity: 1, y: 0, duration: 1, ease: "power3.out" }
       );
@@ -1401,7 +1401,7 @@ const OfferedCountriesSection = () => {
             </p>
           </div>
         </div>
-        
+
         <div className="grid grid-cols-3 gap-2 sm:gap-3 w-full mb-4">
           <div className="text-center">
             <div className="text-sm sm:text-base font-bold text-purple-600">{country.universities.length}</div>
@@ -1444,7 +1444,7 @@ const OfferedCountriesSection = () => {
   );
 
   return (
-    <section 
+    <section
       ref={sectionRef}
       className="py-12 px-4 sm:px-6 lg:px-8 text-center overflow-hidden flex flex-col items-center justify-center bg-gradient-to-b from-white to-purple-50"
     >
@@ -1494,7 +1494,7 @@ const OfferedCountriesSection = () => {
 
         <div className="swiper-button-prev !text-purple-600 !bg-white !shadow-lg !w-10 !h-10 !rounded-full after:!text-sm"></div>
         <div className="swiper-button-next !text-purple-600 !bg-white !shadow-lg !w-10 !h-10 !rounded-full after:!text-sm"></div>
-        
+
         <div className="swiper-pagination !relative !mt-6 [&>.swiper-pagination-bullet]:!bg-purple-300 [&>.swiper-pagination-bullet-active]:!bg-purple-600"></div>
       </div>
     </section>
