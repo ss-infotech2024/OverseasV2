@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { 
+import {
   Users, Award, Globe, Target, Heart, Zap, CheckCircle, ArrowRight, Quote, MapPin, Calendar, BookOpen, MessageCircle, Phone
 } from 'lucide-react';
 import mangeshsir from "../assets/mangeshsir.jpg";
@@ -12,7 +12,7 @@ const AboutUs = () => {
   const [activeSection, setActiveSection] = useState('about');
   const [isScrolled, setIsScrolled] = useState(false);
   const navigate = useNavigate();
-  
+
   const sectionRefs = {
     about: useRef(null),
     mission: useRef(null),
@@ -25,7 +25,7 @@ const AboutUs = () => {
   const WHATSAPP_BASE = `https://wa.me/${WHATSAPP_NUMBER}`;
 
   const openWhatsApp = (context = "General Inquiry", name = "") => {
-    const text = name 
+    const text = name
       ? `Hi, I want to connect with *${name}* regarding *${context}*.`
       : `Hi, I'm interested in *${context}*. Can you help?`;
     window.open(`${WHATSAPP_BASE}?text=${encodeURIComponent(text)}`, "_blank");
@@ -65,7 +65,7 @@ const AboutUs = () => {
       hoverRing: 'ring-purple-500',
       icon: <Users className="w-5 h-5" />,
       experience: '12+ years',
-   
+
     },
     {
       id: 3,
@@ -77,7 +77,7 @@ const AboutUs = () => {
       hoverRing: 'ring-green-500',
       icon: <Zap className="w-5 h-5" />,
       experience: '10+ years',
-    
+
     },
   ];
 
@@ -166,8 +166,8 @@ const AboutUs = () => {
                   <div className="w-20 h-1 bg-purple-600 rounded-full mb-6"></div>
                 </div>
                 <p className="text-lg text-gray-600 leading-relaxed">
-                  SS Overseas Education is a premier consultancy dedicated to guiding students through their study abroad journey. 
-                  With experienced counselors and a global network of institutions, we provide comprehensive services to help students 
+                  SS Overseas Education is a premier consultancy dedicated to guiding students through their study abroad journey.
+                  With experienced counselors and a global network of institutions, we provide comprehensive services to help students
                   achieve their academic and career goals internationally.
                 </p>
                 <div className="grid grid-cols-2 gap-4 mt-8">
@@ -185,7 +185,7 @@ const AboutUs = () => {
             </motion.div>
             <motion.div initial={{ opacity: 0, x: 50 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.7 }} viewport={{ once: true }} className="relative">
               <div className="bg-gradient-to-br from-purple-600 to-blue-600 rounded-2xl p-2 shadow-2xl">
-                <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Students" className="rounded-xl w-full h-96 object-cover" />
+                <img src="https://www.impactplus.com/hs-fs/hubfs/blog-image-uploads/best-about-us-pages.jpg?length=1200&name=best-about-us-pages.jpg" alt="Students" className="rounded-xl w-full h-96 object-cover" />
               </div>
               <div className="absolute -bottom-6 -right-6 bg-white rounded-2xl p-6 shadow-2xl border">
                 <div className="text-center">
@@ -235,26 +235,82 @@ const AboutUs = () => {
       </section>
 
       {/* Mission & Vision */}
-      <section ref={sectionRefs.mission} className="py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-gray-50 to-blue-50">
+      <section
+        ref={sectionRefs.mission}
+        className="py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-gray-50 to-blue-50"
+      >
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12">
-          <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="bg-white rounded-2xl p-8 shadow-xl border">
-            <div className="w-12 h-12 bg-green-600 rounded-xl flex items-center justify-center text-white mb-6"><Target className="w-6 h-6" /></div>
+          {/* Mission Card */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="bg-white rounded-2xl p-8 shadow-xl border"
+          >
+            <div className="w-12 h-12 bg-green-600 rounded-xl flex items-center justify-center text-white mb-6">
+              <Target className="w-6 h-6" />
+            </div>
             <h3 className="text-3xl font-bold text-gray-900 mb-4">Our Mission</h3>
-            <p className="text-lg text-gray-600 mb-6">To empower students to achieve their global education goals through personalized guidance and unwavering support.</p>
+            <p className="text-lg text-gray-600 mb-6">
+              To empower ambitious students to achieve their global education goals by
+              providing transparent guidance, expert mentorship, and end-to-end
+              support for every stage of their journey abroad.
+            </p>
+
             <ul className="space-y-3">
-              {['Personalized counseling', 'Comprehensive application support', 'Visa guidance', 'Pre-departure orientation'].map((item, i) => (
-                <li key={i} className="flex items-center gap-3 text-gray-600"><CheckCircle className="w-5 h-5 text-green-500" />{item}</li>
+              {[
+                'Personalized career and university counseling',
+                'Comprehensive application and documentation support',
+                'Professional SOP, LOR & CV preparation assistance',
+                'Expert visa guidance and financial documentation help',
+                'Pre-departure orientation and post-arrival support',
+              ].map((item, i) => (
+                <li
+                  key={i}
+                  className="flex items-center gap-3 text-gray-600"
+                >
+                  <CheckCircle className="w-5 h-5 text-green-500" />
+                  {item}
+                </li>
               ))}
             </ul>
           </motion.div>
 
-          <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} viewport={{ once: true }} className="bg-purple-600 rounded-2xl p-8 shadow-xl text-white">
-            <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center mb-6"><Globe className="w-6 h-6" /></div>
+          {/* Vision Card */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            viewport={{ once: true }}
+            className="bg-purple-600 rounded-2xl p-8 shadow-xl text-white"
+          >
+            <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center mb-6">
+              <Globe className="w-6 h-6" />
+            </div>
             <h3 className="text-3xl font-bold mb-4">Our Vision</h3>
-            <p className="text-lg text-blue-100">To be the most trusted and innovative study abroad consultancy, making international education accessible worldwide.</p>
+            <p className="text-lg text-blue-100 mb-6">
+              To become the most trusted and innovative global education partner,
+              helping students from every background access international
+              opportunities and build successful global careers.
+            </p>
+
+            <ul className="space-y-3 text-blue-100">
+              {[
+                'Building a community of globally competent professionals',
+                'Partnering with world-class universities & institutions',
+                'Promoting ethical and transparent counseling practices',
+                'Empowering students to study, work, and settle abroad confidently',
+              ].map((point, index) => (
+                <li key={index} className="flex items-center gap-3">
+                  <CheckCircle className="w-5 h-5 text-white/90" />
+                  {point}
+                </li>
+              ))}
+            </ul>
           </motion.div>
         </div>
       </section>
+
 
       {/* === LEADERSHIP SECTION – REDESIGNED === */}
       <section ref={sectionRefs.leadership} className="py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-50">
@@ -310,7 +366,7 @@ const AboutUs = () => {
                         "{person.quote}"
                       </p>
 
-                
+
                     </div>
                   </div>
                 </div>
