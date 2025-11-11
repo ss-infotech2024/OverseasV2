@@ -49,7 +49,7 @@ export default function Services() {
       popular: true,
       color: "from-blue-600 to-blue-800",
       cta: "Inquire Now",
-      image: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+      image: "https://d3f5t311jggq1i.cloudfront.net/2024/12/medium-shot-woman-working-as-travel-agent-scaled.jpg"
     },
     {
       id: 2,
@@ -97,7 +97,7 @@ export default function Services() {
       popular: false,
       color: "from-blue-600 to-blue-800",
       cta: "Inquire Now",
-      image: "https://images.unsplash.com/photo-1589561084287-1b64b8a0d4e2?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+      image: "https://theglobalconnect.co.in/wp-content/uploads/2023/07/visa-process.jpg"
     },
     {
       id: 5,
@@ -177,7 +177,7 @@ export default function Services() {
       popular: false,
       color: "from-blue-600 to-blue-800",
       cta: "Inquire Now",
-      image: "https://images.unsplash.com/photo-1551836026-d5cbc2f4ce7a?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+      image: "https://www.avanse.com/blogs/images/16feb-blog-2024.jpg"
     },
   ];
 
@@ -220,31 +220,31 @@ export default function Services() {
   ];
 
   const process = [
-    { 
-      step: 1, 
-      title: "Consultation", 
-      description: "Free profile evaluation", 
+    {
+      step: 1,
+      title: "Consultation",
+      description: "Free profile evaluation",
       duration: "30-45 mins",
       icon: Users
     },
-    { 
-      step: 2, 
-      title: "Plan Creation", 
-      description: "Customized roadmap", 
+    {
+      step: 2,
+      title: "Plan Creation",
+      description: "Customized roadmap",
       duration: "3-5 days",
       icon: FileSearch
     },
-    { 
-      step: 3, 
-      title: "Execution", 
-      description: "Application & visa support", 
+    {
+      step: 3,
+      title: "Execution",
+      description: "Application & visa support",
       duration: "Ongoing",
       icon: CheckCircle
     },
-    { 
-      step: 4, 
-      title: "Success", 
-      description: "Achieve your goals", 
+    {
+      step: 4,
+      title: "Success",
+      description: "Achieve your goals",
       duration: "Lifetime",
       icon: Award
     },
@@ -267,7 +267,7 @@ export default function Services() {
         <div className="absolute inset-0 bg-gradient-to-br from-purple-900/50 to-purple-700/30"></div>
         <div className="absolute top-0 right-0 w-40 h-40 sm:w-48 sm:h-48 bg-purple-500/10 rounded-full -translate-y-20 sm:-translate-y-24 translate-x-20 sm:translate-x-24"></div>
         <div className="absolute bottom-0 left-0 w-48 h-48 sm:w-64 sm:h-64 bg-purple-400/10 rounded-full -translate-x-24 sm:-translate-x-32 translate-y-24 sm:translate-y-32"></div>
-        
+
         <div className="max-w-7xl mx-auto text-center relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -278,14 +278,14 @@ export default function Services() {
               <Star className="w-2.5 h-2.5 sm:w-3 sm:h-3 fill-current text-yellow-300" />
               <span className="text-[10px] sm:text-xs font-medium">Study Abroad Services</span>
             </div>
-            
+
             <h1 className="text-xl sm:text-3xl lg:text-4xl font-bold mb-3 sm:mb-4 leading-tight">
               Your Study Abroad
               <span className="block bg-gradient-to-r from-yellow-300 to-yellow-400 bg-clip-text text-transparent">
                 Journey Partner
               </span>
             </h1>
-            
+
             <motion.p
               className="text-sm sm:text-base lg:text-lg text-purple-100 mb-4 sm:mb-6 max-w-2xl mx-auto leading-relaxed"
               initial={{ opacity: 0 }}
@@ -301,13 +301,13 @@ export default function Services() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6, duration: 0.8 }}
             >
-              <button 
+              <button
                 onClick={() => openInquiryForm({ title: "General Consultation" })}
                 className="px-4 py-2 sm:px-6 sm:py-3 bg-gradient-to-r from-yellow-400 to-yellow-500 text-black font-semibold rounded-lg hover:from-yellow-500 hover:to-yellow-600 transition-all duration-300 transform hover:-translate-y-1 shadow-md hover:shadow-yellow-500/25 text-xs sm:text-sm"
               >
                 Start Your Journey
               </button>
-              <button 
+              <button
                 onClick={() => navigate('/courses')}
                 className="px-4 py-2 sm:px-6 sm:py-3 border border-white text-white font-semibold rounded-lg hover:bg-white/10 transition-all duration-300 transform hover:-translate-y-1 text-xs sm:text-sm"
               >
@@ -374,19 +374,18 @@ export default function Services() {
                 viewport={{ once: true }}
                 className="group"
               >
-                <div className={`bg-white rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border ${
-                  service.popular ? "border-purple-500 ring-2 ring-purple-500/20" : "border-gray-100"
-                } group-hover:border-purple-300 h-full flex flex-col`}>
-                  
+                <div className={`bg-white rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border ${service.popular ? "border-purple-500 ring-2 ring-purple-500/20" : "border-gray-100"
+                  } group-hover:border-purple-300 h-full flex flex-col`}>
+
                   {/* Service Image */}
                   <div className="relative h-32 sm:h-40 overflow-hidden">
-                    <img 
-                      src={service.image} 
+                    <img
+                      src={service.image}
                       alt={service.title}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
-                    
+
                     {service.popular && (
                       <div className="absolute top-3 right-3">
                         <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-yellow-500 text-white shadow-lg">
@@ -409,7 +408,7 @@ export default function Services() {
                     <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2 group-hover:text-purple-700 transition-colors">
                       {service.title}
                     </h3>
-                    
+
                     <p className="text-sm text-gray-600 mb-4 flex-1">
                       {service.description}
                     </p>
@@ -446,7 +445,7 @@ export default function Services() {
         </div>
       </section>
 
-     
+
       {/* Support Features Section */}
       <section className="py-12 px-3 sm:px-6 lg:px-8 bg-white">
         <div className="max-w-7xl mx-auto">
@@ -510,13 +509,13 @@ export default function Services() {
               Take the first step towards your international education dreams with our expert guidance and comprehensive support
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button 
+              <button
                 onClick={() => openInquiryForm({ title: "Free Consultation" })}
                 className="px-8 py-4 bg-gradient-to-r from-yellow-400 to-yellow-500 text-black font-bold rounded-xl hover:from-yellow-500 hover:to-yellow-600 transition-all duration-300 transform hover:-translate-y-1 shadow-2xl hover:shadow-yellow-500/30 text-lg"
               >
                 Get Free Consultation
               </button>
-              <button 
+              <button
                 onClick={() => navigate('/courses')}
                 className="px-8 py-4 border-2 border-white text-white font-bold rounded-xl hover:bg-white/10 transition-all duration-300 transform hover:-translate-y-1 text-lg"
               >

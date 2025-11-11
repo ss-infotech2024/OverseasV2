@@ -1,18 +1,34 @@
 // AllUniversities.js
-import React, { useState, useMemo } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useMemo, useEffect } from "react";
+import { Link, useSearchParams } from "react-router-dom";
 import { countries } from "../offeredCountries";
 
 const AllUniversities = () => {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCountry, setSelectedCountry] = useState("All");
-  const [sortBy, setSortBy] = useState("rank");
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(5);
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  // Initialize state from URL parameters or defaults
+  const [searchTerm, setSearchTerm] = useState(searchParams.get('search') || "");
+  const [selectedCountry, setSelectedCountry] = useState(searchParams.get('country') || "All");
+  const [sortBy, setSortBy] = useState(searchParams.get('sort') || "rank");
+  const [currentPage, setCurrentPage] = useState(parseInt(searchParams.get('page')) || 1);
+  const [itemsPerPage, setItemsPerPage] = useState(parseInt(searchParams.get('perPage')) || 3);
+
+  // Update URL parameters whenever filters change
+  useEffect(() => {
+    const params = new URLSearchParams();
+
+    if (searchTerm) params.set('search', searchTerm);
+    if (selectedCountry !== "All") params.set('country', selectedCountry);
+    if (sortBy !== "rank") params.set('sort', sortBy);
+    if (currentPage !== 1) params.set('page', currentPage.toString());
+    if (itemsPerPage !== 3) params.set('perPage', itemsPerPage.toString());
+
+    setSearchParams(params);
+  }, [searchTerm, selectedCountry, sortBy, currentPage, itemsPerPage, setSearchParams]);
 
   // Get all universities from all countries
   const allUniversities = useMemo(() => {
-    return countries.flatMap(country => 
+    return countries.flatMap(country =>
       country.universities.map(uni => ({
         ...uni,
         country: country.name,
@@ -34,7 +50,7 @@ const AllUniversities = () => {
         uni.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         uni.country.toLowerCase().includes(searchTerm.toLowerCase()) ||
         uni.location.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        uni.programs.some(program => 
+        uni.programs.some(program =>
           program.toLowerCase().includes(searchTerm.toLowerCase())
         )
       );
@@ -85,7 +101,7 @@ const AllUniversities = () => {
   // Statistics
   const stats = useMemo(() => {
     const rankedUniversities = allUniversities.filter(uni => uni.rank !== 9999);
-    const averageRank = rankedUniversities.length > 0 
+    const averageRank = rankedUniversities.length > 0
       ? Math.round(rankedUniversities.reduce((acc, uni) => acc + uni.rank, 0) / rankedUniversities.length)
       : 0;
 
@@ -94,7 +110,7 @@ const AllUniversities = () => {
       return acc;
     }, {});
 
-    const topCountry = Object.entries(countryCounts).reduce((prev, current) => 
+    const topCountry = Object.entries(countryCounts).reduce((prev, current) =>
       current[1] > prev[1] ? current : prev
     )[0];
 
@@ -107,10 +123,44 @@ const AllUniversities = () => {
     };
   }, [allUniversities]);
 
-  // Reset to first page when filters change
-  React.useEffect(() => {
+  // Reset to first page when filters change (except page changes)
+  useEffect(() => {
     setCurrentPage(1);
-  }, [searchTerm, selectedCountry, sortBy]);
+  }, [searchTerm, selectedCountry, sortBy, itemsPerPage]);
+
+  // Handle search input change
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
+  // Handle country filter change
+  const handleCountryChange = (e) => {
+    setSelectedCountry(e.target.value);
+  };
+
+  // Handle sort change
+  const handleSortChange = (e) => {
+    setSortBy(e.target.value);
+  };
+
+  // Handle items per page change
+  const handleItemsPerPageChange = (e) => {
+    setItemsPerPage(Number(e.target.value));
+  };
+
+  // Handle page change
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+
+  // Clear all filters
+  const clearAllFilters = () => {
+    setSearchTerm("");
+    setSelectedCountry("All");
+    setSortBy("rank");
+    setItemsPerPage(3);
+    setCurrentPage(1);
+  };
 
   return (
     <section className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-white">
@@ -122,10 +172,10 @@ const AllUniversities = () => {
               All Universities
             </h1>
             <p className="text-base sm:text-lg text-gray-200 max-w-3xl mx-auto leading-relaxed">
-              Explore {allUniversities.length} world-class universities across {stats.totalCountries} countries. 
+              Explore {allUniversities.length} world-class universities across {stats.totalCountries} countries.
               Find your perfect academic destination with detailed information and rankings.
             </p>
-            
+
             {/* Quick Stats */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6 max-w-2xl mx-auto">
               <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3">
@@ -160,7 +210,7 @@ const AllUniversities = () => {
                 type="text"
                 placeholder="Search universities, countries, programs..."
                 value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
+                onChange={handleSearchChange}
                 className="w-full pl-8 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 text-sm"
               />
               <svg
@@ -176,7 +226,7 @@ const AllUniversities = () => {
             {/* Country Filter */}
             <select
               value={selectedCountry}
-              onChange={(e) => setSelectedCountry(e.target.value)}
+              onChange={handleCountryChange}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 text-sm"
             >
               {uniqueCountries.map(country => (
@@ -189,7 +239,7 @@ const AllUniversities = () => {
             {/* Sort By */}
             <select
               value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}
+              onChange={handleSortChange}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 text-sm"
             >
               <option value="rank">Sort by Rank</option>
@@ -199,22 +249,19 @@ const AllUniversities = () => {
               <option value="students">Sort by Student Size</option>
             </select>
 
-          {/* Items Per Page */}
-<select
-  value={itemsPerPage}
-  onChange={(e) => {
-    setItemsPerPage(Number(e.target.value));
-    setCurrentPage(1);
-  }}
-  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 text-sm"
->
-  <option value="5">5 per page</option>
-  <option value="10">10 per page</option>
-  <option value="20">20 per page</option>
-  <option value="50">50 per page</option>
-  <option value="100">100 per page</option>
-</select>
-
+            {/* Items Per Page */}
+            <select
+              value={itemsPerPage}
+              onChange={handleItemsPerPageChange}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 text-sm"
+            >
+              <option value="3">3 per page</option>
+              <option value="5">5 per page</option>
+              <option value="10">10 per page</option>
+              <option value="20">20 per page</option>
+              <option value="50">50 per page</option>
+              <option value="100">100 per page</option>
+            </select>
           </div>
 
           {/* Active Filters */}
@@ -235,6 +282,22 @@ const AllUniversities = () => {
                 </button>
               </span>
             )}
+            {sortBy !== "rank" && (
+              <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs flex items-center gap-1 font-medium">
+                Sort: {sortBy}
+                <button onClick={() => setSortBy("rank")} className="hover:text-blue-900 ml-1">
+                  ×
+                </button>
+              </span>
+            )}
+            {itemsPerPage !== 3 && (
+              <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs flex items-center gap-1 font-medium">
+                Per Page: {itemsPerPage}
+                <button onClick={() => setItemsPerPage(3)} className="hover:text-blue-900 ml-1">
+                  ×
+                </button>
+              </span>
+            )}
           </div>
         </div>
 
@@ -249,7 +312,6 @@ const AllUniversities = () => {
               <div className="flex-1 p-3 sm:p-4">
                 {/* University Header */}
                 <div className="flex items-start gap-3 mb-3">
-                 
                   <div className="flex-1">
                     <h3 className="text-base sm:text-lg font-bold text-gray-900 mb-1 line-clamp-2">
                       {uni.name}
@@ -303,7 +365,7 @@ const AllUniversities = () => {
                   </h4>
                   <div className="flex flex-wrap gap-1">
                     {uni.programs.slice(0, 3).map((program, idx) => (
-                      <span 
+                      <span
                         key={idx}
                         className="text-xs bg-white text-gray-700 px-2 py-1 rounded-lg border border-gray-200 hover:border-blue-300 hover:text-blue-700 transition-all duration-300"
                       >
@@ -341,13 +403,13 @@ const AllUniversities = () => {
 
               {/* Right Action Buttons */}
               <div className="w-full sm:w-32 p-3 sm:p-4 flex flex-row sm:flex-col justify-between sm:justify-center gap-2 sm:gap-3 bg-gray-50 sm:bg-white">
-                <Link 
+                <Link
                   to={`/university/${encodeURIComponent(uni.name)}`}
                   className="flex-1 sm:flex-none bg-blue-600 text-white py-2 px-3 rounded-lg text-xs font-semibold hover:bg-blue-700 transition-all duration-300 text-center shadow-sm hover:shadow-md"
                 >
                   View Details
                 </Link>
-                <Link 
+                <Link
                   to={`/universities/${encodeURIComponent(uni.country)}`}
                   className="flex-none w-10 sm:w-auto flex items-center justify-center bg-gray-100 text-gray-600 rounded-lg hover:bg-blue-100 hover:text-blue-700 transition-all duration-300 border border-gray-200 hover:border-blue-300 py-2"
                   title="View all universities in this country"
@@ -367,16 +429,16 @@ const AllUniversities = () => {
             <div className="text-sm text-gray-600">
               Page {currentPage} of {totalPages}
             </div>
-            
+
             <div className="flex items-center gap-2">
               <button
-                onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                onClick={() => handlePageChange(Math.max(currentPage - 1, 1))}
                 disabled={currentPage === 1}
                 className="px-3 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 text-sm"
               >
                 Previous
               </button>
-              
+
               {/* Page Numbers */}
               <div className="flex gap-1">
                 {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
@@ -390,25 +452,24 @@ const AllUniversities = () => {
                   } else {
                     pageNum = currentPage - 2 + i;
                   }
-                  
+
                   return (
                     <button
                       key={pageNum}
-                      onClick={() => setCurrentPage(pageNum)}
-                      className={`w-8 h-8 rounded-lg text-sm font-medium transition-all duration-300 ${
-                        currentPage === pageNum
-                          ? 'bg-blue-600 text-white'
-                          : 'border border-gray-300 hover:bg-gray-50 text-gray-700'
-                      }`}
+                      onClick={() => handlePageChange(pageNum)}
+                      className={`w-8 h-8 rounded-lg text-sm font-medium transition-all duration-300 ${currentPage === pageNum
+                        ? 'bg-blue-600 text-white'
+                        : 'border border-gray-300 hover:bg-gray-50 text-gray-700'
+                        }`}
                     >
                       {pageNum}
                     </button>
                   );
                 })}
               </div>
-              
+
               <button
-                onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                onClick={() => handlePageChange(Math.min(currentPage + 1, totalPages))}
                 disabled={currentPage === totalPages}
                 className="px-3 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 text-sm"
               >
@@ -427,11 +488,7 @@ const AllUniversities = () => {
               Try adjusting your search terms or filters to find what you're looking for.
             </p>
             <button
-              onClick={() => {
-                setSearchTerm("");
-                setSelectedCountry("All");
-                setCurrentPage(1);
-              }}
+              onClick={clearAllFilters}
               className="bg-blue-600 text-white py-2 px-6 rounded-lg font-semibold hover:bg-blue-700 transition-all duration-300 shadow-sm hover:shadow-md text-sm"
             >
               Clear All Filters
@@ -441,7 +498,7 @@ const AllUniversities = () => {
 
         {/* Back to Home */}
         <div className="text-center mb-10">
-          <Link 
+          <Link
             to="/"
             className="inline-flex items-center gap-2 bg-white text-blue-700 border border-blue-300 py-2 px-6 rounded-lg font-semibold hover:bg-blue-50 hover:border-blue-400 transition-all duration-300 shadow-sm hover:shadow-md text-sm"
           >
