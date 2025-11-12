@@ -2,11 +2,12 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
-  Users, Award, Globe, Target, Heart, Zap, CheckCircle, ArrowRight, Quote, MapPin, Calendar, BookOpen, MessageCircle, Phone
+  Users, Award, Globe, Target, Heart, Zap, CheckCircle, ArrowRight, Quote,
+  MapPin, Calendar, BookOpen, MessageCircle, Phone, Star
 } from 'lucide-react';
 import mangeshsir from "../assets/mangeshsir.jpg";
-import allensir from "../assets/allensir.jpg"
-import alvisir from "../assets/Alvisir.jpg"
+import allensir from "../assets/allensir.jpg";
+import alvisir from "../assets/Alvisir.jpg";
 
 const AboutUs = () => {
   const [activeSection, setActiveSection] = useState('about');
@@ -65,7 +66,6 @@ const AboutUs = () => {
       hoverRing: 'ring-purple-500',
       icon: <Users className="w-5 h-5" />,
       experience: '12+ years',
-
     },
     {
       id: 3,
@@ -77,7 +77,6 @@ const AboutUs = () => {
       hoverRing: 'ring-green-500',
       icon: <Zap className="w-5 h-5" />,
       experience: '10+ years',
-
     },
   ];
 
@@ -111,41 +110,81 @@ const AboutUs = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50">
-      {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 text-white py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 overflow-hidden">
-        <div className="absolute inset-0 bg-black/20"></div>
-        <div className="absolute top-0 left-0 w-64 h-64 bg-purple-500/10 rounded-full -translate-x-1/2 -translate-y-1/2"></div>
-        <div className="absolute bottom-0 right-0 w-80 h-80 bg-blue-500/10 rounded-full translate-x-1/3 translate-y-1/3"></div>
+      {/* Hero Section - Matching Services Page */}
+      <motion.section
+        className="relative py-10 px-3 sm:px-6 lg:px-8 text-white overflow-hidden"
+        style={{ backgroundColor: '#581C87' }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.8 }}
+      >
+        <div className="absolute inset-0 bg-gradient-to-br from-purple-900/50 to-purple-700/30"></div>
+        <div className="absolute top-0 right-0 w-40 h-40 sm:w-48 sm:h-48 bg-purple-500/10 rounded-full -translate-y-20 sm:-translate-y-24 translate-x-20 sm:translate-x-24"></div>
+        <div className="absolute bottom-0 left-0 w-48 h-48 sm:w-64 sm:h-64 bg-purple-400/10 rounded-full -translate-x-24 sm:-translate-x-32 translate-y-24 sm:translate-y-32"></div>
+
         <div className="max-w-7xl mx-auto text-center relative z-10">
-          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
-            <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-4 py-2 mb-6 border border-white/20">
-              <span className="text-sm font-medium text-white/90">About SS Overseas</span>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+          >
+            <div className="inline-flex items-center gap-1.5 bg-white/10 backdrop-blur-sm rounded-full px-2.5 py-1 sm:px-3 sm:py-1.5 mb-3 sm:mb-4 border border-white/20">
+              <Star className="w-2.5 h-2.5 sm:w-3 sm:h-3 fill-current text-yellow-300" />
+              <span className="text-[10px] sm:text-xs font-medium">About SS Overseas</span>
             </div>
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-              Your Trusted Study Abroad
-              <span className="block bg-gradient-to-r from-yellow-400 to-yellow-300 bg-clip-text text-transparent">Partner</span>
+
+            <h1 className="text-xl sm:text-3xl lg:text-4xl font-bold mb-3 sm:mb-4 leading-tight">
+              Your Trusted
+              <span className="block bg-gradient-to-r from-yellow-300 to-yellow-400 bg-clip-text text-transparent">
+                Study Abroad Partner
+              </span>
             </h1>
-            <p className="text-lg sm:text-xl text-blue-100 max-w-3xl mx-auto mb-8 leading-relaxed">
+
+            <motion.p
+              className="text-sm sm:text-base lg:text-lg text-purple-100 mb-4 sm:mb-6 max-w-2xl mx-auto leading-relaxed"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.4, duration: 0.8 }}
+            >
               Guiding students to global education success with personalized support, expert counseling, and proven results.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button onClick={() => scrollToSection('about')} className="px-8 py-4 bg-yellow-400 text-gray-900 rounded-xl font-semibold hover:bg-yellow-500 transition-all duration-300 shadow-lg text-base sm:text-lg">
+            </motion.p>
+
+            <motion.div
+              className="flex flex-col sm:flex-row gap-2 sm:gap-3 justify-center"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.6, duration: 0.8 }}
+            >
+              <button
+                onClick={() => scrollToSection('about')}
+                className="px-4 py-2 sm:px-6 sm:py-3 bg-gradient-to-r from-yellow-400 to-yellow-500 text-black font-semibold rounded-lg hover:from-yellow-500 hover:to-yellow-600 transition-all duration-300 transform hover:-translate-y-1 shadow-md hover:shadow-yellow-500/25 text-xs sm:text-sm"
+              >
                 Explore Our Story
               </button>
-              <button onClick={() => openWhatsApp("Free Consultation")} className="px-8 py-4 border-2 border-white text-white rounded-xl font-semibold hover:bg-white/10 transition-all duration-300 text-base sm:text-lg">
+              <button
+                onClick={() => openWhatsApp("Free Consultation")}
+                className="px-4 py-2 sm:px-6 sm:py-3 border border-white text-white font-semibold rounded-lg hover:bg-white/10 transition-all duration-300 transform hover:-translate-y-1 text-xs sm:text-sm"
+              >
                 Get Free Consultation
               </button>
-            </div>
+            </motion.div>
           </motion.div>
         </div>
-      </section>
+      </motion.section>
 
       {/* Sticky Navigation */}
       <nav className={`sticky top-0 z-50 bg-white/95 backdrop-blur-md shadow-lg border-b border-gray-200/50 transition-all duration-300 ${isScrolled ? 'py-3' : 'py-4'}`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-wrap justify-center gap-6">
             {['about', 'mission', 'stats', 'leadership'].map((id) => (
-              <button key={id} onClick={() => scrollToSection(id)} className={`text-sm font-medium transition-all duration-300 px-3 py-2 rounded-lg ${activeSection === id ? 'text-purple-600 bg-purple-50' : 'text-gray-600 hover:text-purple-500 hover:bg-gray-50'}`}>
+              <button
+                key={id}
+                onClick={() => scrollToSection(id)}
+                className={`text-sm font-medium transition-all duration-300 px-3 py-2 rounded-lg ${activeSection === id
+                    ? 'text-purple-600 bg-purple-50'
+                    : 'text-gray-600 hover:text-purple-500 hover:bg-gray-50'
+                  }`}
+              >
                 {id === 'about' ? 'About Us' : id === 'mission' ? 'Mission & Vision' : id === 'stats' ? 'Our Impact' : 'Leadership'}
               </button>
             ))}
@@ -172,7 +211,14 @@ const AboutUs = () => {
                 </p>
                 <div className="grid grid-cols-2 gap-4 mt-8">
                   {servicesData.map((s, i) => (
-                    <motion.div key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1 }} viewport={{ once: true }} className="flex items-start gap-3 p-3 bg-white rounded-lg shadow-sm border">
+                    <motion.div
+                      key={i}
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      transition={{ delay: i * 0.1 }}
+                      viewport={{ once: true }}
+                      className="flex items-start gap-3 p-3 bg-white rounded-lg shadow-sm border"
+                    >
                       <div className="w-8 h-8 bg-purple-600 rounded-lg flex items-center justify-center text-white">{s.icon}</div>
                       <div>
                         <h4 className="font-semibold text-gray-900 text-sm">{s.title}</h4>
@@ -185,7 +231,11 @@ const AboutUs = () => {
             </motion.div>
             <motion.div initial={{ opacity: 0, x: 50 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.7 }} viewport={{ once: true }} className="relative">
               <div className="bg-gradient-to-br from-purple-600 to-blue-600 rounded-2xl p-2 shadow-2xl">
-                <img src="https://www.impactplus.com/hs-fs/hubfs/blog-image-uploads/best-about-us-pages.jpg?length=1200&name=best-about-us-pages.jpg" alt="Students" className="rounded-xl w-full h-96 object-cover" />
+                <img
+                  src="https://www.impactplus.com/hs-fs/hubfs/blog-image-uploads/best-about-us-pages.jpg?length=1200&name=best-about-us-pages.jpg"
+                  alt="Students"
+                  className="rounded-xl w-full h-96 object-cover"
+                />
               </div>
               <div className="absolute -bottom-6 -right-6 bg-white rounded-2xl p-6 shadow-2xl border">
                 <div className="text-center">
@@ -210,7 +260,14 @@ const AboutUs = () => {
 
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
             {statsData.map((s, i) => (
-              <motion.div key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1 }} viewport={{ once: true }} className={`${s.color} rounded-2xl p-6 text-white shadow-xl hover:shadow-2xl transition-all hover:scale-105`}>
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.1 }}
+                viewport={{ once: true }}
+                className={`${s.color} rounded-2xl p-6 text-white shadow-xl hover:shadow-2xl transition-all hover:scale-105`}
+              >
                 <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center mb-4">{s.icon}</div>
                 <div className="text-3xl font-bold text-center mb-2">{s.number}</div>
                 <div className="text-sm font-semibold text-center mb-1">{s.label}</div>
@@ -223,7 +280,14 @@ const AboutUs = () => {
             <h3 className="text-3xl font-bold text-gray-900 mb-12">Our Core <span className="text-purple-600">Values</span></h3>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {valuesData.map((v, i) => (
-                <motion.div key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1 }} viewport={{ once: true }} className="bg-white rounded-2xl p-6 text-center shadow-lg hover:shadow-xl transition-all border">
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.1 }}
+                  viewport={{ once: true }}
+                  className="bg-white rounded-2xl p-6 text-center shadow-lg hover:shadow-xl transition-all border"
+                >
                   <div className="w-16 h-16 bg-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4 text-white">{v.icon}</div>
                   <h4 className="text-lg font-bold text-gray-900 mb-3">{v.title}</h4>
                   <p className="text-gray-600">{v.description}</p>
@@ -265,10 +329,7 @@ const AboutUs = () => {
                 'Expert visa guidance and financial documentation help',
                 'Pre-departure orientation and post-arrival support',
               ].map((item, i) => (
-                <li
-                  key={i}
-                  className="flex items-center gap-3 text-gray-600"
-                >
+                <li key={i} className="flex items-center gap-3 text-gray-600">
                   <CheckCircle className="w-5 h-5 text-green-500" />
                   {item}
                 </li>
@@ -311,8 +372,7 @@ const AboutUs = () => {
         </div>
       </section>
 
-
-      {/* === LEADERSHIP SECTION – REDESIGNED === */}
+      {/* Leadership Section */}
       <section ref={sectionRefs.leadership} className="py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-50">
         <div className="max-w-7xl mx-auto">
           <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-16">
@@ -332,14 +392,12 @@ const AboutUs = () => {
                 viewport={{ once: true }}
                 className="group relative"
               >
-                {/* Glow on Hover */}
                 <div className={`absolute -inset-1 ${person.color} opacity-0 group-hover:opacity-20 rounded-3xl blur-xl transition duration-500`}></div>
 
                 <div className="relative bg-white/90 backdrop-blur-sm rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500 overflow-hidden border border-gray-100">
                   <div className={`h-2 ${person.color}`}></div>
                   <div className="p-6 sm:p-8">
                     <div className="flex flex-col items-center text-center space-y-5">
-                      {/* Image */}
                       <div className="relative">
                         <div className="w-28 h-28 rounded-full overflow-hidden ring-4 ring-white shadow-xl">
                           <img src={person.image} alt={person.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
@@ -349,24 +407,19 @@ const AboutUs = () => {
                         </div>
                       </div>
 
-                      {/* Name & Role */}
                       <div>
                         <h3 className="text-xl font-bold text-gray-900">{person.name}</h3>
                         <p className={`text-sm font-semibold ${person.color.replace('bg-', 'text-')} mt-1`}>{person.role}</p>
                       </div>
 
-                      {/* Experience */}
                       <div className="flex items-center gap-1 bg-gray-100 rounded-full px-3 py-1">
                         <Calendar className="w-3 h-3 text-gray-600" />
                         <span className="text-xs text-gray-600 font-medium">{person.experience}</span>
                       </div>
 
-                      {/* Quote */}
                       <p className="text-sm text-gray-600 italic leading-relaxed line-clamp-3 group-hover:line-clamp-none transition-all">
                         "{person.quote}"
                       </p>
-
-
                     </div>
                   </div>
                 </div>
@@ -389,7 +442,7 @@ const AboutUs = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {processData.map((step, i) => (
               <motion.div key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1 }} viewport={{ once: true }} className="relative text-center group">
-                {i < processData.length - 1 && <div className="hidden lg:block absolute top-12 left-1 Insurance w-full h-0.5 bg-gray-200 -z-10"></div>}
+                {i < processData.length - 1 && <div className="hidden lg:block absolute top-12 left-full w-full h-0.5 bg-gray-200 -z-10"></div>}
                 <div className={`w-16 h-16 ${step.color} rounded-2xl mx-auto mb-4 flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-transform`}>
                   {step.icon}
                 </div>
