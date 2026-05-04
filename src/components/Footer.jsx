@@ -81,6 +81,18 @@ const Footer = () => {
                 +91 9371494930
               </a>
             </li>
+             <li className="flex items-center gap-2">
+              <Phone className="w-4 h-4 text-yellow-400 flex-shrink-0" />
+              <a href="tel:+919422129534" className="hover:text-yellow-400 transition-colors">
+                +91 9422129534
+              </a>
+            </li>
+             <li className="flex items-center gap-2">
+              <Phone className="w-4 h-4 text-yellow-400 flex-shrink-0" />
+              <a href="tel:+919422129534" className="hover:text-yellow-400 transition-colors">
+                +91 9399345989
+              </a>
+            </li>
             {/* Timings */}
             <li className="flex items-center gap-2">
               <Clock className="w-4 h-4 text-yellow-400 flex-shrink-0" />
@@ -109,12 +121,12 @@ const Footer = () => {
         <p className="text-xs text-gray-500 mt-4">
           Design & Developed by{" "}
           <a
-            href="https://www.linkedin.com/in/tejas-khope/"
+            href="https://ssinfotech.co"
             target="_blank"
             rel="noopener noreferrer"
             className="text-yellow-400 hover:text-yellow-300 font-medium underline transition-colors"
           >
-            Tejas Khope
+            SS Infotech
           </a>
         </p>
       </div>

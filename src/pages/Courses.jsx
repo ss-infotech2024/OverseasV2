@@ -22,6 +22,15 @@ import {
   Bookmark,
   Crown,
   Filter,
+  Languages,
+  Briefcase,
+  Microscope,
+  Code,
+  Calculator,
+  Palette,
+  Stethoscope,
+  Car,
+  Database,
 } from "lucide-react";
 
 // Course images mapping
@@ -35,12 +44,14 @@ const courseImages = {
   "default": "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
 };
 
-// Our premium courses
+// Our premium courses with German language options
 const ourCourses = [
   {
     id: 1,
     title: "IELTS & TOEFL Prep",
+    title_de: "IELTS & TOEFL Vorbereitung",
     instructor: "Language Experts",
+    instructor_de: "Sprachexperten",
     category: "Test Preparation",
     level: "Beginner to Advanced",
     duration: "8 weeks",
@@ -48,15 +59,21 @@ const ourCourses = [
     rating: 4.8,
     image: "https://images.unsplash.com/photo-1501504905252-473c47e087f8?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
     description: "Training for study abroad exams.",
-    features: ["Practice tests"],
+    description_de: "Vorbereitung für Auslandsstudienprüfungen.",
+    features: ["Practice tests", "Mock exams"],
+    features_de: ["Übungstests", "Probeprüfungen"],
     bestseller: true,
     popular: true,
-    discount: "17% OFF"
+    discount: "17% OFF",
+    language: "English & German",
+    filterCategory: "exam"
   },
   {
     id: 2,
     title: "GRE / GMAT Coaching",
+    title_de: "GRE / GMAT Vorbereitung",
     instructor: "Quant & Verbal Experts",
+    instructor_de: "Quantitative & Verbale Experten",
     category: "Test Preparation",
     level: "Intermediate",
     duration: "12 weeks",
@@ -64,15 +81,21 @@ const ourCourses = [
     rating: 4.7,
     image: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
     description: "Coaching for master's and MBA exams.",
-    features: ["Mock tests"],
+    description_de: "Vorbereitung für Master- und MBA-Prüfungen.",
+    features: ["Mock tests", "Strategy sessions"],
+    features_de: ["Probeprüfungen", "Strategiesitzungen"],
     bestseller: true,
     popular: true,
-    discount: "17% OFF"
+    discount: "17% OFF",
+    language: "English & German",
+    filterCategory: "exam"
   },
   {
     id: 3,
     title: "Admission Guidance",
+    title_de: "Bewerbungsberatung",
     instructor: "Admission Specialists",
+    instructor_de: "Bewerbungsspezialisten",
     category: "Admission Guidance",
     level: "All Levels",
     duration: "Ongoing",
@@ -80,15 +103,21 @@ const ourCourses = [
     rating: 4.9,
     image: "https://images.unsplash.com/photo-1562813733-b31f71025d54?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
     description: "Support for university applications.",
-    features: ["SOP/LOR writing"],
+    description_de: "Unterstützung bei Universitätsbewerbungen.",
+    features: ["SOP/LOR writing", "Document review"],
+    features_de: ["SOP/LOR verfassen", "Dokumentenprüfung"],
     bestseller: false,
     popular: true,
-    discount: "14% OFF"
+    discount: "14% OFF",
+    language: "German & English",
+    filterCategory: "guidance"
   },
   {
     id: 4,
     title: "Visa Assistance",
+    title_de: "Visumshilfe",
     instructor: "Visa Experts",
+    instructor_de: "Visumsexperten",
     category: "Visa Assistance",
     level: "All Levels",
     duration: "4 weeks",
@@ -96,15 +125,21 @@ const ourCourses = [
     rating: 4.8,
     image: "https://images.unsplash.com/photo-1589561084287-1b64b8a0d4e2?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
     description: "Visa documentation support.",
-    features: ["Document checklist"],
+    description_de: "Unterstützung bei Visumsdokumentation.",
+    features: ["Document checklist", "Interview prep"],
+    features_de: ["Dokumenten-Checkliste", "Vorbereitung für Interviews"],
     bestseller: false,
     popular: false,
-    discount: "17% OFF"
+    discount: "17% OFF",
+    language: "German & English",
+    filterCategory: "visa"
   },
   {
     id: 5,
     title: "Pre-Departure Program",
+    title_de: "Programm vor der Abreise",
     instructor: "Student Advisors",
+    instructor_de: "Studentenberater",
     category: "Pre-Departure",
     level: "All Levels",
     duration: "2 weeks",
@@ -112,15 +147,21 @@ const ourCourses = [
     rating: 4.7,
     image: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
     description: "Prepare for life abroad.",
-    features: ["Cultural sessions"],
+    description_de: "Vorbereitung auf das Leben im Ausland.",
+    features: ["Cultural sessions", "Packing guide"],
+    features_de: ["Kulturelle Sitzungen", "Packratgeber"],
     bestseller: false,
     popular: false,
-    discount: "29% OFF"
+    discount: "29% OFF",
+    language: "English & German",
+    filterCategory: "predeparture"
   },
   {
     id: 6,
     title: "Career Counselling",
+    title_de: "Karriereberatung",
     instructor: "Career Experts",
+    instructor_de: "Karriereexperten",
     category: "Career Counseling",
     level: "All Levels",
     duration: "Ongoing",
@@ -128,93 +169,255 @@ const ourCourses = [
     rating: 4.8,
     image: "https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
     description: "Choose the right course and country.",
-    features: ["Career assessment"],
+    description_de: "Wählen Sie den richtigen Kurs und das richtige Land.",
+    features: ["Career assessment", "Job market analysis"],
+    features_de: ["Karrierebewertung", "Arbeitsmarktanalyse"],
     bestseller: false,
     popular: true,
-    discount: "22% OFF"
+    discount: "22% OFF",
+    language: "German & English",
+    filterCategory: "career"
   },
+  {
+    id: 7,
+    title: "German Language Course",
+    title_de: "Deutsch Sprachkurs",
+    instructor: "Native German Speakers",
+    instructor_de: "Muttersprachliche Deutschlehrer",
+    category: "Language Learning",
+    level: "A1 to C2",
+    duration: "16 weeks",
+    students: 5420,
+    rating: 4.9,
+    image: "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+    description: "Complete German language training from basics to fluency.",
+    description_de: "Komplettes Deutsch-Sprachtraining von den Grundlagen bis zur Fließendheit.",
+    features: ["Speaking practice", "Grammar focus", "Exam prep (Goethe/Telc)"],
+    features_de: ["Sprechpraxis", "Grammatikfokus", "Prüfungsvorbereitung (Goethe/Telc)"],
+    bestseller: true,
+    popular: true,
+    discount: "25% OFF",
+    language: "German (Immersion)",
+    filterCategory: "language"
+  },
+  {
+    id: 8,
+    title: "Study in Germany Preparation",
+    title_de: "Vorbereitung für das Studium in Deutschland",
+    instructor: "German Education Experts",
+    instructor_de: "Deutsche Bildungsexperten",
+    category: "Country Preparation",
+    level: "All Levels",
+    duration: "12 weeks",
+    students: 3100,
+    rating: 4.8,
+    image: "https://images.unsplash.com/photo-1515488764276-beab7607c1e6?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+    description: "Complete guidance for studying in German universities.",
+    description_de: "Vollständige Beratung für das Studium an deutschen Universitäten.",
+    features: ["University selection", "Visa guidance", "TestAS preparation"],
+    features_de: ["Universitätsauswahl", "Visumsberatung", "TestAS Vorbereitung"],
+    bestseller: true,
+    popular: true,
+    discount: "20% OFF",
+    language: "German & English",
+    filterCategory: "germany"
+  }
 ];
 
-// Study abroad courses (tuition removed)
+// Study abroad courses with course-wise filters
 const studyAbroadCourses = [
   {
     id: 1,
     name: "Computer Science",
+    name_de: "Informatik",
     description: "AI and software development program.",
+    description_de: "KI- und Softwareentwicklungsprogramm.",
     duration: "4 years",
     country: "USA",
-    countryFlag: "USA Flag",
+    countryFlag: "🇺🇸",
     qualification: "Bachelor's",
     entryRequirements: "SAT 1200+, IELTS 6.5",
     careerProspects: "Software Engineer",
     image: courseImages["Computer Science"],
-    link: "/course/cs-engineering"
+    link: "/course/cs-engineering",
+    language: "English",
+    filterCategory: "engineering"
   },
   {
     id: 2,
     name: "MBA in Business",
+    name_de: "MBA in Betriebswirtschaft",
     description: "Global business strategies and leadership.",
+    description_de: "Globale Geschäftsstrategien und Führung.",
     duration: "2 years",
     country: "UK",
-    countryFlag: "UK Flag",
+    countryFlag: "🇬🇧",
     qualification: "Master's",
     entryRequirements: "GMAT 650+, IELTS 7.0",
     careerProspects: "Business Consultant",
     image: courseImages["Business"],
-    link: "/course/mba-international"
+    link: "/course/mba-international",
+    language: "English",
+    filterCategory: "business"
   },
   {
     id: 3,
     name: "Mechanical Engineering",
+    name_de: "Maschinenbau",
     description: "Robotics and sustainable energy program.",
+    description_de: "Robotik- und nachhaltiges Energieprogramm.",
     duration: "4 years",
     country: "Germany",
-    countryFlag: "Germany Flag",
+    countryFlag: "🇩🇪",
     qualification: "Bachelor's",
-    entryRequirements: "Abitur equivalent, IELTS 6.0",
+    entryRequirements: "Abitur equivalent, TestDaF 4×4",
     careerProspects: "Mechanical Engineer",
     image: courseImages["Engineering"],
-    link: "/course/mechanical-engineering"
+    link: "/course/mechanical-engineering",
+    language: "German",
+    filterCategory: "engineering"
   },
   {
     id: 4,
     name: "Medicine (MBBS)",
+    name_de: "Medizin (MBBS)",
     description: "Medical program with clinical rotations.",
+    description_de: "Medizinisches Programm mit klinischen Rotationen.",
     duration: "6 years",
     country: "Australia",
-    countryFlag: "Australia Flag",
+    countryFlag: "🇦🇺",
     qualification: "Doctoral",
     entryRequirements: "NEET qualified, IELTS 7.0",
     careerProspects: "Doctor",
     image: courseImages["Medicine"],
-    link: "/course/medicine-mbbs"
+    link: "/course/medicine-mbbs",
+    language: "English",
+    filterCategory: "medical"
   },
   {
     id: 5,
     name: "Data Science",
+    name_de: "Datenwissenschaft",
     description: "Big data and machine learning program.",
+    description_de: "Big Data- und maschinelles Lernprogramm.",
     duration: "2 years",
     country: "Canada",
-    countryFlag: "Canada Flag",
+    countryFlag: "🇨🇦",
     qualification: "Master's",
     entryRequirements: "GRE 310+, IELTS 6.5",
     careerProspects: "Data Scientist",
     image: courseImages["Computer Science"],
-    link: "/course/data-science"
+    link: "/course/data-science",
+    language: "English",
+    filterCategory: "it"
   },
   {
     id: 6,
     name: "International Relations",
+    name_de: "Internationale Beziehungen",
     description: "Global politics and diplomacy study.",
+    description_de: "Studium der globalen Politik und Diplomatie.",
     duration: "3 years",
     country: "UK",
-    countryFlag: "UK Flag",
+    countryFlag: "🇬🇧",
     qualification: "Bachelor's",
     entryRequirements: "IELTS 6.5, Personal Statement",
     careerProspects: "Diplomat",
     image: courseImages["Arts & Humanities"],
-    link: "/course/international-relations"
+    link: "/course/international-relations",
+    language: "English",
+    filterCategory: "arts"
+  },
+  {
+    id: 7,
+    name: "German Engineering",
+    name_de: "Deutsches Ingenieurwesen",
+    description: "Precision engineering and automotive technology.",
+    description_de: "Präzisionsmechanik und Automobiltechnologie.",
+    duration: "3.5 years",
+    country: "Germany",
+    countryFlag: "🇩🇪",
+    qualification: "Bachelor's",
+    entryRequirements: "Abitur equivalent, DSH-2",
+    careerProspects: "Automotive Engineer",
+    image: courseImages["Engineering"],
+    link: "/course/german-engineering",
+    language: "German",
+    filterCategory: "engineering"
+  },
+  {
+    id: 8,
+    name: "Renewable Energy",
+    name_de: "Erneuerbare Energien",
+    description: "Sustainable energy systems and technology.",
+    description_de: "Nachhaltige Energiesysteme und -technologie.",
+    duration: "2 years",
+    country: "Germany",
+    countryFlag: "🇩🇪",
+    qualification: "Master's",
+    entryRequirements: "Bachelor's in Engineering, German B2",
+    careerProspects: "Energy Consultant",
+    image: courseImages["Science"],
+    link: "/course/renewable-energy",
+    language: "German",
+    filterCategory: "engineering"
+  },
+  {
+    id: 9,
+    name: "Business Analytics",
+    name_de: "Geschäftsanalyse",
+    description: "Data-driven decision making program.",
+    description_de: "Datenbasierte Entscheidungsfindung.",
+    duration: "1.5 years",
+    country: "USA",
+    countryFlag: "🇺🇸",
+    qualification: "Master's",
+    entryRequirements: "GMAT 600+, IELTS 6.5",
+    careerProspects: "Business Analyst",
+    image: courseImages["Business"],
+    link: "/course/business-analytics",
+    language: "English",
+    filterCategory: "business"
+  },
+  {
+    id: 10,
+    name: "Artificial Intelligence",
+    name_de: "Künstliche Intelligenz",
+    description: "Machine learning and neural networks.",
+    description_de: "Maschinelles Lernen und neuronale Netze.",
+    duration: "2 years",
+    country: "Canada",
+    countryFlag: "🇨🇦",
+    qualification: "Master's",
+    entryRequirements: "GRE 320+, IELTS 7.0",
+    careerProspects: "AI Engineer",
+    image: courseImages["Computer Science"],
+    link: "/course/ai-master",
+    language: "English",
+    filterCategory: "it"
   }
+];
+
+// Filter categories for premium courses
+const premiumFilters = [
+  { id: "all", name: "All Courses", icon: Crown },
+  { id: "exam", name: "Exam Prep", icon: BookOpen },
+  { id: "language", name: "Language Courses", icon: Languages },
+  { id: "guidance", name: "Admission Guidance", icon: Target },
+  { id: "visa", name: "Visa Assistance", icon: Shield },
+  { id: "career", name: "Career Counselling", icon: Briefcase },
+  { id: "predeparture", name: "Pre-Departure", icon: MapPin },
+  { id: "germany", name: "Study in Germany", icon: Globe },
+];
+
+// Filter categories for study abroad courses
+const abroadFilters = [
+  { id: "all", name: "All Programs", icon: Globe },
+  { id: "engineering", name: "Engineering", icon: Zap },
+  { id: "business", name: "Business", icon: Briefcase },
+  { id: "it", name: "IT & Data Science", icon: Code },
+  { id: "medical", name: "Medical", icon: Stethoscope },
+  { id: "arts", name: "Arts & Humanities", icon: Palette },
 ];
 
 // Tab Button Component
@@ -234,10 +437,29 @@ const TabButton = ({ active, onClick, icon: Icon, children }) => (
   </motion.button>
 );
 
+// Filter Button Component
+const FilterButton = ({ filter, isActive, onClick, icon: Icon }) => (
+  <motion.button
+    onClick={onClick}
+    whileHover={{ scale: 1.05 }}
+    whileTap={{ scale: 0.95 }}
+    className={`flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg font-medium transition-all duration-300 text-xs sm:text-sm whitespace-nowrap ${
+      isActive
+        ? "bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-lg shadow-purple-500/25"
+        : "bg-white text-gray-700 border border-gray-200 hover:border-purple-300 hover:shadow-lg"
+    }`}
+  >
+    <Icon className="w-3 h-3 sm:w-4 sm:h-4" />
+    {filter.name}
+  </motion.button>
+);
+
 export default function Courses() {
   const [selectedCountry, setSelectedCountry] = useState("All");
-  const [searchQuery, setSearchQuery] = useState("");
   const [activeTab, setActiveTab] = useState("premium");
+  const [selectedPremiumFilter, setSelectedPremiumFilter] = useState("all");
+  const [selectedAbroadFilter, setSelectedAbroadFilter] = useState("all");
+
   const navigate = useNavigate();
 
   // ---- Open Google Form in a new tab ----
@@ -252,24 +474,41 @@ export default function Courses() {
   // Country filters
   const countryFilters = ["All", ...new Set(studyAbroadCourses.map(course => course.country))];
 
-  // Filter courses
+  // Filter courses based on selected filters
   const filteredCourses = useMemo(() => {
-    const courses = activeTab === "premium" ? ourCourses : studyAbroadCourses;
+    let courses = activeTab === "premium" ? ourCourses : studyAbroadCourses;
     
-    return courses.filter((course) => {
-      const matchesSearch = course.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                           course.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                           course.description.toLowerCase().includes(searchQuery.toLowerCase());
-      
-      const matchesCountry = selectedCountry === "All" || course.country === selectedCountry;
-      
-      return matchesSearch && (activeTab === "premium" || matchesCountry);
-    });
-  }, [activeTab, searchQuery, selectedCountry]);
+    // Apply course-wise filter
+    if (activeTab === "premium" && selectedPremiumFilter !== "all") {
+      courses = courses.filter(course => course.filterCategory === selectedPremiumFilter);
+    }
+    
+    if (activeTab === "abroad" && selectedAbroadFilter !== "all") {
+      courses = courses.filter(course => course.filterCategory === selectedAbroadFilter);
+    }
+    
+    // Apply country filter for abroad tab
+    if (activeTab === "abroad" && selectedCountry !== "All") {
+      courses = courses.filter(course => course.country === selectedCountry);
+    }
+    
+    return courses;
+  }, [activeTab, selectedPremiumFilter, selectedAbroadFilter, selectedCountry]);
 
   // Handle image error
   const handleImageError = (e, courseName, category = "default") => {
     e.target.src = courseImages[category] || courseImages.default;
+  };
+
+  // Get current filters based on active tab
+  const currentFilters = activeTab === "premium" ? premiumFilters : abroadFilters;
+  const currentSelectedFilter = activeTab === "premium" ? selectedPremiumFilter : selectedAbroadFilter;
+  const setCurrentFilter = (filterId) => {
+    if (activeTab === "premium") {
+      setSelectedPremiumFilter(filterId);
+    } else {
+      setSelectedAbroadFilter(filterId);
+    }
   };
 
   // Render course card
@@ -300,9 +539,17 @@ export default function Courses() {
           {/* Badges */}
           <div className="absolute top-1 right-1 sm:top-2 sm:right-2">
             {isPremium ? (
-              <span className="inline-flex items-center px-1.5 py-0.5 sm:px-2 sm:py-0.5 rounded-full text-[8px] sm:text-[10px] font-medium bg-green-500 text-white">
-                {course.discount}
-              </span>
+              <div className="flex gap-1">
+                <span className="inline-flex items-center px-1.5 py-0.5 sm:px-2 sm:py-0.5 rounded-full text-[8px] sm:text-[10px] font-medium bg-green-500 text-white">
+                  {course.discount}
+                </span>
+                {course.language && (
+                  <span className="inline-flex items-center px-1.5 py-0.5 sm:px-2 sm:py-0.5 rounded-full text-[8px] sm:text-[10px] font-medium bg-purple-500 text-white">
+                    <Languages className="w-2 h-2 mr-0.5" />
+                    {course.language === "German (Immersion)" ? "DE Immersion" : course.language.substring(0, 8)}
+                  </span>
+                )}
+              </div>
             ) : (
               <div className="flex items-center gap-1 bg-white/90 backdrop-blur-sm rounded-full px-1.5 py-0.5 sm:px-2 sm:py-1">
                 <span className="text-sm sm:text-base">{course.countryFlag}</span>
@@ -354,16 +601,29 @@ export default function Courses() {
 
           <h3 className="text-sm sm:text-base font-bold text-gray-900 mb-1 sm:mb-2 line-clamp-2 group-hover:text-purple-700 transition-colors">
             {isPremium ? course.title : course.name}
+            {isPremium && course.title_de && (
+              <span className="block text-xs text-gray-500 font-normal">
+                {course.title_de}
+              </span>
+            )}
           </h3>
           
           <p className="text-[10px] sm:text-xs text-gray-600 mb-2 sm:mb-3 line-clamp-2 flex-1">
             {course.description}
+            {isPremium && course.description_de && (
+              <span className="block text-gray-500 mt-1">
+                {course.description_de}
+              </span>
+            )}
           </p>
 
           {/* Instructor / Country */}
           <div className="flex items-center gap-1 sm:gap-1.5 text-[10px] sm:text-xs text-gray-500 mb-2 sm:mb-3">
             <Users className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
             <span>{isPremium ? course.instructor : course.country}</span>
+            {isPremium && course.instructor_de && (
+              <span className="text-gray-400">| {course.instructor_de}</span>
+            )}
           </div>
 
           {/* Duration Only */}
@@ -379,7 +639,12 @@ export default function Courses() {
                 {course.features.map((feature, idx) => (
                   <div key={idx} className="flex items-start space-x-1.5">
                     <CheckCircle className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-green-500 flex-shrink-0 mt-0.5" />
-                    <span className="text-[10px] sm:text-xs text-gray-600">{feature}</span>
+                    <span className="text-[10px] sm:text-xs text-gray-600">
+                      {feature}
+                      {course.features_de && course.features_de[idx] && (
+                        <span className="text-gray-400 ml-1">({course.features_de[idx]})</span>
+                      )}
+                    </span>
                   </div>
                 ))}
               </div>
@@ -392,6 +657,26 @@ export default function Courses() {
                 ))}
               </div>
             </>
+          )}
+
+          {/* Language Badge */}
+          {course.language && (
+            <div className="mb-2">
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-purple-100 text-purple-700 rounded-full text-[8px] sm:text-[10px] font-medium">
+                <Languages className="w-2.5 h-2.5" />
+                {course.language}
+              </span>
+            </div>
+          )}
+
+          {/* Entry Requirements for Study Abroad */}
+          {!isPremium && course.entryRequirements && (
+            <div className="mb-2">
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-blue-100 text-blue-700 rounded-full text-[8px] sm:text-[10px] font-medium">
+                <CheckCircle className="w-2.5 h-2.5" />
+                {course.entryRequirements}
+              </span>
+            </div>
           )}
 
           {/* CTA Button */}
@@ -433,21 +718,8 @@ export default function Courses() {
             </h1>
             
             <p className="text-sm sm:text-base lg:text-lg mb-4 sm:mb-6 leading-relaxed max-w-xl mx-auto text-blue-100">
-              Top courses in Engineering, Business, IT, and more.
+              Top courses in Engineering, Business, IT, and more. German language options available.
             </p>
-            
-            <div className="max-w-xl mx-auto mb-4 sm:mb-6">
-              <div className="relative group">
-                <Search className="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4 sm:w-5 sm:h-5 z-10" />
-                <input
-                  type="text"
-                  placeholder={`Search ${activeTab === 'premium' ? 'premium courses' : 'study abroad courses'}...`}
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-10 sm:pl-12 pr-3 sm:pr-4 py-2 sm:py-3 rounded-xl text-gray-900 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-yellow-400/30 shadow-md border-0 transition-all duration-300 group-hover:shadow-yellow-400/20"
-                />
-              </div>
-            </div>
             
             <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 justify-center items-center">
               <button
@@ -475,17 +747,52 @@ export default function Courses() {
           </div>
           
           <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 justify-center mb-6 sm:mb-8">
-            <TabButton active={activeTab === "premium"} onClick={() => setActiveTab("premium")} icon={Crown}>
+            <TabButton active={activeTab === "premium"} onClick={() => {
+              setActiveTab("premium");
+              setSelectedPremiumFilter("all");
+            }} icon={Crown}>
               Premium Courses
             </TabButton>
-            <TabButton active={activeTab === "abroad"} onClick={() => setActiveTab("abroad")} icon={Globe}>
+            <TabButton active={activeTab === "abroad"} onClick={() => {
+              setActiveTab("abroad");
+              setSelectedAbroadFilter("all");
+              setSelectedCountry("All");
+            }} icon={Globe}>
               Study Abroad
             </TabButton>
           </div>
 
-          {/* Country Filters */}
+          {/* Course-wise Filters */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }} 
+            animate={{ opacity: 1, y: 0 }} 
+            transition={{ duration: 0.5 }}
+            className="mb-6"
+          >
+            <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-3 sm:mb-4 text-center">
+              Filter by {activeTab === "premium" ? "Course Type" : "Program Category"}
+            </h3>
+            <div className="flex flex-wrap gap-2 sm:gap-3 justify-center">
+              {currentFilters.map((filter) => (
+                <FilterButton
+                  key={filter.id}
+                  filter={filter}
+                  isActive={currentSelectedFilter === filter.id}
+                  onClick={() => setCurrentFilter(filter.id)}
+                  icon={filter.icon}
+                />
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Country Filters (Only for Study Abroad) */}
           {activeTab === "abroad" && (
-            <motion.div className="text-center mb-6" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }} 
+              animate={{ opacity: 1, y: 0 }} 
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="text-center"
+            >
               <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-3 sm:mb-4">
                 Filter by Destination
               </h3>
@@ -527,10 +834,15 @@ export default function Courses() {
               </h2>
               <p className="text-sm sm:text-base text-gray-600 max-w-xl mx-auto">
                 {activeTab === "premium" 
-                  ? "Preparation and guidance for success."
-                  : "Top programs in USA, UK, Canada, and more."
+                  ? "Preparation, guidance, and German language training for success."
+                  : `Showing ${filteredCourses.length} programs ${selectedCountry !== "All" ? `in ${selectedCountry}` : "worldwide"}`
                 }
               </p>
+              {activeTab === "premium" && (
+                <p className="text-xs text-purple-600 mt-2">
+                  🇩🇪 New! German language courses and study preparation for Germany now available
+                </p>
+              )}
             </motion.div>
           </div>
 
@@ -541,20 +853,23 @@ export default function Courses() {
           {filteredCourses.length === 0 && (
             <motion.div className="text-center py-8 sm:py-12" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6 }}>
               <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6">
-                <Search className="w-6 h-6 sm:w-8 sm:h-8 text-gray-400" />
+                <Filter className="w-6 h-6 sm:w-8 sm:h-8 text-gray-400" />
               </div>
               <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-3 sm:mb-4">No courses found</h3>
               <p className="text-sm sm:text-base text-gray-600 mb-4 sm:mb-6 max-w-md mx-auto">
-                {activeTab === "premium" ? "No premium courses match your search." : "No courses match your filters."}
+                {activeTab === "premium" 
+                  ? "No premium courses match your selected filter. Try selecting a different category."
+                  : "No study abroad programs match your filters. Try adjusting the category or destination."}
               </p>
               <button
                 onClick={() => {
                   setSelectedCountry("All");
-                  setSearchQuery("");
+                  setSelectedPremiumFilter("all");
+                  setSelectedAbroadFilter("all");
                 }}
                 className="px-4 py-2 sm:px-6 sm:py-3 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white rounded-xl font-medium transition-all duration-300 text-xs sm:text-sm"
               >
-                Clear Filters
+                Clear All Filters
               </button>
             </motion.div>
           )}
@@ -569,7 +884,7 @@ export default function Courses() {
               Start Your Study Abroad Journey
             </h2>
             <p className="text-sm sm:text-base text-blue-100 mb-4 sm:mb-6 max-w-lg mx-auto">
-              Achieve your dreams with our guidance.
+              Learn German or prepare for top universities with our expert guidance.
             </p>
             <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 justify-center">
               <button
@@ -580,10 +895,13 @@ export default function Courses() {
                 Free Consultation
               </button>
               <button
-                onClick={() => openInquiryForm({ title: "Contact Experts" })}
+                onClick={() => {
+                  setActiveTab("premium");
+                  setSelectedPremiumFilter("language");
+                }}
                 className="px-4 py-2 sm:px-6 sm:py-3 border border-white text-white hover:bg-white hover:text-purple-900 rounded-xl font-semibold transition-all duration-300 transform hover:-translate-y-1 text-xs sm:text-sm"
               >
-                Contact Experts
+                Learn German 🇩🇪
               </button>
             </div>
           </motion.div>
