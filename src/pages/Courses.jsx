@@ -687,7 +687,7 @@ export default function Courses() {
             }}
             className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white rounded-md py-1.5 sm:py-2 font-medium transition-all duration-300 group/btn flex items-center justify-center text-[10px] sm:text-xs"
           >
-            {isPremium ? "Inquire Now" : "Explore Course"}
+            {isPremium ? "Get More Details" : "Explore Course"}
             <ArrowRight className="w-3 h-3 sm:w-3.5 sm:h-3.5 ml-1 group-hover/btn:translate-x-0.5 transition-transform" />
           </button>
         </div>

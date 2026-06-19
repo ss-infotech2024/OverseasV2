@@ -47,7 +47,7 @@ export default function Services() {
       duration: "60-90 mins",
       popular: true,
       color: "from-blue-600 to-blue-800",
-      cta: "Inquire Now",
+      cta: "Get More Details",
     },
     {
       id: 2,
@@ -62,7 +62,7 @@ export default function Services() {
       duration: "4-6 weeks",
       popular: true,
       color: "from-blue-600 to-blue-800",
-      cta: "Inquire Now",
+      cta: "Get More Details",
     },
     {
       id: 3,
@@ -77,7 +77,7 @@ export default function Services() {
       duration: "8-12 weeks",
       popular: false,
       color: "from-blue-600 to-blue-800",
-      cta: "Inquire Now",
+      cta: "Get More Details",
     },
     {
       id: 4,
@@ -92,7 +92,7 @@ export default function Services() {
       duration: "3-4 weeks",
       popular: false,
       color: "from-blue-600 to-blue-800",
-      cta: "Inquire Now",
+      cta: "Get More Details",
     },
     {
       id: 5,
@@ -107,7 +107,7 @@ export default function Services() {
       duration: "2-4 weeks",
       popular: false,
       color: "from-blue-600 to-blue-800",
-      cta: "Inquire Now",
+      cta: "Get More Details",
     },
     {
       id: 6,
@@ -122,7 +122,7 @@ export default function Services() {
       duration: "1-2 weeks",
       popular: false,
       color: "from-blue-600 to-blue-800",
-      cta: "Inquire Now",
+      cta: "Get More Details",
     },
     {
       id: 7,
@@ -137,7 +137,7 @@ export default function Services() {
       duration: "4-8 weeks",
       popular: false,
       color: "from-blue-600 to-blue-800",
-      cta: "Inquire Now",
+      cta: "Get More Details",
     },
     {
       id: 8,
@@ -152,7 +152,7 @@ export default function Services() {
       duration: "1-2 sessions",
       popular: false,
       color: "from-blue-600 to-blue-800",
-      cta: "Inquire Now",
+      cta: "Get More Details",
     },
     {
       id: 9,
@@ -167,7 +167,7 @@ export default function Services() {
       duration: "Ongoing",
       popular: false,
       color: "from-blue-600 to-blue-800",
-      cta: "Inquire Now",
+      cta: "Get More Details",
     },
   ];
 

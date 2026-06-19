@@ -48,7 +48,7 @@ export default function Services() {
       duration: "60-90 mins",
       popular: true,
       color: "from-blue-600 to-blue-800",
-      cta: "Inquire Now",
+      cta: "Get More Details",
       image: "https://d3f5t311jggq1i.cloudfront.net/2024/12/medium-shot-woman-working-as-travel-agent-scaled.jpg"
     },
     {
@@ -64,7 +64,7 @@ export default function Services() {
       duration: "4-6 weeks",
       popular: true,
       color: "from-blue-600 to-blue-800",
-      cta: "Inquire Now",
+      cta: "Get More Details",
       image: "https://images.unsplash.com/photo-1562813733-b31f71025d54?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
     },
     {
@@ -80,7 +80,7 @@ export default function Services() {
       duration: "8-12 weeks",
       popular: false,
       color: "from-blue-600 to-blue-800",
-      cta: "Inquire Now",
+      cta: "Get More Details",
       image: "https://images.unsplash.com/photo-1501504905252-473c47e087f8?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
     },
     {
@@ -96,7 +96,7 @@ export default function Services() {
       duration: "3-4 weeks",
       popular: false,
       color: "from-blue-600 to-blue-800",
-      cta: "Inquire Now",
+      cta: "Get More Details",
       image: "https://theglobalconnect.co.in/wp-content/uploads/2023/07/visa-process.jpg"
     },
     {
@@ -112,7 +112,7 @@ export default function Services() {
       duration: "2-4 weeks",
       popular: false,
       color: "from-blue-600 to-blue-800",
-      cta: "Inquire Now",
+      cta: "Get More Details",
       image: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
     },
     {
@@ -128,7 +128,7 @@ export default function Services() {
       duration: "1-2 weeks",
       popular: false,
       color: "from-blue-600 to-blue-800",
-      cta: "Inquire Now",
+      cta: "Get More Details",
       image: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
     },
     {
@@ -144,7 +144,7 @@ export default function Services() {
       duration: "4-8 weeks",
       popular: false,
       color: "from-blue-600 to-blue-800",
-      cta: "Inquire Now",
+      cta: "Get More Details",
       image: "https://images.unsplash.com/photo-1543269865-cbf427effbad?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
     },
     {
@@ -160,7 +160,7 @@ export default function Services() {
       duration: "1-2 sessions",
       popular: false,
       color: "from-blue-600 to-blue-800",
-      cta: "Inquire Now",
+      cta: "Get More Details",
       image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
     },
     {
@@ -176,7 +176,7 @@ export default function Services() {
       duration: "Ongoing",
       popular: false,
       color: "from-blue-600 to-blue-800",
-      cta: "Inquire Now",
+      cta: "Get More Details",
       image: "https://www.avanse.com/blogs/images/16feb-blog-2024.jpg"
     },
   ];
